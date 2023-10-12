@@ -1,24 +1,25 @@
-
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import Navigation from './src/navigation';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import Navigation from "./src/navigation";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
+  uri: "http://172.25.16.1:3000/graphql",
   cache: new InMemoryCache(),
 });
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.root}>
-      <Navigation/>
-    </SafeAreaView>
+    <ApolloProvider client={client}>
+      <SafeAreaView style={styles.root}>
+        <Navigation />
+      </SafeAreaView>
+    </ApolloProvider>
   );
 }
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#F9FBFC'
-  }
+    backgroundColor: "#F9FBFC",
+  },
 });

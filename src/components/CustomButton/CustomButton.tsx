@@ -41,6 +41,7 @@ const CustomButton: React.FC<CustomInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    maxWidth: 350,
     padding: 10,
     marginVertical: 5,
 
