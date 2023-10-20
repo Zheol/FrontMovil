@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import React from "react";
 
 interface CustomInputProps {
@@ -40,20 +40,25 @@ const CustomButton: React.FC<CustomInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    maxWidth: 350,
+    
     padding: 10,
     marginVertical: 5,
-
-    alignItems: "center",
-    borderRadius: 5,
   },
 
   container_PRIMARY: {
     backgroundColor: "#3B71F3",
+    alignItems: "center",
+    borderRadius: 5,
+    width: "100%",
+    maxWidth: 350,
   },
 
-  container_TERTIARY: {},
+  container_TERTIARY: {
+    alignItems: "center",
+    borderRadius: 5,
+    width: "100%",
+    maxWidth: 350,
+  },
 
   text: {
     fontWeight: "bold",

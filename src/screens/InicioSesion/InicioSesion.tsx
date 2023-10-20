@@ -14,25 +14,32 @@ import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { gql, useMutation } from "@apollo/client";
+import { newInvariantError } from "@apollo/client/utilities/globals";
+import { useUser } from "../../User/UserContext";
 
 const LOGIN_USER = gql`
   mutation login($input: LoginUserInput!) {
     login(loginUserInput: $input) {
       user {
         email
+        id
+        name
       }
       access_token
     }
   }
 `;
 
+
 const InicioSesion: React.FC = () => {
+  const title = String;
   const [mail, setMail] = useState<string>("");
   const [mailEmpty, setMailEmpty] = useState<string>("");
   const [camposEmpty, setCamposEmpty] = useState<string>("");
   const [passwordEmpty, setPasswordEmpty] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [login, { data, loading, error }] = useMutation(LOGIN_USER);
+  const {loginSave} = useUser();
 
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
@@ -52,13 +59,23 @@ const InicioSesion: React.FC = () => {
           input: LoginUserInput,
         },
       })
-        .then((data) => {
-          navigation.navigate("Home");
+        .then((response) => {
+          const data = response.data;
+
+          if (data && data.login) {
+            loginSave({
+              accessToken: data.login.access_token,
+              userEmail: data.login.user.email,
+              userName: data.login.user.name,
+              userID: data.login.user.id
+            })
+            navigation.navigate("Home");
+          }
         })
         .catch((error) => {});
     }
   };
-
+  
   const onForgotPasswordPressed = () => {
     navigation.navigate("ForgotPassword");
   };

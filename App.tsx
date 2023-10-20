@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import Navigation from "./src/navigation";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { UserProvider } from "./src/User/UserContext";
 
 const client = new ApolloClient({
-  uri: "http://172.25.16.1:3000/graphql",
+  uri: "http://172.24.208.1:4000/graphql",
   cache: new InMemoryCache(),
 });
 
@@ -11,7 +12,9 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <SafeAreaView style={styles.root}>
-        <Navigation />
+        <UserProvider>
+          <Navigation />
+        </UserProvider>
       </SafeAreaView>
     </ApolloProvider>
   );
