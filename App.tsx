@@ -1,28 +1,25 @@
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import Navigation from "./src/navigation";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { UserProvider } from "./src/User/UserContext";
+import "react-native-gesture-handler";
 
+import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import fonts from "./config/fonts";
+import Navigation from "./navigation";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 const client = new ApolloClient({
-  uri: "http://172.24.208.1:4000/graphql",
+  uri: "http://192.168.100.3:4000/graphql",
   cache: new InMemoryCache(),
 });
 
 export default function App() {
-  return (
+  const [fontsLoaded] = useFonts(fonts);
+
+  return !fontsLoaded ? null : (
     <ApolloProvider client={client}>
-      <SafeAreaView style={styles.root}>
-        <UserProvider>
-          <Navigation />
-        </UserProvider>
-      </SafeAreaView>
+      <SafeAreaProvider>
+        <Navigation />
+        <StatusBar />
+      </SafeAreaProvider>
     </ApolloProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: "#F9FBFC",
-  },
-});
