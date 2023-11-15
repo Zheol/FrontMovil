@@ -174,7 +174,7 @@ export default function ProyectoFindScreen({ route }) {
             <View>
               {projects.map((projects: any) => {
                 return (
-                  <View
+                  <TouchableOpacity
                     style={{
                       marginVertical: 20,
                       backgroundColor: "#005050",
@@ -182,6 +182,10 @@ export default function ProyectoFindScreen({ route }) {
                       borderRadius: 10,
                     }}
                     key={projects.id}
+                    onPress={() => {
+                      // MANDAR A LA PANTALLA DEL PROYECTO
+                      console.log(`Botón presionado: ${projects.name}`);
+                    }}
                   >
                     <Text
                       style={{
@@ -193,7 +197,7 @@ export default function ProyectoFindScreen({ route }) {
                     >
                       {projects.name}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 );
               })}
             </View>

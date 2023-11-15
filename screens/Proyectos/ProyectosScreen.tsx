@@ -1,4 +1,4 @@
-import { Dimensions, View, Text, ScrollView } from "react-native";
+import { Dimensions, View, Text, ScrollView, TouchableOpacity } from "react-native";
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
@@ -62,7 +62,7 @@ export default function ProyectosScreen({ route }) {
             <View>
               {projects.map((projects: any) => {
                 return (
-                  <View
+                  <TouchableOpacity
                     style={{
                       marginVertical: 20,
                       backgroundColor: "#005050",
@@ -70,6 +70,10 @@ export default function ProyectosScreen({ route }) {
                       borderRadius: 10,
                     }}
                     key={projects.id}
+                    onPress={() => {
+                      // MANDAR A LA PANTALLA DEL PROYECTO
+                      console.log(`Botón presionado: ${projects.name}`);
+                    }}
                   >
                     <Text
                       style={{
@@ -81,7 +85,7 @@ export default function ProyectosScreen({ route }) {
                     >
                       {projects.name}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 );
               })}
             </View>
