@@ -81,7 +81,7 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
             navigation.navigate("ProyectosNav", {
               nombre: data.login.user.name,
               email: data.login.user.email,
-              id: data.login.user.id,
+              id : data.login.user.id,
               accessToken: data.login.access_token
             });
           }

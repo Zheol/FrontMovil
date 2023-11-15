@@ -48,3 +48,7 @@ export type formCreateProyect = {
   nombre: string;
   area: string;
 };
+
+export type formFindProyect = {
+  nombre: string;
+}

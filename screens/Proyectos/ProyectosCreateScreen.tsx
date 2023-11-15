@@ -11,7 +11,7 @@ import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { gql, useMutation } from "@apollo/client";
-import { useNavigation } from "@react-navigation/native";
+import { TabRouterOptions, useNavigation } from "@react-navigation/native";
 import {RootStackParamList, formCreateProyect, formLogin, formRegister } from "../../types";
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
@@ -19,6 +19,7 @@ import FontSize from "../../constants/FontSize";
 import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
 import { SubmitHandler } from "react-hook-form";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 const { height } = Dimensions.get("window");
 
 
@@ -38,7 +39,7 @@ const schema = yup.object().shape({
   area: yup.string().required("Area is required"),
 });
 
-export default function ProyectoCreateScreen() {
+export default function ProyectoCreateScreen({ route }) {
   const {
     control,
     handleSubmit,
@@ -51,15 +52,16 @@ export default function ProyectoCreateScreen() {
     },
   });
 
-  const [createProyecto, { loading, error}] = useMutation(CREATE_PROYECTO);
+  const { nombre, email, id } = route.params;
 
-  const navigation = useNavigation();
+  const [createProyecto, { loading, error}] = useMutation(CREATE_PROYECTO);
 
 
   const onPressSend: SubmitHandler<formCreateProyect> = (formData) => {
+    console.log(nombre,email,id)
     const createProyectoInput = {
       nombre: formData.nombre,
-      idAdmin: 1,
+      idAdmin: id,
       area: formData.area,
     };
     createProyecto({
@@ -71,6 +73,7 @@ export default function ProyectoCreateScreen() {
         const data = response.data;
         if (data && data.createProyecto) {
           console.log("Creado");
+          // Mandar a la Pantalla del Equipo
         }
       })
       .catch((error) => {});

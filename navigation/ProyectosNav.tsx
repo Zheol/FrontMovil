@@ -28,6 +28,7 @@ function ProyectosNav({ route }: NativeStackScreenProps<RootStackParamList, 'Pro
         }}
         name="Create"
         component={ProyectoCreateScreen}
+        initialParams={{ nombre, email, id }}
       />
 
       {/* Mis Proyecto */}
@@ -40,6 +41,7 @@ function ProyectosNav({ route }: NativeStackScreenProps<RootStackParamList, 'Pro
         }}
         name="MisProyectos"
         component={ProyectosScreen}
+        initialParams={{ nombre, email, id }}
       />
 
       {/* Buscar Proyecto */}
@@ -56,6 +58,7 @@ function ProyectosNav({ route }: NativeStackScreenProps<RootStackParamList, 'Pro
         }}
         name="Find"
         component={ProyectoFindScreen}
+        initialParams={{ nombre, email, id }}
       />
     </Tab.Navigator>
   );

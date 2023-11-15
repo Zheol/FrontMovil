@@ -14,8 +14,9 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
-import { Controller, useForm } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import { formFindProyect } from "../../types";
 
 const { height } = Dimensions.get("window");
 
@@ -24,20 +25,16 @@ const schema = yup.object().shape({
   area: yup.string(),
 });
 
-const LOGIN_USER = gql`
-  mutation login($input: LoginUserInput!) {
-    login(loginUserInput: $input) {
-      user {
-        email
-        id
-        name
-      }
-      access_token
-    }
+const FIND_PROYECT = gql`
+query($getProyectoInput: getProyectoInput!){
+  getProyectobyUserIdName(getProyectoInput: $getProyectoInput) {
+    id
+    nombre
   }
+}
 `;
 
-export default function ProyectoFindScreen() {
+export default function ProyectoFindScreen({ route }) {
   const {
     control,
     handleSubmit,
@@ -49,7 +46,24 @@ export default function ProyectoFindScreen() {
       area: "",
     },
   });
-  const [login, { loading, error }] = useMutation(LOGIN_USER);
+
+  const { nombre, email, id } = route.params;
+  const { loading, error, data } = useQuery(FIND_PROYECT);
+
+
+  const onPressSend: SubmitHandler<formFindProyect> = (formData) => {
+    const getProyectoInput = {
+      nombre: formData.nombre,
+      idUser: id,
+    };
+    console.log(getProyectoInput)
+    const { loading, error, data } = useQuery(FIND_PROYECT, {
+      variables: {
+        getProyectoInput: getProyectoInput
+      }
+    });
+    console.log(data)
+  };
 
   return (
     <SafeAreaView>
@@ -114,7 +128,7 @@ export default function ProyectoFindScreen() {
           </View>
         ) : (
           <TouchableOpacity
-            // onPress={handleSubmit(onPressSend)}
+            //onPress={handleSubmit(onPressSend)}
             style={{
               padding: Spacing * 1.5,
               backgroundColor: "#005050",

@@ -7,53 +7,32 @@ import { Proyect } from "./types";
 import { gql, useQuery } from "@apollo/client";
 const { height } = Dimensions.get("window");
 
-const OBTENER_USUARIO = gql`
-  query ObtenerUsuario($email: String!) {
-    user(email: $email) {
-      name
-      equipos {
-        nombre
-      }
+const OBTENER_PROYECTOS = gql`
+  query($id: Int!){
+    getProyectosbyUserId(id: $id) {
+      id
+      nombre
     }
   }
 `;
 
-const persons = [
-  {
-    id: "1",
-    name: "Earnest Green",
-  },
-  {
-    id: "2",
-    name: "Winston Orn",
-  },
-  {
-    id: "3",
-    name: "Carlton Collins",
-  },
-  {
-    id: "4",
-    name: "Malcolm Labadie",
-  },
-  {
-    id: "5",
-    name: "Michelle Dare",
-  },
-  {
-    id: "6",
-    name: "Michelle Dare",
-  },
-  {
-    id: "7",
-    name: "Michelle Dare",
-  },
-];
+interface Project {
+  id: number;
+  name: string;
+}
 
-export default function ProyectosScreen() {
+export default function ProyectosScreen({ route }) {
   const [proyect, setProyect] = useState<Proyect>();
-  const { loading, error, data } = useQuery(OBTENER_USUARIO);
+  const {id, nombre} = route.params;
 
-  //console.log(error, "Pedro");
+  const { loading, error, data, refetch } = useQuery(OBTENER_PROYECTOS, {
+    variables: {
+      id: id
+    },
+  });
+  refetch(data)
+  const projects: Project[] = data?.getProyectosbyUserId?.map(item => ({ id: item.id, name: item.nombre })) || [];
+  
 
   return (
     <View
@@ -81,7 +60,7 @@ export default function ProyectosScreen() {
         <View style={{ marginBottom: 60 }}>
           <ScrollView>
             <View>
-              {persons.map((persons: any) => {
+              {projects.map((projects: any) => {
                 return (
                   <View
                     style={{
@@ -90,7 +69,7 @@ export default function ProyectosScreen() {
                       height: 80,
                       borderRadius: 10,
                     }}
-                    key={persons.id}
+                    key={projects.id}
                   >
                     <Text
                       style={{
@@ -100,7 +79,7 @@ export default function ProyectosScreen() {
                         paddingTop: 25,
                       }}
                     >
-                      {persons.name}
+                      {projects.name}
                     </Text>
                   </View>
                 );

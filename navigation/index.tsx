@@ -9,6 +9,7 @@ import ForgotPassword from "../screens/ForgotPassword";
 import { RootStackParamList } from "../types";
 import Drawer from "./DrawerNav";
 import ProyectosNav from "./ProyectosNav";
+import { Title } from "react-native-paper";
 
 const theme = {
   ...DefaultTheme,
@@ -41,7 +42,7 @@ function RootNavigator() {
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="ForgotPass" component={ForgotPassword} />
       {/* ruta para usuario logeados */}
-      <Stack.Screen name="ProyectosNav" component={ProyectosNav} />
+      <Stack.Screen name="ProyectosNav" component={ProyectosNav}/>
     </Stack.Navigator>
   );
 }
