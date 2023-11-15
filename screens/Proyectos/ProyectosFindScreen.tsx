@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView
 } from "react-native";
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
@@ -15,7 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { formFindProyect } from "../../types";
 
 const { height } = Dimensions.get("window");
@@ -34,6 +35,12 @@ query($getProyectoInput: getProyectoInput!){
 }
 `;
 
+interface Project {
+  id: number;
+  name: string;
+}
+
+
 export default function ProyectoFindScreen({ route }) {
   const {
     control,
@@ -48,23 +55,22 @@ export default function ProyectoFindScreen({ route }) {
   });
 
   const { nombre, email, id } = route.params;
-  const { loading, error, data } = useQuery(FIND_PROYECT);
-
+  const [getProyecto, { loading, error, data}] = useLazyQuery(FIND_PROYECT);
 
   const onPressSend: SubmitHandler<formFindProyect> = (formData) => {
-    const getProyectoInput = {
-      nombre: formData.nombre,
-      idUser: id,
-    };
-    console.log(getProyectoInput)
-    const { loading, error, data } = useQuery(FIND_PROYECT, {
+    getProyecto({
       variables: {
-        getProyectoInput: getProyectoInput
-      }
-    });
-    console.log(data)
+        getProyectoInput: {
+          nombre: formData.nombre,
+          idUser: id,
+        },
+      },
+    })
   };
 
+  const projects: Project[] = data?.getProyectobyUserIdName?.map(item => ({ id: item.id, name: item.nombre })) || [];
+
+  console.log(projects)
   return (
     <SafeAreaView>
       <View
@@ -128,7 +134,7 @@ export default function ProyectoFindScreen({ route }) {
           </View>
         ) : (
           <TouchableOpacity
-            //onPress={handleSubmit(onPressSend)}
+            onPress={handleSubmit(onPressSend)}
             style={{
               padding: Spacing * 1.5,
               backgroundColor: "#005050",
@@ -162,6 +168,36 @@ export default function ProyectoFindScreen({ route }) {
               {error.message}
             </Text>
           )} */}
+        </View>
+        <View style={{ marginBottom: 60 }}>
+          <ScrollView>
+            <View>
+              {projects.map((projects: any) => {
+                return (
+                  <View
+                    style={{
+                      marginVertical: 20,
+                      backgroundColor: "#005050",
+                      height: 80,
+                      borderRadius: 10,
+                    }}
+                    key={projects.id}
+                  >
+                    <Text
+                      style={{
+                        width: 350,
+                        color: "white",
+                        textAlign: "center",
+                        paddingTop: 25,
+                      }}
+                    >
+                      {projects.name}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          </ScrollView>
         </View>
       </View>
     </SafeAreaView>
