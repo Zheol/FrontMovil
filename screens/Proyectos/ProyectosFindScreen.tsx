@@ -18,6 +18,7 @@ import Colors from "../../constants/Colors";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { formFindProyect } from "../../types";
+import { useNavigation } from "@react-navigation/native";
 
 const { height } = Dimensions.get("window");
 
@@ -55,6 +56,7 @@ export default function ProyectoFindScreen({ route }) {
 
   const { nombre, email, id } = route.params;
   const [getProyecto, { loading, error, data }] = useLazyQuery(FIND_PROYECT);
+  const navigation = useNavigation();
 
   const onPressSend: SubmitHandler<formFindProyect> = (formData) => {
     getProyecto({
@@ -186,7 +188,12 @@ export default function ProyectoFindScreen({ route }) {
                     key={projects.id}
                     onPress={() => {
                       // MANDAR A LA PANTALLA DEL PROYECTO
-                      console.log(`Botón presionado: ${projects.name}`);
+                      navigation.navigate("EquiposNav", {
+                        nombreUser:nombre,
+                        idUser: 17,
+                        nombreProyecto: projects.name,
+                        idProyecto: 16,
+                      })
                     }}
                   >
                     <Text

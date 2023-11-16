@@ -11,6 +11,7 @@ import FontSize from "../../constants/FontSize";
 import { useEffect, useState } from "react";
 import { Proyect } from "./types";
 import { gql, useQuery } from "@apollo/client";
+import { useNavigation } from "@react-navigation/native";
 const { height } = Dimensions.get("window");
 
 const OBTENER_PROYECTOS = gql`
@@ -42,6 +43,8 @@ export default function ProyectosScreen({ route }) {
       id: item.id,
       name: item.nombre,
     })) || [];
+
+  const navigation = useNavigation()
 
   return (
     <View
@@ -81,7 +84,12 @@ export default function ProyectosScreen({ route }) {
                     key={projects.id}
                     onPress={() => {
                       // MANDAR A LA PANTALLA DEL PROYECTO
-                      console.log(`Botón presionado: ${projects.name}`);
+                      navigation.navigate("EquiposNav", {
+                        nombreUser:nombre,
+                        idUser: 17,
+                        nombreProyecto: projects.name,
+                        idProyecto: 16,
+                      })
                     }}
                   >
                     <Text

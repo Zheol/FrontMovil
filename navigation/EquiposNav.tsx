@@ -3,10 +3,13 @@ import EquipoCreateScreen from "../screens/Equipos/EquiposCreateScreen";
 import EquipoFindScreen from "../screens/Equipos/EquiposFindScreen";
 import EquiposScreen from "../screens/Equipos/EquiposScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../types";
 
 const Tab = createBottomTabNavigator();
 
-function EquiposNav() {
+function EquiposNav({ route }: NativeStackScreenProps<RootStackParamList, 'EquiposNav'>) {
+  const {idUser, nombreUser, idProyecto, nombreProyecto} = route.params;
   return (
     <Tab.Navigator
       screenOptions={{
@@ -25,6 +28,7 @@ function EquiposNav() {
         }}
         name="MisProyectos"
         component={EquiposScreen}
+        initialParams={{idUser, nombreUser, idProyecto, nombreProyecto}}
       />
 
       <Tab.Screen name="Find" component={EquipoFindScreen} />

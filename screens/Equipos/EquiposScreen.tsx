@@ -24,11 +24,11 @@ const OBTENER_EQUIPOS = gql`
 
 export default function EquiposScreen({ route }) {
   const [equipo, setEquipo] = useState<Equipo>();
-  const { id, nombre } = route.params;
+  const { idUser, nombreUser, idProyecto, nombreProyecto } = route.params;
 
   const { loading, error, data, refetch } = useQuery(OBTENER_EQUIPOS, {
     variables: {
-      id: id,
+      id: 80,
     },
   });
   refetch(data);
@@ -50,6 +50,16 @@ export default function EquiposScreen({ route }) {
           marginVertical: 40,
         }}
       >
+        <Text
+          style={{
+            fontFamily: Font["poppins-semiBold"],
+            fontSize: FontSize.large,
+            maxWidth: "60%",
+            textAlign: "center",
+          }}
+        >
+          {nombreProyecto}
+        </Text>
         <Text
           style={{
             fontFamily: Font["poppins-semiBold"],

@@ -6,6 +6,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import Welcome from "../screens/WelcomeScreen";
 import ForgotPassword from "../screens/ForgotPassword";
+import EquiposNav from "./EquiposNav";
 import { RootStackParamList } from "../types";
 import Drawer from "./DrawerNav";
 import ProyectosNav from "./ProyectosNav";
@@ -43,6 +44,7 @@ function RootNavigator() {
       <Stack.Screen name="ForgotPass" component={ForgotPassword} />
       {/* ruta para usuario logeados */}
       <Stack.Screen name="ProyectosNav" component={ProyectosNav}/>
+      <Stack.Screen name="EquiposNav" component={EquiposNav}/>
     </Stack.Navigator>
   );
 }

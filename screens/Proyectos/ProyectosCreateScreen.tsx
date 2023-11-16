@@ -58,7 +58,6 @@ export default function ProyectoCreateScreen({ route }) {
 
 
   const onPressSend: SubmitHandler<formCreateProyect> = (formData) => {
-    console.log(nombre,email,id)
     const createProyectoInput = {
       nombre: formData.nombre,
       idAdmin: id,
