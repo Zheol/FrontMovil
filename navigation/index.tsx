@@ -11,6 +11,7 @@ import { RootStackParamList } from "../types";
 import Drawer from "./DrawerNav";
 import ProyectosNav from "./ProyectosNav";
 import { Title } from "react-native-paper";
+import TareasNav from "./TareasNav";
 
 const theme = {
   ...DefaultTheme,
@@ -45,6 +46,7 @@ function RootNavigator() {
       {/* ruta para usuario logeados */}
       <Stack.Screen name="ProyectosNav" component={ProyectosNav}/>
       <Stack.Screen name="EquiposNav" component={EquiposNav}/>
+      <Stack.Screen name="TareasNav" component={TareasNav}/>
     </Stack.Navigator>
   );
 }

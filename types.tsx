@@ -29,6 +29,14 @@ export type RootStackParamList = {
     nombreProyecto: string,
     idProyecto: number,
   }
+  TareasNav: {
+    nombreUser: string,
+    idUser: number,
+    nombreProyecto: string,
+    idProyecto: number,
+    nombreEquipo: string,
+    idEquipo: string,
+  }
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

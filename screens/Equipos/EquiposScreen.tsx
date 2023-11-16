@@ -11,6 +11,7 @@ import FontSize from "../../constants/FontSize";
 import { useEffect, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Equipo } from "./types";
+import { useNavigation } from "@react-navigation/native";
 const { height } = Dimensions.get("window");
 
 const OBTENER_EQUIPOS = gql`
@@ -24,8 +25,9 @@ const OBTENER_EQUIPOS = gql`
 
 export default function EquiposScreen({ route }) {
   const [equipo, setEquipo] = useState<Equipo>();
-  const { idUser, nombreUser, idProyecto, nombreProyecto } = route.params;
+  const { idUser, nombreUser, idProyecto, nombreProyecto} = route.params;
   console.log(route.params)
+  const navigation = useNavigation();
 
   const { loading, error, data, refetch } = useQuery(OBTENER_EQUIPOS, {
     variables: {
@@ -86,8 +88,15 @@ export default function EquiposScreen({ route }) {
                     }}
                     key={equipos.id}
                     onPress={() => {
-                      // MANDAR A LA PANTALLA DEL Equipo
-                      console.log(`Botón presionado: ${equipos.nombre}`);
+                      // MANDAR A LA PANTALLA DEL Tareas
+                      navigation.navigate("TareasNav", {
+                        nombreUser:nombreUser,
+                        idUser: idUser,
+                        nombreProyecto: nombreProyecto,
+                        idProyecto: idProyecto,
+                        nombreEquipo: equipos.name,
+                        idEquipo: equipos.id
+                      })
                     }}
                   >
                     <Text
