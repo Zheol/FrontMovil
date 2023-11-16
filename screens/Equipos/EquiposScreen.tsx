@@ -9,38 +9,33 @@ import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
 import { useEffect, useState } from "react";
-import { Proyect } from "./types";
 import { gql, useQuery } from "@apollo/client";
+import { Equipo } from "./types";
 const { height } = Dimensions.get("window");
 
-const OBTENER_PROYECTOS = gql`
-  query ($id: Int!) {
-    getProyectosbyUserId(id: $id) {
+const OBTENER_EQUIPOS = gql`
+  query getEquiposbyProyectoId($id: Int!) {
+    getEquiposbyProyectId(id: $id) {
       id
       nombre
     }
   }
 `;
 
-interface Project {
-  id: number;
-  name: string;
-}
-
-export default function ProyectosScreen({ route }) {
-  const [proyect, setProyect] = useState<Proyect>();
+export default function EquiposScreen({ route }) {
+  const [equipo, setEquipo] = useState<Equipo>();
   const { id, nombre } = route.params;
 
-  const { loading, error, data, refetch } = useQuery(OBTENER_PROYECTOS, {
+  const { loading, error, data, refetch } = useQuery(OBTENER_EQUIPOS, {
     variables: {
       id: id,
     },
   });
   refetch(data);
-  const projects: Project[] =
-    data?.getProyectosbyUserId?.map((item) => ({
+  const equipos: Equipo[] =
+    data?.getEquiposbyProyectId?.map((item) => ({
       id: item.id,
-      name: item.nombre,
+      nombre: item.nombre,
     })) || [];
 
   return (
@@ -63,13 +58,13 @@ export default function ProyectosScreen({ route }) {
             textAlign: "center",
           }}
         >
-          Mis Proyectos
+          Mis Equipos
         </Text>
 
         <View style={{ marginBottom: 60 }}>
           <ScrollView>
             <View>
-              {projects.map((projects: any) => {
+              {equipos.map((equipos: any) => {
                 return (
                   <TouchableOpacity
                     style={{
@@ -78,10 +73,10 @@ export default function ProyectosScreen({ route }) {
                       height: 80,
                       borderRadius: 10,
                     }}
-                    key={projects.id}
+                    key={equipos.id}
                     onPress={() => {
-                      // MANDAR A LA PANTALLA DEL PROYECTO
-                      console.log(`Botón presionado: ${projects.name}`);
+                      // MANDAR A LA PANTALLA DEL Equipo
+                      console.log(`Botón presionado: ${equipos.nombre}`);
                     }}
                   >
                     <Text
@@ -92,7 +87,7 @@ export default function ProyectosScreen({ route }) {
                         paddingTop: 25,
                       }}
                     >
-                      {projects.name}
+                      {equipos.nombre}
                     </Text>
                   </TouchableOpacity>
                 );

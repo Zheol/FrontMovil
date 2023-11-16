@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
@@ -27,19 +27,18 @@ const schema = yup.object().shape({
 });
 
 const FIND_PROYECT = gql`
-query($getProyectoInput: getProyectoInput!){
-  getProyectobyUserIdName(getProyectoInput: $getProyectoInput) {
-    id
-    nombre
+  query ($getProyectoInput: getProyectoInput!) {
+    getProyectobyUserIdName(getProyectoInput: $getProyectoInput) {
+      id
+      nombre
+    }
   }
-}
 `;
 
 interface Project {
   id: number;
   name: string;
 }
-
 
 export default function ProyectoFindScreen({ route }) {
   const {
@@ -55,7 +54,7 @@ export default function ProyectoFindScreen({ route }) {
   });
 
   const { nombre, email, id } = route.params;
-  const [getProyecto, { loading, error, data}] = useLazyQuery(FIND_PROYECT);
+  const [getProyecto, { loading, error, data }] = useLazyQuery(FIND_PROYECT);
 
   const onPressSend: SubmitHandler<formFindProyect> = (formData) => {
     getProyecto({
@@ -65,12 +64,15 @@ export default function ProyectoFindScreen({ route }) {
           idUser: id,
         },
       },
-    })
+    });
   };
 
-  const projects: Project[] = data?.getProyectobyUserIdName?.map(item => ({ id: item.id, name: item.nombre })) || [];
+  const projects: Project[] =
+    data?.getProyectobyUserIdName?.map((item) => ({
+      id: item.id,
+      name: item.nombre,
+    })) || [];
 
-  console.log(projects)
   return (
     <SafeAreaView>
       <View
