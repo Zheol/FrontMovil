@@ -86,9 +86,9 @@ export default function ProyectosScreen({ route }) {
                       // MANDAR A LA PANTALLA DEL PROYECTO
                       navigation.navigate("EquiposNav", {
                         nombreUser:nombre,
-                        idUser: 17,
+                        idUser: id,
                         nombreProyecto: projects.name,
-                        idProyecto: 16,
+                        idProyecto: projects.id,
                       })
                     }}
                   >

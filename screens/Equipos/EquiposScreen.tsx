@@ -25,10 +25,11 @@ const OBTENER_EQUIPOS = gql`
 export default function EquiposScreen({ route }) {
   const [equipo, setEquipo] = useState<Equipo>();
   const { idUser, nombreUser, idProyecto, nombreProyecto } = route.params;
+  console.log(route.params)
 
   const { loading, error, data, refetch } = useQuery(OBTENER_EQUIPOS, {
     variables: {
-      id: 80,
+      id: idProyecto,
     },
   });
   refetch(data);
