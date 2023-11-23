@@ -2,9 +2,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import TareasCreateScreen from "../screens/tareas/TareasCreateScreen";
-import TareasScreen from "../screens/tareas/TareasScreen";
-import TareasFindScreen from "../screens/tareas/TareasFindScreen";
+import TareasCreateScreen from "../screens/Tareas/TareasCreateScreen";
+import TareasScreen from "../screens/Tareas/TareasScreen";
+import TareasFindScreen from "../screens/Tareas/TareasFindScreen";
 
 const Tab = createBottomTabNavigator();
 
