@@ -14,11 +14,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 const { height } = Dimensions.get("window");
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { formFindEquipo } from "../../types";
 import AppTextInput from "../../components/AppTextInput";
 import { ActivityIndicator } from "react-native-paper";
 import Colors from "../../constants/Colors";
 import { useNavigation } from "@react-navigation/native";
+import { formFindEquipo } from "./types";
 
 const schema = yup.object().shape({
   nombre: yup.string().required("Name is required"),
@@ -40,6 +40,7 @@ interface Equipo {
 
 export default function EquipoFindScreen({ route }) {
   const {
+    reset,
     control,
     handleSubmit,
     formState: { errors },
@@ -61,6 +62,7 @@ export default function EquipoFindScreen({ route }) {
         },
       },
     });
+    reset({ nombre: "" });
   };
 
   const navigation = useNavigation();

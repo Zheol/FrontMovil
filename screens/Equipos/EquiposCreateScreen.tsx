@@ -33,6 +33,7 @@ const schema = yup.object().shape({
 
 export default function EquipoCreateScreen({ route }) {
   const {
+    reset,
     control,
     handleSubmit,
     formState: { errors },
@@ -62,6 +63,7 @@ export default function EquipoCreateScreen({ route }) {
         const data = response.data;
         if (data && data.createProyecto) {
           console.log("Creado");
+          reset({ nombre: "" });
           // Mandar a la Pantalla de Equipos
         }
       })

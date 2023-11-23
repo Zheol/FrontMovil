@@ -6,3 +6,7 @@ export interface Equipo {
 export type formCreateEquipo = {
   nombre: string;
 };
+
+export type formFindEquipo = {
+  nombre: string;
+};

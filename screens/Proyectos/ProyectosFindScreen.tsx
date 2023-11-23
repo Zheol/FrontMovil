@@ -43,6 +43,7 @@ interface Project {
 
 export default function ProyectoFindScreen({ route }) {
   const {
+    reset,
     control,
     handleSubmit,
     formState: { errors },
@@ -50,7 +51,6 @@ export default function ProyectoFindScreen({ route }) {
     resolver: yupResolver(schema),
     defaultValues: {
       nombre: "",
-      area: "",
     },
   });
 
@@ -67,6 +67,7 @@ export default function ProyectoFindScreen({ route }) {
         },
       },
     });
+    reset({ nombre: "" });
   };
 
   const projects: Project[] =
