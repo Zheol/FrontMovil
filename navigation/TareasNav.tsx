@@ -22,7 +22,7 @@ function TareasNav({
   } = route.params;
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName="Tareas">
       <Tab.Screen
         options={{
           tabBarLabel: "Crear",
@@ -36,6 +36,14 @@ function TareasNav({
         }}
         name="Create"
         component={TareasCreateScreen}
+        initialParams={{
+          idUser,
+          nombreUser,
+          idProyecto,
+          nombreProyecto,
+          idEquipo,
+          nombreEquipo,
+        }}
       />
 
       {/* Mis Proyecto */}

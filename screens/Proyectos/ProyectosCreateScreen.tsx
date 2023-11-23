@@ -8,21 +8,16 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import * as yup from "yup";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { gql, useMutation } from "@apollo/client";
-import { TabRouterOptions, useNavigation } from "@react-navigation/native";
-import {RootStackParamList, formCreateProyect, formLogin, formRegister } from "../../types";
+import { formCreateProyect } from "../../types";
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
 import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
-import { SubmitHandler } from "react-hook-form";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 const { height } = Dimensions.get("window");
-
-
 
 const CREATE_PROYECTO = gql`
   mutation createProyecto($input: CreateProyectoInput!) {
@@ -31,8 +26,6 @@ const CREATE_PROYECTO = gql`
     }
   }
 `;
-
-
 
 const schema = yup.object().shape({
   nombre: yup.string().required("Name is required"),
@@ -54,8 +47,7 @@ export default function ProyectoCreateScreen({ route }) {
 
   const { nombre, email, id } = route.params;
 
-  const [createProyecto, { loading, error}] = useMutation(CREATE_PROYECTO);
-
+  const [createProyecto, { loading, error }] = useMutation(CREATE_PROYECTO);
 
   const onPressSend: SubmitHandler<formCreateProyect> = (formData) => {
     const createProyectoInput = {

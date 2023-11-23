@@ -18,25 +18,26 @@ export type RootStackParamList = {
   Register: undefined;
   ForgotPass: undefined;
   ProyectosNav: {
-    nombre: string,
-    email: string,
-    id: Float,
-    accessToken: string,
+    nombre: string;
+    email: string;
+    id: Float;
+    accessToken: string;
   };
   EquiposNav: {
-    nombreUser: string,
-    idUser: number,
-    nombreProyecto: string,
-    idProyecto: number,
-  }
+    nombreUser: string;
+    idUser: number;
+    nombreProyecto: string;
+    idProyecto: number;
+  };
   TareasNav: {
-    nombreUser: string,
-    idUser: number,
-    nombreProyecto: string,
-    idProyecto: number,
-    nombreEquipo: string,
-    idEquipo: string,
-  }
+    nombreUser: string;
+    idUser: number;
+    nombreProyecto: string;
+    idProyecto: number;
+    nombreEquipo: string;
+    idEquipo: string;
+  };
+  Tareas: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -65,4 +66,4 @@ export type formCreateProyect = {
 
 export type formFindProyect = {
   nombre: string;
-}
+};

@@ -83,7 +83,7 @@ export default function EquiposScreen({ route }) {
                         idUser: idUser,
                         nombreProyecto: nombreProyecto,
                         idProyecto: idProyecto,
-                        nombreEquipo: equipos.name,
+                        nombreEquipo: equipos.nombre,
                         idEquipo: equipos.id,
                       });
                     }}

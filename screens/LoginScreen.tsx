@@ -24,8 +24,6 @@ import { useNavigation } from "@react-navigation/native";
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 const { height } = Dimensions.get("window");
 
-
-
 const LOGIN_USER = gql`
   mutation login($input: LoginUserInput!) {
     login(loginUserInput: $input) {
@@ -81,8 +79,8 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
             navigation.navigate("ProyectosNav", {
               nombre: data.login.user.name,
               email: data.login.user.email,
-              id : data.login.user.id,
-              accessToken: data.login.access_token
+              id: data.login.user.id,
+              accessToken: data.login.access_token,
             });
           }
         })
