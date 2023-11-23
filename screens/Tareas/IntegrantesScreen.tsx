@@ -9,7 +9,6 @@ import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
 import { gql, useQuery } from "@apollo/client";
-import { Integrante } from "./types";
 
 const { height } = Dimensions.get("window");
 
@@ -36,18 +35,17 @@ export default function IntegrantesScreen({ route }) {
   } = route.params;
   const { loading, error, data, refetch } = useQuery(OBTENER_INTEGRANTES, {
     variables: {
-      id: 1,
+      id: idEquipo,
     },
   });
   refetch(data);
 
   const integrantes =
     data?.getIntegrantebyIdEquipo?.map((item) => ({
+      id: item.id,
       name: item.user.name,
       rol: item.rol,
     })) || [];
-
-  console.log(integrantes);
 
   return (
     <View

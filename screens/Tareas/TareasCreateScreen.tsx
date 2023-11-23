@@ -10,6 +10,7 @@ export default function TareasCreateScreen() {
     <View
       style={{
         padding: Spacing * 2,
+        marginTop: 20,
       }}
     >
       <View
@@ -26,7 +27,7 @@ export default function TareasCreateScreen() {
             textAlign: "center",
           }}
         >
-          Create Tarea
+          Crear Tarea
         </Text>
       </View>
     </View>

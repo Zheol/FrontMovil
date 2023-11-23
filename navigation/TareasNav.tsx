@@ -5,8 +5,9 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import TareasCreateScreen from "../screens/Tareas/TareasCreateScreen";
 import TareasScreen from "../screens/Tareas/TareasScreen";
 import IntegrantesScreen from "../screens/Tareas/IntegrantesScreen";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 function TareasNav({
   route,
@@ -21,19 +22,28 @@ function TareasNav({
   } = route.params;
 
   return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Tab.Screen name="Create" component={TareasCreateScreen} />
+    <Tab.Navigator>
+      <Tab.Screen
+        options={{
+          tabBarLabel: "Crear",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="briefcase-plus-outline"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+        name="Create"
+        component={TareasCreateScreen}
+      />
 
       {/* Mis Proyecto */}
       <Tab.Screen
         options={{
           tabBarLabel: "Tareas",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="briefcase" color={color} size={26} />
+            <MaterialCommunityIcons name="ballot" color={color} size={26} />
           ),
         }}
         name="Tareas"
@@ -50,6 +60,16 @@ function TareasNav({
 
       <Tab.Screen
         name="Integrantes"
+        options={{
+          tabBarLabel: "Integrantes",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="account-multiple"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
         component={IntegrantesScreen}
         initialParams={{
           idUser,

@@ -8,7 +8,7 @@ import {
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Equipo } from "./types";
 import { useNavigation } from "@react-navigation/native";
@@ -61,16 +61,6 @@ export default function EquiposScreen({ route }) {
           }}
         >
           {nombreProyecto}
-        </Text>
-        <Text
-          style={{
-            fontFamily: Font["poppins-semiBold"],
-            fontSize: FontSize.large,
-            maxWidth: "60%",
-            textAlign: "center",
-          }}
-        >
-          Mis Equipos
         </Text>
 
         <View style={{ marginBottom: 60 }}>

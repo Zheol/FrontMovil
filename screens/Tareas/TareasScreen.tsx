@@ -72,7 +72,7 @@ export default function TareasScreen({ route }) {
             textAlign: "center",
           }}
         >
-          Mis Tareas
+          Tareas
         </Text>
 
         <View style={{ marginBottom: 60 }}>
