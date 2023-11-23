@@ -1,16 +1,24 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
-import TareasScreen from "../screens/Tareas/TareasScreen";
-import TareasCreateScreen from "../screens/Tareas/TareasCreateScreen";
-import TareasFindScreen from "../screens/Tareas/TareasFindScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
+import TareasCreateScreen from "../screens/tareas/TareasCreateScreen";
+import TareasScreen from "../screens/tareas/TareasScreen";
+import TareasFindScreen from "../screens/tareas/TareasFindScreen";
 
 const Tab = createBottomTabNavigator();
 
-function TareasNav({ route }: NativeStackScreenProps<RootStackParamList, 'TareasNav'>) {
-  const {idUser, nombreUser, idProyecto, nombreProyecto, idEquipo, nombreEquipo} = route.params;
+function TareasNav({
+  route,
+}: NativeStackScreenProps<RootStackParamList, "TareasNav">) {
+  const {
+    idUser,
+    nombreUser,
+    idProyecto,
+    nombreProyecto,
+    idEquipo,
+    nombreEquipo,
+  } = route.params;
   return (
     <Tab.Navigator
       screenOptions={{
@@ -29,7 +37,14 @@ function TareasNav({ route }: NativeStackScreenProps<RootStackParamList, 'Tareas
         }}
         name="MisProyectos"
         component={TareasScreen}
-        initialParams={{idUser, nombreUser, idProyecto, nombreProyecto, idEquipo, nombreEquipo}}
+        initialParams={{
+          idUser,
+          nombreUser,
+          idProyecto,
+          nombreProyecto,
+          idEquipo,
+          nombreEquipo,
+        }}
       />
 
       <Tab.Screen name="Find" component={TareasFindScreen} />
