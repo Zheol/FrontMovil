@@ -25,7 +25,7 @@ const OBTENER_EQUIPOS = gql`
 
 export default function EquiposScreen({ route }) {
   const [equipo, setEquipo] = useState<Equipo>();
-  const { idUser, nombreUser, idProyecto, nombreProyecto} = route.params;
+  const { idUser, nombreUser, idProyecto, nombreProyecto } = route.params;
   const navigation = useNavigation();
 
   const { loading, error, data, refetch } = useQuery(OBTENER_EQUIPOS, {
@@ -89,13 +89,13 @@ export default function EquiposScreen({ route }) {
                     onPress={() => {
                       // MANDAR A LA PANTALLA DEL Tareas
                       navigation.navigate("TareasNav", {
-                        nombreUser:nombreUser,
+                        nombreUser: nombreUser,
                         idUser: idUser,
                         nombreProyecto: nombreProyecto,
                         idProyecto: idProyecto,
                         nombreEquipo: equipos.name,
-                        idEquipo: equipos.id
-                      })
+                        idEquipo: equipos.id,
+                      });
                     }}
                   >
                     <Text

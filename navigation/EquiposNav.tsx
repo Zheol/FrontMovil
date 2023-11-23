@@ -5,33 +5,60 @@ import EquiposScreen from "../screens/Equipos/EquiposScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
-function EquiposNav({ route }: NativeStackScreenProps<RootStackParamList, 'EquiposNav'>) {
-  const {idUser, nombreUser, idProyecto, nombreProyecto} = route.params;
+function EquiposNav({
+  route,
+}: NativeStackScreenProps<RootStackParamList, "EquiposNav">) {
+  const { idUser, nombreUser, idProyecto, nombreProyecto } = route.params;
   return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Tab.Screen name="Create" component={EquipoCreateScreen} />
-
-      {/* Mis Proyecto */}
+    <Tab.Navigator initialRouteName="MisEquipos">
       <Tab.Screen
         options={{
-          tabBarLabel: "Mis Equipos",
+          tabBarLabel: "Crear",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="briefcase-plus-outline"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+        name="Create"
+        component={EquipoCreateScreen}
+        initialParams={{ idUser, nombreUser, idProyecto, nombreProyecto }}
+      />
+
+      {/* Mis Equipos */}
+      <Tab.Screen
+        options={{
+          tabBarLabel: "Equipos",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="briefcase" color={color} size={26} />
           ),
         }}
-        name="MisProyectos"
+        name="MisEquipos"
         component={EquiposScreen}
-        initialParams={{idUser, nombreUser, idProyecto, nombreProyecto}}
+        initialParams={{ idUser, nombreUser, idProyecto, nombreProyecto }}
       />
 
-      <Tab.Screen name="Find" component={EquipoFindScreen} />
+      <Tab.Screen
+        options={{
+          tabBarLabel: "Buscar",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="briefcase-search-outline"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+        name="Find"
+        component={EquipoFindScreen}
+        initialParams={{ idUser, nombreUser, idProyecto, nombreProyecto }}
+      />
     </Tab.Navigator>
   );
 }
