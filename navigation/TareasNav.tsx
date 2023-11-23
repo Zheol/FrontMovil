@@ -4,7 +4,7 @@ import { RootStackParamList } from "../types";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import TareasCreateScreen from "../screens/Tareas/TareasCreateScreen";
 import TareasScreen from "../screens/Tareas/TareasScreen";
-import TareasFindScreen from "../screens/Tareas/TareasFindScreen";
+import IntegrantesScreen from "../screens/Tareas/IntegrantesScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +19,7 @@ function TareasNav({
     idEquipo,
     nombreEquipo,
   } = route.params;
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -30,12 +31,12 @@ function TareasNav({
       {/* Mis Proyecto */}
       <Tab.Screen
         options={{
-          tabBarLabel: "Mis Equipos",
+          tabBarLabel: "Tareas",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="briefcase" color={color} size={26} />
           ),
         }}
-        name="MisProyectos"
+        name="Tareas"
         component={TareasScreen}
         initialParams={{
           idUser,
@@ -47,7 +48,18 @@ function TareasNav({
         }}
       />
 
-      <Tab.Screen name="Find" component={TareasFindScreen} />
+      <Tab.Screen
+        name="Integrantes"
+        component={IntegrantesScreen}
+        initialParams={{
+          idUser,
+          nombreUser,
+          idProyecto,
+          nombreProyecto,
+          idEquipo,
+          nombreEquipo,
+        }}
+      />
     </Tab.Navigator>
   );
 }
