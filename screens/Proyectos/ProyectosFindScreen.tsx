@@ -80,7 +80,7 @@ export default function ProyectoFindScreen({ route }) {
       <View
         style={{
           padding: Spacing * 2,
-          marginTop: 30,
+          marginTop: 20,
         }}
       >
         <View
@@ -189,11 +189,11 @@ export default function ProyectoFindScreen({ route }) {
                     onPress={() => {
                       // MANDAR A LA PANTALLA DEL PROYECTO
                       navigation.navigate("EquiposNav", {
-                        nombreUser:nombre,
+                        nombreUser: nombre,
                         idUser: 17,
                         nombreProyecto: projects.name,
                         idProyecto: 16,
-                      })
+                      });
                     }}
                   >
                     <Text

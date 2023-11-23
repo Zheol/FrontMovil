@@ -75,7 +75,7 @@ export default function ProyectoCreateScreen({ route }) {
       <View
         style={{
           padding: Spacing * 2,
-          marginTop: 30,
+          marginTop: 20,
         }}
       >
         <View
