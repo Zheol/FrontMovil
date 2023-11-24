@@ -16,6 +16,7 @@ import AppTextInput from "../../components/AppTextInput";
 import { ActivityIndicator } from "react-native-paper";
 import Colors from "../../constants/Colors";
 import { formCreateEquipo } from "./types";
+import { useNavigation } from "@react-navigation/native";
 
 const { height } = Dimensions.get("window");
 
@@ -44,6 +45,7 @@ export default function EquipoCreateScreen({ route }) {
     },
   });
 
+  const navigation = useNavigation();
   const { idUser, nombreUser, idProyecto, nombreProyecto } = route.params;
 
   const [createEquipo, { loading, error }] = useMutation(CREATE_EQUIPO);
@@ -62,9 +64,8 @@ export default function EquipoCreateScreen({ route }) {
       .then((response) => {
         const data = response.data;
         if (data && data.createEquipo) {
-          console.log("Creado");
           reset({ nombre: "" });
-          // Mandar a la Pantalla de Equipos
+          navigation.navigate("MisEquipos");
         }
       })
       .catch((error) => {});

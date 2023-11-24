@@ -8,7 +8,7 @@ import {
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 const { height } = Dimensions.get("window");
@@ -51,8 +51,6 @@ export default function TareasScreen({ route }) {
       descripcion: item.descripcion,
       estado: item.estado,
     })) || [];
-
-  console.log(tareas);
 
   const navigation = useNavigation();
 

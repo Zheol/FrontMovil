@@ -18,6 +18,7 @@ import FontSize from "../../constants/FontSize";
 import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
 const { height } = Dimensions.get("window");
+import { useNavigation } from "@react-navigation/native";
 
 const CREATE_PROYECTO = gql`
   mutation createProyecto($input: CreateProyectoInput!) {
@@ -48,6 +49,8 @@ export default function ProyectoCreateScreen({ route }) {
 
   const { nombre, email, id } = route.params;
 
+  const navigation = useNavigation();
+
   const [createProyecto, { loading, error }] = useMutation(CREATE_PROYECTO);
 
   const onPressSend: SubmitHandler<formCreateProyect> = (formData) => {
@@ -64,8 +67,8 @@ export default function ProyectoCreateScreen({ route }) {
       .then((response) => {
         const data = response.data;
         if (data && data.createProyecto) {
-          console.log("Creado");
           reset({ nombre: "", area: "" });
+          navigation.navigate("MisProyectos");
         }
       })
       .catch((error) => {});
