@@ -39,7 +39,7 @@ export default function ProyectosScreen({ route }) {
   const hideModal = () => setVisible(false);
   const containerStyle = {
     backgroundColor: "white",
-    padding: 20,
+    padding: 40,
     alignItems: "center",
   };
 
@@ -56,6 +56,10 @@ export default function ProyectosScreen({ route }) {
     })) || [];
 
   const navigation = useNavigation();
+
+  const goToLogin = () => {
+    navigation.navigate("Login");
+  };
 
   return (
     <PaperProvider>
@@ -79,8 +83,22 @@ export default function ProyectosScreen({ route }) {
             >
               Usuario
             </Text>
-            <Text>Nombre: {nombre}</Text>
-            <Text>Email: {email}</Text>
+            <Text style={{ padding: 5, fontSize: FontSize.large }}>
+              Nombre: {nombre}
+            </Text>
+            <Text style={{ padding: 5, fontSize: FontSize.large }}>
+              Email: {email}
+            </Text>
+            <View
+              style={{
+                marginTop: 30,
+                alignSelf: "flex-end",
+              }}
+            >
+              <Button onPress={goToLogin}>
+                <Icon source="exit-to-app" size={25} />
+              </Button>
+            </View>
           </Modal>
         </Portal>
 
@@ -91,7 +109,7 @@ export default function ProyectosScreen({ route }) {
           }}
         >
           <Button onPress={showModal}>
-            <Icon source="account-details-outline" size={25} />
+            <Icon source="account-details" size={30} />
           </Button>
         </View>
 
