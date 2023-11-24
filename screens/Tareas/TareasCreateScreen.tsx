@@ -34,6 +34,7 @@ const schema = yup.object().shape({
 
 export default function TareasCreateScreen({ route }) {
   const {
+    reset,
     control,
     handleSubmit,
     formState: { errors },
@@ -70,6 +71,7 @@ export default function TareasCreateScreen({ route }) {
       .then((response) => {
         const data = response.data;
         if (data && data.createTarea) {
+          reset({ descripcion: "" });
           navigation.navigate("Tareas");
         }
       })
