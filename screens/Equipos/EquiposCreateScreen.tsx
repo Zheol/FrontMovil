@@ -61,7 +61,7 @@ export default function EquipoCreateScreen({ route }) {
     })
       .then((response) => {
         const data = response.data;
-        if (data && data.createProyecto) {
+        if (data && data.createEquipo) {
           console.log("Creado");
           reset({ nombre: "" });
           // Mandar a la Pantalla de Equipos
