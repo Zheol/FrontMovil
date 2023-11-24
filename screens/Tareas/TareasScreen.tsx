@@ -18,6 +18,7 @@ const OBTENER_TAREAS = gql`
     getTareasbyEquipoId(id: $id) {
       descripcion
       id
+      estado
     }
   }
 `;
@@ -48,7 +49,10 @@ export default function TareasScreen({ route }) {
     data?.getTareasbyEquipoId?.map((item) => ({
       id: item.id,
       descripcion: item.descripcion,
+      estado: item.estado,
     })) || [];
+
+  console.log(tareas);
 
   const navigation = useNavigation();
 
@@ -90,7 +94,7 @@ export default function TareasScreen({ route }) {
                     key={tareas.id}
                     onPress={() => {
                       // MANDAR A LA PANTALLA DEL PROYECTO
-                      console.log("Pulsaste el Boton", tareas.name);
+                      console.log("Pulsaste el Boton", tareas.descripcion);
                     }}
                   >
                     <Text
@@ -98,10 +102,19 @@ export default function TareasScreen({ route }) {
                         width: 350,
                         color: "white",
                         textAlign: "center",
-                        paddingTop: 25,
+                        paddingTop: 20,
                       }}
                     >
                       {tareas.descripcion}
+                    </Text>
+                    <Text
+                      style={{
+                        width: 350,
+                        color: "red",
+                        textAlign: "center",
+                      }}
+                    >
+                      {tareas.estado}
                     </Text>
                   </TouchableOpacity>
                 );
