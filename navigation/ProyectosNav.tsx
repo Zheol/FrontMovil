@@ -4,16 +4,17 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ProyectosScreen from "../screens/Proyectos/ProyectosScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList  } from "../types";
+import { RootStackParamList } from "../types";
 
 const Tab = createMaterialBottomTabNavigator();
 
-function ProyectosNav({ route }: NativeStackScreenProps<RootStackParamList, 'ProyectosNav'>) {
-  const {nombre, email, id} = route.params;
+function ProyectosNav({
+  route,
+}: NativeStackScreenProps<RootStackParamList, "ProyectosNav">) {
+  const { nombre, email, id } = route.params;
 
   return (
     <Tab.Navigator initialRouteName="MisProyectos">
-      
       {/* Crear Proyecto */}
       <Tab.Screen
         options={{
@@ -34,7 +35,7 @@ function ProyectosNav({ route }: NativeStackScreenProps<RootStackParamList, 'Pro
       {/* Mis Proyecto */}
       <Tab.Screen
         options={{
-          tabBarLabel: "Mis Proyectos",
+          tabBarLabel: "Proyectos",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="briefcase" color={color} size={26} />
           ),
