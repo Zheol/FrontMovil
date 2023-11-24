@@ -12,7 +12,13 @@ import React, { useEffect, useState } from "react";
 import { Proyect } from "./types";
 import { gql, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
-import { Modal, Portal, Button, PaperProvider } from "react-native-paper";
+import {
+  Modal,
+  Portal,
+  Button,
+  PaperProvider,
+  Divider,
+} from "react-native-paper";
 import { Icon, MD3Colors } from "react-native-paper";
 
 const { height } = Dimensions.get("window");
@@ -124,10 +130,16 @@ export default function ProyectosScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
+              marginTop: -42,
+              marginBottom: 10,
             }}
           >
             Proyectos
           </Text>
+
+          <View style={{ width: "100%" }}>
+            <Divider />
+          </View>
 
           <View style={{ marginBottom: 60 }}>
             <ScrollView>
