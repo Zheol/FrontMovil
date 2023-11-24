@@ -130,8 +130,8 @@ export default function ProyectosScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
-              marginTop: -42,
-              marginBottom: 10,
+              marginTop: -43,
+              paddingBottom: 10,
             }}
           >
             Proyectos
