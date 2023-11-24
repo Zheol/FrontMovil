@@ -12,6 +12,7 @@ import Drawer from "./DrawerNav";
 import ProyectosNav from "./ProyectosNav";
 import { Title } from "react-native-paper";
 import TareasNav from "./TareasNav";
+import IntegrantesCreateScreen from "../screens/Tareas/IntegranteCreateScreen";
 
 const theme = {
   ...DefaultTheme,
@@ -47,6 +48,7 @@ function RootNavigator() {
       <Stack.Screen name="ProyectosNav" component={ProyectosNav}/>
       <Stack.Screen name="EquiposNav" component={EquiposNav}/>
       <Stack.Screen name="TareasNav" component={TareasNav}/>
+      <Stack.Screen name="CrearIntegrante" component={IntegrantesCreateScreen}/>
     </Stack.Navigator>
   );
 }

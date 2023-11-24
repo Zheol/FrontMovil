@@ -30,14 +30,21 @@ export type RootStackParamList = {
     idProyecto: number;
   };
   TareasNav: {
-    nombreUser: string;
-    idUser: number;
-    nombreProyecto: string;
-    idProyecto: number;
-    nombreEquipo: string;
-    idEquipo: string;
-  };
-  Tareas: undefined;
+    nombreUser: string,
+    idUser: number,
+    nombreProyecto: string,
+    idProyecto: number,
+    nombreEquipo: string,
+    idEquipo: string,
+  }
+  CrearIntegrante:{
+    nombreUser: string,
+    idUser: number,
+    nombreProyecto: string,
+    idProyecto: number,
+    nombreEquipo: string,
+    idEquipo: string,
+  }
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -66,4 +73,8 @@ export type formCreateProyect = {
 
 export type formFindProyect = {
   nombre: string;
-};
+}
+
+export type formCreateIntegrante = {
+  email: string;
+}

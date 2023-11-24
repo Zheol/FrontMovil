@@ -5,6 +5,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import TareasCreateScreen from "../screens/Tareas/TareasCreateScreen";
 import TareasScreen from "../screens/Tareas/TareasScreen";
 import IntegrantesScreen from "../screens/Tareas/IntegrantesScreen";
+import IntegrantesCreateScreen from "../screens/Tareas/IntegranteCreateScreen";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
 const Tab = createMaterialBottomTabNavigator();

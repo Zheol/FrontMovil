@@ -9,6 +9,8 @@ import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
 import { gql, useQuery } from "@apollo/client";
+import { SubmitHandler } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
 
 const { height } = Dimensions.get("window");
 
@@ -39,6 +41,7 @@ export default function IntegrantesScreen({ route }) {
     },
   });
   refetch(data);
+  const navigation = useNavigation();
 
   const integrantes =
     data?.getIntegrantebyIdEquipo?.map((item) => ({
@@ -85,21 +88,23 @@ export default function IntegrantesScreen({ route }) {
                   key={integrante.id}
                   onPress={() => {
                     // MANDAR A LA PANTALLA DEL PROYECTO
-                    console.log("Pulsaste el Boton", integrante.name);
+                    console.log("Pulsaste el boton de:", integrante.name)
                   }}
                 >
                   <Text
                     style={{
+                      fontSize: 22,
                       width: 350,
                       color: "white",
                       textAlign: "center",
-                      paddingTop: 20,
+                      paddingTop: 10,
                     }}
                   >
                     {integrante.name}
                   </Text>
                   <Text
                     style={{
+                      fontSize: 20,
                       width: 350,
                       color: "white",
                       textAlign: "center",
@@ -110,6 +115,41 @@ export default function IntegrantesScreen({ route }) {
                 </TouchableOpacity>
               );
             })}
+          </View>
+
+          <View>
+            <TouchableOpacity
+              style={{
+                marginVertical: 20,
+                backgroundColor: "#005050",
+                height: 80,
+                borderRadius: 10,
+              }}
+              onPress={() => {
+                // MANDAR A LA PANTALLA DE CREAR INTEGRANTE
+                navigation.navigate("CrearIntegrante", {
+                  nombreUser: nombreUser,
+                  idUser: idUser,
+                  idProyecto:idProyecto,
+                  nombreProyecto: nombreProyecto,
+                  nombreEquipo: nombreEquipo,
+                  idEquipo: idEquipo
+                })
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 50,
+                  width: 350,
+                  color: "white",
+                  textAlign: "center",
+                  paddingTop: 5,
+                }}
+              >
+                {"+"}
+              </Text>
+              
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
