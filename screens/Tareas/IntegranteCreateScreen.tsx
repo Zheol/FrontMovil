@@ -10,7 +10,7 @@ import {
   import FontSize from "../../constants/FontSize";
   import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-  import { gql, useLazyQuery, useQuery } from "@apollo/client";
+  import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
   import { SubmitHandler, useForm, Controller } from "react-hook-form";
   import { useNavigation } from "@react-navigation/native";
 import { formCreateIntegrante } from "../../types";
@@ -30,8 +30,17 @@ import { ActivityIndicator } from "react-native-paper";
     }
   }
   `;
+
+  const CREAR_INTEGRANTE = gql `
+  mutation createIntegrante($input: CreateIntegranteInput!){
+    createIntegrante(createIntegranteInput: $input){
+      id,
+    }
+  }
+  `
 const schema = yup.object().shape({
     email: yup.string().required("email is required"),
+    rol: yup.string().required("rol is required")
 });
   
   export default function IntegrantesCreateScreen({ route }) {
@@ -46,6 +55,8 @@ const schema = yup.object().shape({
     const [getUser, { loading, error, data, refetch }] = useLazyQuery(OBTENER_USUARIO);
     const navigation = useNavigation();
 
+    const [newIntegrante, { loading: cargando, error: errores }] = useMutation(CREAR_INTEGRANTE);
+
     const {
         control,
         handleSubmit,
@@ -54,18 +65,45 @@ const schema = yup.object().shape({
         resolver: yupResolver(schema),
         defaultValues: {
           email: "",
+          rol: "",
         },
       });
 
-    const onPressSend: SubmitHandler<formCreateIntegrante> = (formData) => {
-        getUser({
-          variables: {
-            email: formData.email
-          },
-        });
+      const onPressSend: SubmitHandler<formCreateIntegrante> = async (formData) => {
+        try {
+          const { data: userData } = await getUser({
+            variables: {
+              email: formData.email
+            },
+          });
+      
+          const userId = userData.user.id;
 
-        console.log(data)
+          const CreateIntegranteInput = {
+            userId: userId,
+            equipoId: idEquipo,
+            rol: formData.rol
+          };
+      
+          await newIntegrante({
+            variables: {
+              input: CreateIntegranteInput,
+            }
+          });
+      
+          navigation.navigate("TareasNav", {
+            nombreUser: nombreUser,
+            idUser: idUser,
+            idProyecto: idProyecto,
+            nombreProyecto: nombreProyecto,
+            nombreEquipo: nombreEquipo,
+            idEquipo: idEquipo
+          });
+        } catch (error) {
+          console.error(error);
+        }
       };
+      
     return (
         <SafeAreaView>
         <View
@@ -116,6 +154,25 @@ const schema = yup.object().shape({
                 <Text style={{ color: "red" }}>{errors.email.message}</Text>
               )}
             </View>
+          </View>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <AppTextInput
+                value={value}
+                onChangeText={onChange}
+                placeholder="Rol"
+              />
+            )}
+            name="rol"
+          />
+          <View style={{ height: 15 }}>
+            {errors.rol && (
+              <Text style={{ color: "red" }}>{errors.rol.message}</Text>
+            )}
           </View>
   
           {loading ? (

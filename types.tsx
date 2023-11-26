@@ -45,6 +45,17 @@ export type RootStackParamList = {
     nombreEquipo: string,
     idEquipo: string,
   }
+  EditarTarea:{
+    nombreUser: string,
+    idUser: number,
+    nombreProyecto: string,
+    idProyecto: number,
+    nombreEquipo: string,
+    idEquipo: string,
+    nombreTarea: string,
+    idTarea: string,
+    estadoTarea: string,
+  }
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -77,4 +88,5 @@ export type formFindProyect = {
 
 export type formCreateIntegrante = {
   email: string;
+  rol: string;
 }

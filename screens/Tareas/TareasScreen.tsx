@@ -92,7 +92,17 @@ export default function TareasScreen({ route }) {
                     key={tareas.id}
                     onPress={() => {
                       // MANDAR A LA PANTALLA DEL PROYECTO
-                      console.log("Pulsaste el Boton", tareas.descripcion);
+                      navigation.navigate("EditarTarea", {
+                        nombreUser: nombreUser,
+                        idUser: idUser,
+                        idProyecto:idProyecto,
+                        nombreProyecto: nombreProyecto,
+                        nombreEquipo: nombreEquipo,
+                        idEquipo: idEquipo,
+                        nombreTarea: tareas.descripcion,
+                        idTarea: tareas.id,
+                        estadoTarea: tareas.estado,
+                      })
                     }}
                   >
                     <Text

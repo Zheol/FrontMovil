@@ -7,7 +7,7 @@ import fonts from "./config/fonts";
 import Navigation from "./navigation";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 const client = new ApolloClient({
-  uri: "http://192.168.100.3:4000/graphql",
+  uri: "http://172.21.224.1:4000/graphql",
   cache: new InMemoryCache(),
 });
 
