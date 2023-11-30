@@ -13,13 +13,12 @@ import { Proyect } from "./types";
 import { gql, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import {
-  Modal,
-  Portal,
   Button,
   PaperProvider,
   Divider,
+  Icon
 } from "react-native-paper";
-import { Icon, MD3Colors } from "react-native-paper";
+import UserProfileModal from "../../components/UserProfileModal";
 
 const { height } = Dimensions.get("window");
 
@@ -40,9 +39,9 @@ interface Project {
 export default function ProyectosScreen({ route }) {
   const [proyect, setProyect] = useState<Proyect>();
   const { id, nombre, email } = route.params;
-  const [visible, setVisible] = React.useState(false);
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const showModal = () => setModalVisible(true);
+  const hideModal = () => setModalVisible(false);
   const containerStyle = {
     backgroundColor: "white",
     padding: 40,
@@ -63,10 +62,6 @@ export default function ProyectosScreen({ route }) {
 
   const navigation = useNavigation();
 
-  const goToLogin = () => {
-    navigation.navigate("Login");
-  };
-
   return (
     <PaperProvider>
       <View
@@ -74,40 +69,12 @@ export default function ProyectosScreen({ route }) {
           padding: Spacing * 2,
         }}
       >
-        <Portal>
-          <Modal
-            visible={visible}
-            onDismiss={hideModal}
-            contentContainerStyle={containerStyle}
-          >
-            <Text
-              style={{
-                fontFamily: Font["poppins-semiBold"],
-                fontSize: FontSize.large,
-                textAlign: "center",
-              }}
-            >
-              Usuario
-            </Text>
-            <Text style={{ padding: 5, fontSize: FontSize.large }}>
-              Nombre: {nombre}
-            </Text>
-            <Text style={{ padding: 5, fontSize: FontSize.large }}>
-              Email: {email}
-            </Text>
-            <View
-              style={{
-                marginTop: 30,
-                alignSelf: "flex-end",
-              }}
-            >
-              <Button onPress={goToLogin}>
-                <Icon source="exit-to-app" size={25} />
-              </Button>
-            </View>
-          </Modal>
-        </Portal>
-
+        <UserProfileModal 
+          visible={modalVisible}
+          hideModal={hideModal}
+          nombre= {nombre}
+          email= {email}
+        />
         <View
           style={{
             marginTop: 30,

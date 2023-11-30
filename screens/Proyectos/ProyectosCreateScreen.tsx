@@ -19,6 +19,13 @@ import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
 const { height } = Dimensions.get("window");
 import { useNavigation } from "@react-navigation/native";
+import UserProfileModal from "../../components/UserProfileModal";
+import {
+  Button,
+  PaperProvider,
+  Divider,
+  Icon
+} from "react-native-paper";
 
 const CREATE_PROYECTO = gql`
   mutation createProyecto($input: CreateProyectoInput!) {
@@ -46,6 +53,9 @@ export default function ProyectoCreateScreen({ route }) {
       area: "",
     },
   });
+  const [modalVisible, setModalVisible] = useState(false);
+  const showModal = () => setModalVisible(true);
+  const hideModal = () => setModalVisible(false);
 
   const { nombre, email, id } = route.params;
 
@@ -75,17 +85,32 @@ export default function ProyectoCreateScreen({ route }) {
   };
 
   return (
+    <PaperProvider>
     <SafeAreaView>
       <View
         style={{
           padding: Spacing * 2,
-          marginTop: 20,
         }}
       >
+        <UserProfileModal
+          visible= {modalVisible}
+          hideModal={hideModal}
+          nombre= {nombre}
+          email= {email}
+        />
+        <View
+          style={{
+            marginTop: 30,
+            alignSelf: "flex-end",
+          }}
+        >
+          <Button onPress={showModal}>
+            <Icon source="account-details" size={30} />
+          </Button>
+        </View>
         <View
           style={{
             alignItems: "center",
-            paddingTop: 20,
           }}
         >
           <Text
@@ -94,11 +119,16 @@ export default function ProyectoCreateScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
+              marginTop: -43,
+              paddingBottom: 10,
             }}
           >
             Crear Proyecto
           </Text>
-        </View>
+          <View style={{ width: "100%" }}>
+            <Divider />
+          </View>
+        </View>     
 
         <View
           style={{
@@ -194,5 +224,6 @@ export default function ProyectoCreateScreen({ route }) {
         </View>
       </View>
     </SafeAreaView>
+    </PaperProvider>
   );
 }
