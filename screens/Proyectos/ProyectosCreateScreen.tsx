@@ -19,6 +19,7 @@ import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
 const { height } = Dimensions.get("window");
 import { useNavigation } from "@react-navigation/native";
+import { Divider } from "react-native-paper";
 
 const CREATE_PROYECTO = gql`
   mutation createProyecto($input: CreateProyectoInput!) {
@@ -98,6 +99,10 @@ export default function ProyectoCreateScreen({ route }) {
           >
             Crear Proyecto
           </Text>
+        </View>
+
+        <View style={{ width: "100%" }}>
+          <Divider />
         </View>
 
         <View

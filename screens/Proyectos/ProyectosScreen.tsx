@@ -111,11 +111,11 @@ export default function ProyectosScreen({ route }) {
         <View
           style={{
             marginTop: 30,
-            alignSelf: "flex-end",
+            alignSelf: "flex-start",
           }}
         >
           <Button onPress={showModal}>
-            <Icon source="account-details" size={30} />
+            <Icon source="magnify" size={30} />
           </Button>
         </View>
 
@@ -137,6 +137,17 @@ export default function ProyectosScreen({ route }) {
             Proyectos
           </Text>
 
+          <View
+            style={{
+              alignSelf: "flex-end",
+              marginTop: -50,
+            }}
+          >
+            <Button onPress={showModal}>
+              <Icon source="account-details" size={30} />
+            </Button>
+          </View>
+
           <View style={{ width: "100%" }}>
             <Divider />
           </View>
@@ -149,8 +160,8 @@ export default function ProyectosScreen({ route }) {
                     <TouchableOpacity
                       style={{
                         marginVertical: 20,
-                        backgroundColor: "#005050",
-                        height: 80,
+                        backgroundColor: "#ffebcd",
+                        height: 100,
                         borderRadius: 10,
                       }}
                       key={projects.id}
@@ -167,13 +178,32 @@ export default function ProyectosScreen({ route }) {
                       <Text
                         style={{
                           width: 350,
-                          color: "white",
+                          color: "black",
                           textAlign: "center",
-                          paddingTop: 25,
+                          paddingTop: 35,
+                          fontSize: 15,
                         }}
                       >
                         {projects.name}
                       </Text>
+                      <View
+                        style={{
+                          alignSelf: "flex-end",
+                        }}
+                      >
+                        <Button onPress={goToLogin}>
+                          <Icon source="format-list-checkbox" size={17} />
+                        </Button>
+                      </View>
+                      {/* <View
+                        style={{
+                          alignSelf: "flex-end",
+                        }}
+                      >
+                        <Button onPress={goToLogin}>
+                          <Icon source="information-variant" size={17} />
+                        </Button>
+                      </View> */}
                     </TouchableOpacity>
                   );
                 })}
