@@ -62,6 +62,10 @@ export default function ProyectosScreen({ route }) {
 
   const navigation = useNavigation();
 
+  const goToLogin = () => {
+    navigation.navigate("Login");
+  };
+
   return (
     <PaperProvider>
       <View

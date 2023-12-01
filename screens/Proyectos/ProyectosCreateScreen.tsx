@@ -19,6 +19,13 @@ import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
 const { height } = Dimensions.get("window");
 import { useNavigation } from "@react-navigation/native";
+import UserProfileModal from "../../components/UserProfileModal";
+import {
+  Button,
+  PaperProvider,
+  Divider,
+  Icon
+} from "react-native-paper";
 
 const CREATE_PROYECTO = gql`
   mutation createProyecto($input: CreateProyectoInput!) {
@@ -77,9 +84,10 @@ export default function ProyectoCreateScreen({ route }) {
       .catch((error) => {});
   };
 
+  
+
   return (
     <PaperProvider>
-      <SafeAreaView>
         <View
           style={{
             padding: Spacing * 2,
@@ -118,6 +126,9 @@ export default function ProyectoCreateScreen({ route }) {
             >
               Crear Proyecto
             </Text>
+            <View style={{ width: "100%" }}>
+            <Divider />
+          </View>
           </View>
 
           <View
@@ -213,7 +224,6 @@ export default function ProyectoCreateScreen({ route }) {
             )}
           </View>
         </View>
-      </SafeAreaView>
     </PaperProvider>
   );
 }
