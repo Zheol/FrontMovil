@@ -19,7 +19,6 @@ import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
 const { height } = Dimensions.get("window");
 import { useNavigation } from "@react-navigation/native";
-import { Divider } from "react-native-paper";
 
 const CREATE_PROYECTO = gql`
   mutation createProyecto($input: CreateProyectoInput!) {
@@ -47,6 +46,9 @@ export default function ProyectoCreateScreen({ route }) {
       area: "",
     },
   });
+  const [modalVisible, setModalVisible] = useState(false);
+  const showModal = () => setModalVisible(true);
+  const hideModal = () => setModalVisible(false);
 
   const { nombre, email, id } = route.params;
 
@@ -76,128 +78,142 @@ export default function ProyectoCreateScreen({ route }) {
   };
 
   return (
-    <SafeAreaView>
-      <View
-        style={{
-          padding: Spacing * 2,
-          marginTop: 20,
-        }}
-      >
+    <PaperProvider>
+      <SafeAreaView>
         <View
           style={{
-            alignItems: "center",
-            paddingTop: 20,
+            padding: Spacing * 2,
           }}
         >
-          <Text
-            style={{
-              fontFamily: Font["poppins-semiBold"],
-              fontSize: FontSize.large,
-              maxWidth: "60%",
-              textAlign: "center",
-            }}
-          >
-            Crear Proyecto
-          </Text>
-        </View>
-
-        <View style={{ width: "100%" }}>
-          <Divider />
-        </View>
-
-        <View
-          style={{
-            marginVertical: Spacing * 1,
-          }}
-        >
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, value } }) => (
-              <AppTextInput
-                value={value}
-                onChangeText={onChange}
-                placeholder="Nombre"
-              />
-            )}
-            name="nombre"
+          <UserProfileModal
+            visible={modalVisible}
+            hideModal={hideModal}
+            nombre={nombre}
+            email={email}
           />
-          <View style={{ height: 15 }}>
-            {errors.nombre && (
-              <Text style={{ color: "red" }}>{errors.nombre.message}</Text>
-            )}
-          </View>
-
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, value } }) => (
-              <AppTextInput
-                value={value}
-                onChangeText={onChange}
-                placeholder="Área"
-              />
-            )}
-            name="area"
-          />
-          <View style={{ height: 15 }}>
-            {errors.area && (
-              <Text style={{ color: "red" }}>{errors.area.message}</Text>
-            )}
-          </View>
-        </View>
-
-        {loading ? (
           <View
             style={{
-              padding: Spacing * 1.5,
-              marginVertical: Spacing * 3,
+              marginTop: 30,
+              alignSelf: "flex-end",
             }}
           >
-            <ActivityIndicator size="large" color="#d2691e" />
+            <Button onPress={showModal}>
+              <Icon source="account-details" size={30} />
+            </Button>
           </View>
-        ) : (
-          <TouchableOpacity
-            onPress={handleSubmit(onPressSend)}
+          <View
             style={{
-              padding: Spacing * 1.5,
-              backgroundColor: "#005050",
-              marginTop: 20,
-              borderRadius: Spacing,
-              shadowColor: Colors.primary,
-              shadowOffset: {
-                width: 0,
-                height: Spacing,
-              },
-              shadowOpacity: 0.3,
-              shadowRadius: Spacing,
+              alignItems: "center",
             }}
           >
             <Text
               style={{
-                fontFamily: Font["poppins-bold"],
-                color: Colors.onPrimary,
-                textAlign: "center",
+                fontFamily: Font["poppins-semiBold"],
                 fontSize: FontSize.large,
+                maxWidth: "60%",
+                textAlign: "center",
+                marginTop: -43,
+                paddingBottom: 10,
               }}
             >
-              Crear
+              Crear Proyecto
             </Text>
-          </TouchableOpacity>
-        )}
+          </View>
 
-        <View style={{ height: 40, paddingTop: 20 }}>
-          {error && (
-            <Text style={{ color: "red", textAlign: "center" }}>
-              {error.message}
-            </Text>
+          <View
+            style={{
+              marginVertical: Spacing * 1,
+            }}
+          >
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, value } }) => (
+                <AppTextInput
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="Nombre"
+                />
+              )}
+              name="nombre"
+            />
+            <View style={{ height: 15 }}>
+              {errors.nombre && (
+                <Text style={{ color: "red" }}>{errors.nombre.message}</Text>
+              )}
+            </View>
+
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, value } }) => (
+                <AppTextInput
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="Área"
+                />
+              )}
+              name="area"
+            />
+            <View style={{ height: 15 }}>
+              {errors.area && (
+                <Text style={{ color: "red" }}>{errors.area.message}</Text>
+              )}
+            </View>
+          </View>
+
+          {loading ? (
+            <View
+              style={{
+                padding: Spacing * 1.5,
+                marginVertical: Spacing * 3,
+              }}
+            >
+              <ActivityIndicator size="large" color="#d2691e" />
+            </View>
+          ) : (
+            <TouchableOpacity
+              onPress={handleSubmit(onPressSend)}
+              style={{
+                padding: Spacing * 1.5,
+                backgroundColor: "#005050",
+                marginTop: 20,
+                borderRadius: Spacing,
+                shadowColor: Colors.primary,
+                shadowOffset: {
+                  width: 0,
+                  height: Spacing,
+                },
+                shadowOpacity: 0.3,
+                shadowRadius: Spacing,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: Font["poppins-bold"],
+                  color: Colors.onPrimary,
+                  textAlign: "center",
+                  fontSize: FontSize.large,
+                }}
+              >
+                Crear
+              </Text>
+            </TouchableOpacity>
           )}
+
+          <View style={{ height: 40, paddingTop: 20 }}>
+            {error && (
+              <Text style={{ color: "red", textAlign: "center" }}>
+                {error.message}
+              </Text>
+            )}
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </PaperProvider>
   );
 }
