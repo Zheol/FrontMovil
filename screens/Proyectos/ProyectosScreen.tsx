@@ -117,7 +117,7 @@ export default function ProyectosScreen({ route }) {
           </View>
 
           <View style={{ marginBottom: 60 }}>
-            <ScrollView>
+            <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
               <View>
                 {projects.map((projects: any) => {
                   return (
