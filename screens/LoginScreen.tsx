@@ -13,7 +13,7 @@ import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
 import Font from "../constants/Font";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList, formLogin } from "../types";
+import { RootStackParamList, VALID_PASSWORD_REGEX, formLogin } from "../types";
 import AppTextInput from "../components/AppTextInput";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
@@ -39,10 +39,7 @@ const LOGIN_USER = gql`
 
 const schema = yup.object().shape({
   email: yup.string().required("Email is required").email("Invalid email"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(8, "Password must contain at least 8 characters"),
+  password: yup.string().required("Password is required"),
 });
 
 const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {

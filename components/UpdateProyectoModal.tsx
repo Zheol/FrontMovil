@@ -1,38 +1,42 @@
 // UserProfileModal.tsx
 import React from "react";
 import { Text, View } from "react-native";
-import {
-  Modal,
-  Portal,
-  Button,
-  Icon,
-  PaperProvider,
-  Divider,
-} from "react-native-paper";
+import { Modal, Portal, Button, Divider } from "react-native-paper";
 import Font from "../constants/Font";
 import FontSize from "../constants/FontSize";
 import { useNavigation } from "@react-navigation/native";
 import AppTextInput from "./AppTextInput";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import Colors from "../constants/Colors";
-interface UserProfileModalProps {
-  visible: boolean;
-  hideModal: () => void;
-  nombre: string;
-  email: string;
-}
-const UserProfileModal: React.FC<UserProfileModalProps> = ({
+import { UpdateProyectoModalProps } from "../types";
+import { gql, useMutation } from "@apollo/client";
+
+const DELETE_PROYECT = gql`
+  mutation removeProyecto($input: FindProyectoByIdInput!) {
+    removeProyecto(findProyectoByIdInput: $input) {
+      id
+    }
+  }
+`;
+
+const ProyectoUpdateModal: React.FC<UpdateProyectoModalProps> = ({
   visible,
   hideModal,
   nombre,
-  email,
+  area,
 }) => {
+  const [deleteProyect, { loading, error }] = useMutation(DELETE_PROYECT);
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
   const navigation = useNavigation();
 
-  const goToLogin = () => {
-    navigation.navigate("Login");
+  const funcDeleteProyect = () => {
+    const findProyectoByIdInput = {
+      // id: formData.email,
+    };
+    console.log("Se esta eliminando el proyecto", nombre, area);
+  };
+
+  const funcActualizarProyect = () => {
+    console.log("Se esta actualizando el proyecto", nombre, area);
   };
 
   return (
@@ -50,7 +54,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
             marginBottom: 10,
           }}
         >
-          Usuario
+          {nombre}
         </Text>
 
         <View style={{ width: "100%", marginBottom: 10 }}>
@@ -72,10 +76,10 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
               fontFamily: Font["poppins-semiBold"],
             }}
           >
-            Email
+            Area
           </Text>
         </View>
-        <AppTextInput value={email} placeholder="email" />
+        <AppTextInput value={area} placeholder="área" />
 
         <View
           style={{
@@ -87,33 +91,20 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
         >
           <Button
             mode="outlined"
-            onPress={goToLogin}
+            onPress={funcActualizarProyect}
             style={{ width: "45%", marginRight: 10 }}
           >
             Actualizar
           </Button>
           <Button
             mode="outlined"
-            onPress={goToLogin}
+            onPress={funcDeleteProyect}
             style={{ width: "45%", marginLeft: 10 }}
           >
-            Exit
+            Eliminar
           </Button>
         </View>
 
-        <TouchableOpacity>
-          <Text
-            style={{
-              marginTop: 10,
-              fontFamily: Font["poppins-semiBold"],
-              color: Colors.text,
-              textAlign: "center",
-              fontSize: FontSize.small,
-            }}
-          >
-            Actualizar contraseña
-          </Text>
-        </TouchableOpacity>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
           <Divider />
         </View>
@@ -122,4 +113,4 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
   );
 };
 
-export default UserProfileModal;
+export default ProyectoUpdateModal;

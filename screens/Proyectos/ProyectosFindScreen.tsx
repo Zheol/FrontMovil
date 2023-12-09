@@ -19,11 +19,12 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { formFindProyect } from "../../types";
 import { useNavigation } from "@react-navigation/native";
+import { Divider } from "react-native-paper";
 
 const { height } = Dimensions.get("window");
 
 const schema = yup.object().shape({
-  nombre: yup.string().required("Name is required"),
+  nombre: yup.string().required("Campo Requerido"),
   area: yup.string(),
 });
 
@@ -121,7 +122,7 @@ export default function ProyectoFindScreen({ route }) {
             )}
             name="nombre"
           />
-          <View style={{ height: 15 }}>
+          <View style={{ height: 25 }}>
             {errors.nombre && (
               <Text style={{ color: "red" }}>{errors.nombre.message}</Text>
             )}
@@ -143,7 +144,7 @@ export default function ProyectoFindScreen({ route }) {
             style={{
               padding: Spacing * 1.5,
               backgroundColor: "#005050",
-              marginTop: 20,
+              marginTop: 10,
               borderRadius: Spacing,
               shadowColor: Colors.primary,
               shadowOffset: {
@@ -167,23 +168,20 @@ export default function ProyectoFindScreen({ route }) {
           </TouchableOpacity>
         )}
 
-        <View style={{ height: 40, paddingTop: 20 }}>
-          {/* {error && (
-            <Text style={{ color: "red", textAlign: "center" }}>
-              {error.message}
-            </Text>
-          )} */}
+        <View style={{ width: "100%" }}>
+          <Divider />
         </View>
+
         <View style={{ marginBottom: 60 }}>
           <ScrollView>
-            <View>
+            <View style={{ paddingTop: 20 }}>
               {projects.map((projects: any) => {
                 return (
                   <TouchableOpacity
                     style={{
                       marginVertical: 20,
-                      backgroundColor: "#005050",
-                      height: 80,
+                      backgroundColor: "#ffebcd",
+                      height: 120,
                       borderRadius: 10,
                     }}
                     key={projects.id}
@@ -191,18 +189,18 @@ export default function ProyectoFindScreen({ route }) {
                       // MANDAR A LA PANTALLA DEL PROYECTO
                       navigation.navigate("EquiposNav", {
                         nombreUser: nombre,
-                        idUser: 17,
+                        idUser: id,
                         nombreProyecto: projects.name,
-                        idProyecto: 16,
+                        idProyecto: projects.id,
                       });
                     }}
                   >
                     <Text
                       style={{
                         width: 350,
-                        color: "white",
+                        color: "black",
                         textAlign: "center",
-                        paddingTop: 25,
+                        paddingTop: 45,
                       }}
                     >
                       {projects.name}

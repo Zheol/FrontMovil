@@ -12,21 +12,20 @@ import React, { useEffect, useState } from "react";
 import { Proyect } from "./types";
 import { gql, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
-import {
-  Button,
-  PaperProvider,
-  Divider,
-  Icon
-} from "react-native-paper";
+import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
+import UserProyectoModal from "../../components/UpdateProyectoModal";
+import ProyectoUpdateModal from "../../components/UpdateProyectoModal";
 
 const { height } = Dimensions.get("window");
 
 const OBTENER_PROYECTOS = gql`
-  query ($id: Int!) {
-    getProyectosbyUserId(id: $id) {
+  query getProyectosByUserId($input: getProyectosbyUserIdDto!) {
+    getProyectosbyUserId(getProyectosbyUserInput: $input) {
       id
+      idAdmin
       nombre
+      area
     }
   }
 `;
@@ -37,20 +36,20 @@ interface Project {
 }
 
 export default function ProyectosScreen({ route }) {
-  const [proyect, setProyect] = useState<Proyect>();
+  const [proyect, setProyect] = useState<Proyect[]>();
   const { id, nombre, email } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalUpdateVisible, setModalUpdateVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
-  const containerStyle = {
-    backgroundColor: "white",
-    padding: 40,
-    alignItems: "center",
-  };
+  const showModalUpdate = () => setModalUpdateVisible(true);
+  const hideModalUpdate = () => setModalUpdateVisible(false);
 
   const { loading, error, data, refetch } = useQuery(OBTENER_PROYECTOS, {
     variables: {
-      id: id,
+      input: {
+        id,
+      },
     },
   });
   refetch(data);
@@ -58,7 +57,11 @@ export default function ProyectosScreen({ route }) {
     data?.getProyectosbyUserId?.map((item) => ({
       id: item.id,
       name: item.nombre,
+      area: item.area,
+      idAdmin: item.idAdmin,
     })) || [];
+
+  console.log(data);
 
   const navigation = useNavigation();
 
@@ -73,20 +76,21 @@ export default function ProyectosScreen({ route }) {
           padding: Spacing * 2,
         }}
       >
-        <UserProfileModal 
+        <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre= {nombre}
-          email= {email}
+          nombre={nombre}
+          email={email}
         />
+
         <View
           style={{
             marginTop: 30,
-            alignSelf: "flex-start",
+            alignSelf: "flex-end",
           }}
         >
           <Button onPress={showModal}>
-            <Icon source="magnify" size={30} />
+            <Icon source="dots-vertical" size={25} />
           </Button>
         </View>
 
@@ -101,23 +105,12 @@ export default function ProyectosScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
-              marginTop: -43,
+              marginTop: -40,
               paddingBottom: 10,
             }}
           >
             Proyectos
           </Text>
-
-          <View
-            style={{
-              alignSelf: "flex-end",
-              marginTop: -50,
-            }}
-          >
-            <Button onPress={showModal}>
-              <Icon source="account-details" size={30} />
-            </Button>
-          </View>
 
           <View style={{ width: "100%" }}>
             <Divider />
@@ -129,13 +122,13 @@ export default function ProyectosScreen({ route }) {
                 {projects.map((projects: any) => {
                   return (
                     <TouchableOpacity
+                      key={projects.id}
                       style={{
-                        marginVertical: 20,
+                        marginVertical: 10,
                         backgroundColor: "#ffebcd",
-                        height: 100,
+                        height: 120,
                         borderRadius: 10,
                       }}
-                      key={projects.id}
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL PROYECTO
                         navigation.navigate("EquiposNav", {
@@ -149,23 +142,45 @@ export default function ProyectosScreen({ route }) {
                       <Text
                         style={{
                           width: 350,
+                          color: "grey",
+                          fontSize: 13,
+                          alignSelf: "flex-start",
+                          paddingTop: 10,
+                          paddingLeft: 15,
+                        }}
+                      >
+                        {projects.area}
+                      </Text>
+                      <Text
+                        style={{
+                          width: 350,
                           color: "black",
                           textAlign: "center",
-                          paddingTop: 35,
+                          paddingTop: 20,
                           fontSize: 15,
                         }}
                       >
                         {projects.name}
                       </Text>
+
                       <View
                         style={{
                           alignSelf: "flex-end",
+                          paddingTop: 10,
                         }}
                       >
-                        <Button onPress={goToLogin}>
+                        <Button onPress={showModalUpdate}>
                           <Icon source="format-list-checkbox" size={17} />
                         </Button>
                       </View>
+
+                      <ProyectoUpdateModal
+                        visible={modalUpdateVisible}
+                        hideModal={hideModalUpdate}
+                        nombre={projects.name}
+                        area={projects.area}
+                      />
+
                       {/* <View
                         style={{
                           alignSelf: "flex-end",
