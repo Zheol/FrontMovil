@@ -38,8 +38,8 @@ const LOGIN_USER = gql`
 `;
 
 const schema = yup.object().shape({
-  email: yup.string().required("Email is required").email("Invalid email"),
-  password: yup.string().required("Password is required"),
+  email: yup.string().required("Campo Requerido").email("Email inválido"),
+  password: yup.string().required("Campo Requerido"),
 });
 
 const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
@@ -137,7 +137,7 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
             )}
             name="email"
           />
-          <View style={{ height: 15 }}>
+          <View style={{ height: 20 }}>
             {errors.email && (
               <Text style={{ color: "red" }}>{errors.email.message}</Text>
             )}
@@ -158,7 +158,7 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
             )}
             name="password"
           />
-          <View style={{ height: 15 }}>
+          <View style={{ height: 20 }}>
             {errors.password && (
               <Text style={{ color: "red" }}>{errors.password.message}</Text>
             )}

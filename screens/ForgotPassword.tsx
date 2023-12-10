@@ -24,7 +24,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "ForgotPass">;
 const { height } = Dimensions.get("window");
 
 const schema = yup.object().shape({
-  email: yup.string().required("Email is required").email("Invalid email"),
+  email: yup.string().required("Campo Requerido").email("Email inválido"),
 });
 
 const ForgotPassword: React.FC<Props> = ({ navigation: { navigate } }) => {
@@ -111,7 +111,7 @@ const ForgotPassword: React.FC<Props> = ({ navigation: { navigate } }) => {
             style={{
               padding: Spacing * 1.5,
               backgroundColor: "#000000",
-              marginVertical: Spacing * 3,
+              marginTop: 20,
               borderRadius: Spacing,
               shadowColor: Colors.primary,
               shadowOffset: {

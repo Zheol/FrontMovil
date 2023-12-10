@@ -80,7 +80,7 @@ const WelcomeScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
           <TouchableOpacity
             onPress={() => navigate("Register")}
             style={{
-              backgroundColor: "#f0f8ff",
+              backgroundColor: "#ffebcd",
               paddingVertical: Spacing * 1.5,
               paddingHorizontal: Spacing * 2,
               width: "48%",
