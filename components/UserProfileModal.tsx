@@ -65,7 +65,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
             Nombre
           </Text>
         </View>
-        <AppTextInput value={nombre} placeholder="nombre" />
+        <AppTextInput placeholder={nombre} />
         <View>
           <Text
             style={{
@@ -75,7 +75,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
             Email
           </Text>
         </View>
-        <AppTextInput value={email} placeholder="email" />
+        <AppTextInput placeholder={email} />
 
         <View
           style={{
