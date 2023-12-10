@@ -11,12 +11,7 @@ import FontSize from "../../constants/FontSize";
 import { gql, useQuery } from "@apollo/client";
 import { SubmitHandler } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
-import {
-  Button,
-  PaperProvider,
-  Divider,
-  Icon
-} from "react-native-paper";
+import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
 import { useState } from "react";
 
@@ -69,11 +64,11 @@ export default function IntegrantesScreen({ route }) {
           padding: Spacing * 2,
         }}
       >
-        <UserProfileModal 
+        <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre= {nombreUser}
-          email= {email}
+          nombre={nombreUser}
+          email={email}
         />
 
         <View
@@ -126,15 +121,15 @@ export default function IntegrantesScreen({ route }) {
                   <TouchableOpacity
                     style={{
                       marginVertical: 20,
-                        backgroundColor: "#ffebcd",
-                        height: 100,
-                        borderRadius: 10,
-                        paddingTop: 6,
+                      backgroundColor: "#ffebcd",
+                      height: 100,
+                      borderRadius: 10,
+                      paddingTop: 6,
                     }}
                     key={integrante.id}
                     onPress={() => {
                       // MANDAR A LA PANTALLA DEL PROYECTO
-                      console.log("Pulsaste el boton de:", integrante.name)
+                      console.log("Pulsaste el boton de:", integrante.name);
                     }}
                   >
                     <Text
@@ -176,11 +171,11 @@ export default function IntegrantesScreen({ route }) {
                   navigation.navigate("CrearIntegrante", {
                     nombreUser: nombreUser,
                     idUser: idUser,
-                    idProyecto:idProyecto,
+                    idProyecto: idProyecto,
                     nombreProyecto: nombreProyecto,
                     nombreEquipo: nombreEquipo,
-                    idEquipo: idEquipo
-                  })
+                    idEquipo: idEquipo,
+                  });
                 }}
               >
                 <Text
@@ -194,7 +189,6 @@ export default function IntegrantesScreen({ route }) {
                 >
                   {"+"}
                 </Text>
-                
               </TouchableOpacity>
             </View>
           </ScrollView>

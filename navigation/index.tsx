@@ -8,12 +8,11 @@ import Welcome from "../screens/WelcomeScreen";
 import ForgotPassword from "../screens/ForgotPassword";
 import EquiposNav from "./EquiposNav";
 import { RootStackParamList } from "../types";
-import Drawer from "./DrawerNav";
 import ProyectosNav from "./ProyectosNav";
-import { Title } from "react-native-paper";
 import TareasNav from "./TareasNav";
 import IntegrantesCreateScreen from "../screens/Tareas/IntegranteCreateScreen";
 import TareaEditScreen from "../screens/Tareas/TareaEditScreen";
+import ChangePasswordScreen from "../components/changePassword";
 
 const theme = {
   ...DefaultTheme,
@@ -46,11 +45,15 @@ function RootNavigator() {
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="ForgotPass" component={ForgotPassword} />
       {/* ruta para usuario logeados */}
-      <Stack.Screen name="ProyectosNav" component={ProyectosNav}/>
-      <Stack.Screen name="EquiposNav" component={EquiposNav}/>
-      <Stack.Screen name="TareasNav" component={TareasNav}/>
-      <Stack.Screen name="CrearIntegrante" component={IntegrantesCreateScreen}/>
-      <Stack.Screen name="EditarTarea" component={TareaEditScreen}/>
+      <Stack.Screen name="ProyectosNav" component={ProyectosNav} />
+      <Stack.Screen name="EquiposNav" component={EquiposNav} />
+      <Stack.Screen name="TareasNav" component={TareasNav} />
+      <Stack.Screen
+        name="CrearIntegrante"
+        component={IntegrantesCreateScreen}
+      />
+      <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+      <Stack.Screen name="EditarTarea" component={TareaEditScreen} />
     </Stack.Navigator>
   );
 }

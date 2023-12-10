@@ -58,6 +58,9 @@ export type RootStackParamList = {
     idTarea: string;
     estadoTarea: string;
   };
+  ChangePassword: {
+    idUser: number;
+  };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -109,3 +112,9 @@ export interface UpdateProyectoModalProps {
   nombre: string;
   area: string;
 }
+
+export type formChangePassword = {
+  oldPassword: string;
+  newPassword: string;
+  repeatPassword: string;
+};

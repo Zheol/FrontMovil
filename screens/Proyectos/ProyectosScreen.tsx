@@ -131,6 +131,7 @@ export default function ProyectosScreen({ route }) {
           hideModal={hideModal}
           nombre={nombre}
           email={email}
+          idUser={id}
         />
 
         <View

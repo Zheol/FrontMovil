@@ -20,12 +20,14 @@ interface UserProfileModalProps {
   hideModal: () => void;
   nombre: string;
   email: string;
+  idUser: number;
 }
 const UserProfileModal: React.FC<UserProfileModalProps> = ({
   visible,
   hideModal,
   nombre,
   email,
+  idUser,
 }) => {
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
@@ -103,6 +105,9 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
         <TouchableOpacity>
           <Text
+            onPress={() => {
+              navigation.navigate("ChangePassword", { idUser });
+            }}
             style={{
               marginTop: 10,
               fontFamily: Font["poppins-semiBold"],
