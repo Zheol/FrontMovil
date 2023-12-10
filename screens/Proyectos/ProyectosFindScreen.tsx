@@ -144,7 +144,7 @@ export default function ProyectoFindScreen({ route }) {
             style={{
               padding: Spacing * 1.5,
               backgroundColor: "#005050",
-              marginTop: 10,
+              marginTop: 20,
               borderRadius: Spacing,
               shadowColor: Colors.primary,
               shadowOffset: {
@@ -175,7 +175,7 @@ export default function ProyectoFindScreen({ route }) {
         <View style={{ marginBottom: 60 }}>
           <ScrollView>
             <View style={{ paddingTop: 20 }}>
-              {projects.map((projects: any) => {
+              {projects.map((projects: Project) => {
                 return (
                   <TouchableOpacity
                     style={{
@@ -192,6 +192,7 @@ export default function ProyectoFindScreen({ route }) {
                         idUser: id,
                         nombreProyecto: projects.name,
                         idProyecto: projects.id,
+                        email: email,
                       });
                     }}
                   >

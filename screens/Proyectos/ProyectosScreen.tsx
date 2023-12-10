@@ -20,7 +20,7 @@ import ProyectoUpdateModal from "../../components/UpdateProyectoModal";
 const { height } = Dimensions.get("window");
 
 const OBTENER_INTEGRANTES = gql`
-  query getIntegrantevyIdUser($id: Int!) {
+  query getIntegrantesbyIdUsuario($id: Int!) {
     getIntegrantebyIdUsuario(id: $id) {
       idProyecto
       rol
@@ -50,7 +50,9 @@ const OBTENER_PROYECTOS = gql`
 
 interface Project {
   id: number;
-  name: string;
+  nombre: string;
+  area: string;
+  idAdmin: number;
 }
 
 export default function ProyectosScreen({ route }) {
@@ -63,7 +65,12 @@ export default function ProyectosScreen({ route }) {
   const showModalUpdate = () => setModalUpdateVisible(true);
   const hideModalUpdate = () => setModalUpdateVisible(false);
 
-  const { loading: loadPro, error: errProy, data: dataProyecto, refetch } = useQuery(OBTENER_PROYECTOS, {
+  const {
+    loading: loadPro,
+    error: errProy,
+    data: dataProyecto,
+    refetch,
+  } = useQuery(OBTENER_PROYECTOS, {
     variables: {
       input: {
         id,
@@ -72,41 +79,45 @@ export default function ProyectosScreen({ route }) {
   });
   refetch(dataProyecto);
   const projects: Project[] =
-    dataProyecto?.getProyectosbyUserId?.map((item) => ({
+    dataProyecto?.getProyectosbyUserId?.map((item: Project) => ({
       id: item.id,
       nombre: item.nombre,
       area: item.area,
       idAdmin: item.idAdmin,
     })) || [];
 
-  const { loading, error, data, refetch: refInte } = useQuery(OBTENER_INTEGRANTES, {
+  const {
+    loading,
+    error,
+    data,
+    refetch: refInte,
+  } = useQuery(OBTENER_INTEGRANTES, {
     variables: { id: id },
   });
-  refInte(data)
+  refInte(data);
 
   const [projectsMiembro, setProyectos] = useState<Project[]>([]);
   const client = useApolloClient();
 
-  useEffect(() => {
-    if (data?.getIntegrantebyIdUsuario) {
-      data.getIntegrantebyIdUsuario.forEach(async integrante => {
-        const response = await client.query({
-          query: OBTENER_PROYECTO,
-          variables: { id: integrante.idProyecto }
-        });
-        if (response.data) {
-          setProyectos(currentProyectos => [...currentProyectos, response.data.getProyectosbyId]);
-        }
-      });
-    }
-  }, [data, client]);
+  // useEffect(() => {
+  //   if (data?.getIntegrantebyIdUsuario) {
+  //     data.getIntegrantebyIdUsuario.forEach(async (integrante) => {
+  //       const response = await client.query({
+  //         query: OBTENER_PROYECTO,
+  //         variables: { id: integrante.idProyecto },
+  //       });
+  //       console.log(response);
+  //       if (response.data) {
+  //         setProyectos((currentProyectos) => [
+  //           ...currentProyectos,
+  //           response.data.getProyectosbyId,
+  //         ]);
+  //       }
+  //     });
+  //   }
+  // }, [data, client]);
 
   const navigation = useNavigation();
-
-  const goToLogin = () => {
-    navigation.navigate("Login");
-  };
-
 
   return (
     <PaperProvider>
@@ -155,11 +166,13 @@ export default function ProyectosScreen({ route }) {
             <Divider />
           </View>
 
-          <View style={{ marginBottom: 60 }}>
-            <ScrollView contentContainerStyle= {{paddingBottom: 70}}>
-              <Text> Creador </Text>
+          <View style={{ marginBottom: 80 }}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>
+              <View style={{ paddingVertical: 10 }}>
+                <Text> Creados </Text>
+              </View>
               <View>
-                {projects.map((projects: any) => {
+                {projects.map((projects: Project) => {
                   return (
                     <TouchableOpacity
                       key={projects.id}
@@ -176,7 +189,7 @@ export default function ProyectosScreen({ route }) {
                           idUser: id,
                           nombreProyecto: projects.nombre,
                           idProyecto: projects.id,
-                          email: email
+                          email: email,
                         });
                       }}
                     >
@@ -217,25 +230,19 @@ export default function ProyectosScreen({ route }) {
                       <ProyectoUpdateModal
                         visible={modalUpdateVisible}
                         hideModal={hideModalUpdate}
-                        nombre={projects.name}
+                        nombre={projects.nombre}
                         area={projects.area}
                       />
-                      {/* <View
-                        style={{
-                          alignSelf: "flex-end",
-                        }}
-                      >
-                        <Button onPress={goToLogin}>
-                          <Icon source="information-variant" size={17} />
-                        </Button>
-                      </View> */}
                     </TouchableOpacity>
                   );
                 })}
               </View>
-              <Text> Miembro </Text>
+              <View style={{ paddingVertical: 10 }}>
+                <Text> Miembro </Text>
+              </View>
+
               <View>
-                {projectsMiembro.map((projectsMiembro: any) => {
+                {projectsMiembro.map((projectsMiembro: Project) => {
                   return (
                     <TouchableOpacity
                       style={{
@@ -252,7 +259,7 @@ export default function ProyectosScreen({ route }) {
                           idUser: id,
                           nombreProyecto: projectsMiembro.nombre,
                           idProyecto: projectsMiembro.id,
-                          email: email
+                          email: email,
                         });
                       }}
                     >
@@ -267,18 +274,6 @@ export default function ProyectosScreen({ route }) {
                       >
                         {projectsMiembro.nombre}
                       </Text>
-
-                      
-
-                      {/* <View
-                        style={{
-                          alignSelf: "flex-end",
-                        }}
-                      >
-                        <Button onPress={goToLogin}>
-                          <Icon source="information-variant" size={17} />
-                        </Button>
-                      </View> */}
                     </TouchableOpacity>
                   );
                 })}

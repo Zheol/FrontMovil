@@ -31,33 +31,33 @@ export type RootStackParamList = {
     email: string;
   };
   TareasNav: {
-    nombreUser: string,
-    idUser: number,
-    nombreProyecto: string,
-    idProyecto: number,
-    nombreEquipo: string,
-    idEquipo: string,
+    nombreUser: string;
+    idUser: number;
+    nombreProyecto: string;
+    idProyecto: number;
+    nombreEquipo: string;
+    idEquipo: number;
     email: string;
-  }
-  CrearIntegrante:{
-    nombreUser: string,
-    idUser: number,
-    nombreProyecto: string,
-    idProyecto: number,
-    nombreEquipo: string,
-    idEquipo: string,
-  }
-  EditarTarea:{
-    nombreUser: string,
-    idUser: number,
-    nombreProyecto: string,
-    idProyecto: number,
-    nombreEquipo: string,
-    idEquipo: string,
-    nombreTarea: string,
-    idTarea: string,
-    estadoTarea: string,
-  }
+  };
+  CrearIntegrante: {
+    nombreUser: string;
+    idUser: number;
+    nombreProyecto: string;
+    idProyecto: number;
+    nombreEquipo: string;
+    idEquipo: string;
+  };
+  EditarTarea: {
+    nombreUser: string;
+    idUser: number;
+    nombreProyecto: string;
+    idProyecto: number;
+    nombreEquipo: string;
+    idEquipo: string;
+    nombreTarea: string;
+    idTarea: string;
+    estadoTarea: string;
+  };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

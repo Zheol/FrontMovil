@@ -21,7 +21,7 @@ import {
   PaperProvider,
   Divider,
   Icon,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
 import { useState } from "react";
@@ -36,7 +36,6 @@ const CREATE_EQUIPO = gql`
     }
   }
 `;
-
 
 const schema = yup.object().shape({
   nombre: yup.string().required("Name is required"),
@@ -56,7 +55,8 @@ export default function EquipoCreateScreen({ route }) {
   });
 
   const navigation = useNavigation();
-  const { idUser, nombreUser, idProyecto, nombreProyecto, email } = route.params;
+  const { idUser, nombreUser, idProyecto, nombreProyecto, email } =
+    route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
@@ -91,20 +91,20 @@ export default function EquipoCreateScreen({ route }) {
           padding: Spacing * 2,
         }}
       >
-        <UserProfileModal 
+        <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre= {nombreUser}
-          email= {email}
+          nombre={nombreUser}
+          email={email}
         />
         <View
           style={{
             marginTop: 30,
-            alignSelf: "flex-start",
+            alignSelf: "flex-end",
           }}
         >
           <Button onPress={showModal}>
-            <Icon source="magnify" size={30} />
+            <Icon source="dots-vertical" size={25} />
           </Button>
         </View>
         <View
@@ -118,26 +118,16 @@ export default function EquipoCreateScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
-              marginTop: -43,
+              marginTop: -40,
               paddingBottom: 10,
             }}
           >
             Crear Equipo
           </Text>
-          <View
-            style={{
-              alignSelf: "flex-end",
-              marginTop: -50,
-            }}
-          >
-            <Button onPress={showModal}>
-              <Icon source="account-details" size={30} />
-            </Button>
-          </View>
         </View>
         <View style={{ width: "100%" }}>
-            <Divider />
-          </View>
+          <Divider />
+        </View>
 
         <View
           style={{

@@ -13,12 +13,7 @@ import { gql, useQuery } from "@apollo/client";
 import { Equipo } from "./types";
 import { useNavigation } from "@react-navigation/native";
 const { height } = Dimensions.get("window");
-import {
-  Button,
-  PaperProvider,
-  Divider,
-  Icon
-} from "react-native-paper";
+import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
 
 const OBTENER_EQUIPOS = gql`
@@ -32,7 +27,8 @@ const OBTENER_EQUIPOS = gql`
 
 export default function EquiposScreen({ route }) {
   const [equipo, setEquipo] = useState<Equipo>();
-  const { idUser, nombreUser, idProyecto, nombreProyecto, email } = route.params;
+  const { idUser, nombreUser, idProyecto, nombreProyecto, email } =
+    route.params;
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
@@ -57,20 +53,21 @@ export default function EquiposScreen({ route }) {
           padding: Spacing * 2,
         }}
       >
-        <UserProfileModal 
+        <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre= {nombreUser}
-          email= {email}
+          nombre={nombreUser}
+          email={email}
         />
+
         <View
           style={{
             marginTop: 30,
-            alignSelf: "flex-start",
+            alignSelf: "flex-end",
           }}
         >
           <Button onPress={showModal}>
-            <Icon source="magnify" size={30} />
+            <Icon source="dots-vertical" size={25} />
           </Button>
         </View>
         <View
@@ -84,37 +81,27 @@ export default function EquiposScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
-              marginTop: -43,
+              marginTop: -40,
               paddingBottom: 10,
             }}
           >
             {nombreProyecto}
           </Text>
-          <View
-            style={{
-              alignSelf: "flex-end",
-              marginTop: -50,
-            }}
-          >
-            <Button onPress={showModal}>
-              <Icon source="account-details" size={30} />
-            </Button>
-          </View>
 
           <View style={{ width: "100%" }}>
             <Divider />
           </View>
 
           <View style={{ marginBottom: 60 }}>
-            <ScrollView>
+            <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>
               <View>
                 {equipos.map((equipos: any) => {
                   return (
                     <TouchableOpacity
                       style={{
-                        marginVertical: 20,
+                        marginVertical: 10,
                         backgroundColor: "#ffebcd",
-                        height: 100,
+                        height: 120,
                         borderRadius: 10,
                       }}
                       key={equipos.id}
@@ -136,7 +123,7 @@ export default function EquiposScreen({ route }) {
                           width: 350,
                           color: "black",
                           textAlign: "center",
-                          paddingTop: 35,
+                          paddingTop: 45,
                           fontSize: 15,
                         }}
                       >

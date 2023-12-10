@@ -23,7 +23,7 @@ import {
   PaperProvider,
   Divider,
   Icon,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
 import { useState } from "react";
@@ -43,7 +43,7 @@ const FIND_EQUIPO = gql`
 
 interface Equipo {
   id: number;
-  name: string;
+  nombre: string;
 }
 
 export default function EquipoFindScreen({ route }) {
@@ -58,7 +58,8 @@ export default function EquipoFindScreen({ route }) {
       nombre: "",
     },
   });
-  const { idUser, nombreUser, idProyecto, nombreProyecto, email } = route.params;
+  const { idUser, nombreUser, idProyecto, nombreProyecto, email } =
+    route.params;
   const [getEquipo, { loading, error, data }] = useLazyQuery(FIND_EQUIPO);
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
@@ -79,9 +80,9 @@ export default function EquipoFindScreen({ route }) {
   const navigation = useNavigation();
 
   const equipos: Equipo[] =
-    data?.getEquiposbyIdProyectoName?.map((item) => ({
+    data?.getEquiposbyIdProyectoName?.map((item: Equipo) => ({
       id: item.id,
-      name: item.nombre,
+      nombre: item.nombre,
     })) || [];
 
   return (
@@ -89,27 +90,19 @@ export default function EquipoFindScreen({ route }) {
       <View
         style={{
           padding: Spacing * 2,
+          marginTop: 20,
         }}
       >
-        <UserProfileModal 
+        <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre= {nombreUser}
-          email= {email}
+          nombre={nombreUser}
+          email={email}
         />
         <View
           style={{
-            marginTop: 30,
-            alignSelf: "flex-start",
-          }}
-        >
-          <Button onPress={showModal}>
-            <Icon source="magnify" size={30} />
-          </Button>
-        </View>
-        <View
-          style={{
             alignItems: "center",
+            paddingTop: 20,
           }}
         >
           <Text
@@ -118,27 +111,12 @@ export default function EquipoFindScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
-              marginTop: -43,
-              paddingBottom: 10,
             }}
           >
             Buscar Equipo
           </Text>
         </View>
-        <View
-            style={{
-              alignSelf: "flex-end",
-              marginTop: -50,
-            }}
-          >
-            <Button onPress={showModal}>
-              <Icon source="account-details" size={30} />
-            </Button>
-          </View>
 
-          <View style={{ width: "100%" }}>
-            <Divider />
-          </View>
         <View
           style={{
             marginVertical: Spacing * 1,
@@ -158,12 +136,11 @@ export default function EquipoFindScreen({ route }) {
             )}
             name="nombre"
           />
-          <View style={{ height: 15 }}>
+          <View style={{ height: 25 }}>
             {errors.nombre && (
               <Text style={{ color: "red" }}>{errors.nombre.message}</Text>
             )}
           </View>
-
 
           {loading ? (
             <View
@@ -204,46 +181,45 @@ export default function EquipoFindScreen({ route }) {
             </TouchableOpacity>
           )}
 
-          <View style={{ height: 40, paddingTop: 20 }}>
-            {/* {error && (
-            <Text style={{ color: "red", textAlign: "center" }}>
-              {error.message}
-            </Text>
-          )} */}
+          <View style={{ width: "100%" }}>
+            <Divider />
           </View>
 
           <View style={{ marginBottom: 60 }}>
             <ScrollView>
-              <View>
-                {equipos.map((equipos: any) => {
+              <View style={{ paddingTop: 20 }}>
+                {equipos.map((equipos: Equipo) => {
                   return (
                     <TouchableOpacity
                       style={{
                         marginVertical: 20,
-                        backgroundColor: "#005050",
-                        height: 80,
+                        backgroundColor: "#ffebcd",
+                        height: 120,
                         borderRadius: 10,
                       }}
                       key={equipos.id}
                       onPress={() => {
-                        // MANDAR A LA PANTALLA DE TAREAS
-                        // navigation.navigate("EquiposNav", {
-                        //   nombreUser: nombre,
-                        //   idUser: id,
-                        //   nombreProyecto: projects.name,
-                        //   idEquipo: equipos.id,
-                        // });
+                        // MANDAR A LA PANTALLA DEL Tareas
+                        navigation.navigate("TareasNav", {
+                          nombreUser: nombreUser,
+                          idUser: idUser,
+                          nombreProyecto: nombreProyecto,
+                          idProyecto: idProyecto,
+                          nombreEquipo: equipos.nombre,
+                          idEquipo: equipos.id,
+                          email: email,
+                        });
                       }}
                     >
                       <Text
                         style={{
                           width: 350,
-                          color: "white",
+                          color: "black",
                           textAlign: "center",
-                          paddingTop: 25,
+                          paddingTop: 45,
                         }}
                       >
-                        {equipos.name}
+                        {equipos.nombre}
                       </Text>
                     </TouchableOpacity>
                   );
