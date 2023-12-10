@@ -18,6 +18,15 @@ import { formCreateTarea } from "./types";
 import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
 import { useNavigation } from "@react-navigation/native";
+import UserProfileModal from "../../components/UserProfileModal";
+import {
+  Button,
+  PaperProvider,
+  Divider,
+  Icon
+} from "react-native-paper";
+import { useState } from "react";
+
 
 const CREATE_TAREA = gql`
   mutation createTarea($input: CreateTareaInput!) {
@@ -51,7 +60,11 @@ export default function TareasCreateScreen({ route }) {
     nombreProyecto,
     idEquipo,
     nombreEquipo,
+    email,
   } = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
+  const showModal = () => setModalVisible(true);
+  const hideModal = () => setModalVisible(false);
 
   const [createTarea, { loading, error }] = useMutation(CREATE_TAREA);
 
@@ -79,17 +92,31 @@ export default function TareasCreateScreen({ route }) {
   };
 
   return (
-    <SafeAreaView>
+    <PaperProvider>
       <View
         style={{
           padding: Spacing * 2,
-          marginTop: 30,
         }}
       >
+        <UserProfileModal
+            visible={modalVisible}
+            hideModal={hideModal}
+            nombre={nombreUser}
+            email={email}
+          />
+          <View
+          style={{
+            marginTop: 30,
+            alignSelf: "flex-start",
+          }}
+        >
+          <Button onPress={showModal}>
+            <Icon source="magnify" size={30} />
+          </Button>
+        </View>
         <View
           style={{
             alignItems: "center",
-            paddingTop: 20,
           }}
         >
           <Text
@@ -98,11 +125,30 @@ export default function TareasCreateScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
+              marginTop: -43,
+              paddingBottom: 10,
             }}
           >
             Crear Tarea
           </Text>
+
+          <View
+            style={{
+              alignSelf: "flex-end",
+              marginTop: -50,
+            }}
+          >
+            <Button onPress={showModal}>
+              <Icon source="account-details" size={30} />
+            </Button>
+          </View>
+
+          <View style={{ width: "100%" }}>
+           <Divider />
+          </View>
+
         </View>
+
 
         <View
           style={{
@@ -177,6 +223,6 @@ export default function TareasCreateScreen({ route }) {
           )}
         </View>
       </View>
-    </SafeAreaView>
+    </PaperProvider>
   );
 }

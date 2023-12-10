@@ -28,6 +28,7 @@ export type RootStackParamList = {
     idUser: number;
     nombreProyecto: string;
     idProyecto: number;
+    email: string;
   };
   TareasNav: {
     nombreUser: string,
@@ -36,6 +37,7 @@ export type RootStackParamList = {
     idProyecto: number,
     nombreEquipo: string,
     idEquipo: string,
+    email: string;
   }
   CrearIntegrante:{
     nombreUser: string,

@@ -15,10 +15,18 @@ import * as yup from "yup";
 const { height } = Dimensions.get("window");
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import AppTextInput from "../../components/AppTextInput";
-import { ActivityIndicator } from "react-native-paper";
 import Colors from "../../constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { formFindEquipo } from "./types";
+import {
+  Button,
+  PaperProvider,
+  Divider,
+  Icon,
+  ActivityIndicator
+} from "react-native-paper";
+import UserProfileModal from "../../components/UserProfileModal";
+import { useState } from "react";
 
 const schema = yup.object().shape({
   nombre: yup.string().required("Name is required"),
@@ -50,8 +58,11 @@ export default function EquipoFindScreen({ route }) {
       nombre: "",
     },
   });
-  const { idUser, nombreUser, idProyecto, nombreProyecto } = route.params;
+  const { idUser, nombreUser, idProyecto, nombreProyecto, email } = route.params;
   const [getEquipo, { loading, error, data }] = useLazyQuery(FIND_EQUIPO);
+  const [modalVisible, setModalVisible] = useState(false);
+  const showModal = () => setModalVisible(true);
+  const hideModal = () => setModalVisible(false);
 
   const onPressSend: SubmitHandler<formFindEquipo> = (formData) => {
     getEquipo({
@@ -74,17 +85,31 @@ export default function EquipoFindScreen({ route }) {
     })) || [];
 
   return (
-    <SafeAreaView>
+    <PaperProvider>
       <View
         style={{
           padding: Spacing * 2,
-          marginTop: 20,
         }}
       >
+        <UserProfileModal 
+          visible={modalVisible}
+          hideModal={hideModal}
+          nombre= {nombreUser}
+          email= {email}
+        />
+        <View
+          style={{
+            marginTop: 30,
+            alignSelf: "flex-start",
+          }}
+        >
+          <Button onPress={showModal}>
+            <Icon source="magnify" size={30} />
+          </Button>
+        </View>
         <View
           style={{
             alignItems: "center",
-            marginVertical: 20,
           }}
         >
           <Text
@@ -93,12 +118,27 @@ export default function EquipoFindScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
+              marginTop: -43,
+              paddingBottom: 10,
             }}
           >
             Buscar Equipo
           </Text>
         </View>
+        <View
+            style={{
+              alignSelf: "flex-end",
+              marginTop: -50,
+            }}
+          >
+            <Button onPress={showModal}>
+              <Icon source="account-details" size={30} />
+            </Button>
+          </View>
 
+          <View style={{ width: "100%" }}>
+            <Divider />
+          </View>
         <View
           style={{
             marginVertical: Spacing * 1,
@@ -123,6 +163,7 @@ export default function EquipoFindScreen({ route }) {
               <Text style={{ color: "red" }}>{errors.nombre.message}</Text>
             )}
           </View>
+
 
           {loading ? (
             <View
@@ -212,6 +253,6 @@ export default function EquipoFindScreen({ route }) {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </PaperProvider>
   );
 }

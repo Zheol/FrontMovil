@@ -19,6 +19,14 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { formFindProyect } from "../../types";
 import { useNavigation } from "@react-navigation/native";
+import {
+  Button,
+  PaperProvider,
+  Divider,
+  Icon
+} from "react-native-paper";
+import UserProfileModal from "../../components/UserProfileModal";
+import { useState } from "react";
 
 const { height } = Dimensions.get("window");
 
@@ -55,6 +63,9 @@ export default function ProyectoFindScreen({ route }) {
   });
 
   const { nombre, email, id } = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
+  const showModal = () => setModalVisible(true);
+  const hideModal = () => setModalVisible(false);
   const [getProyecto, { loading, error, data }] = useLazyQuery(FIND_PROYECT);
   const navigation = useNavigation();
 
@@ -77,17 +88,32 @@ export default function ProyectoFindScreen({ route }) {
     })) || [];
 
   return (
-    <SafeAreaView>
+    <PaperProvider>
       <View
         style={{
           padding: Spacing * 2,
-          marginTop: 20,
         }}
       >
+        <UserProfileModal 
+          visible={modalVisible}
+          hideModal={hideModal}
+          nombre= {nombre}
+          email= {email}
+        />
+        <View
+          style={{
+            marginTop: 30,
+            alignSelf: "flex-start",
+          }}
+        >
+          <Button onPress={showModal}>
+            <Icon source="magnify" size={30} />
+          </Button>
+        </View>
+
         <View
           style={{
             alignItems: "center",
-            paddingTop: 20,
           }}
         >
           <Text
@@ -96,13 +122,29 @@ export default function ProyectoFindScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
+              marginTop: -43,
+              paddingBottom: 10,
             }}
           >
             Buscar Proyecto
           </Text>
-        </View>
+          </View>
+          <View
+            style={{
+              alignSelf: "flex-end",
+              marginTop: -50,
+            }}
+          >
+            <Button onPress={showModal}>
+              <Icon source="account-details" size={30} />
+            </Button>
+          </View>
 
-        <View
+          <View style={{ width: "100%" }}>
+            <Divider />
+          </View>
+
+          <View
           style={{
             marginVertical: Spacing * 1,
           }}
@@ -126,94 +168,96 @@ export default function ProyectoFindScreen({ route }) {
               <Text style={{ color: "red" }}>{errors.nombre.message}</Text>
             )}
           </View>
-        </View>
 
-        {loading ? (
-          <View
-            style={{
-              padding: Spacing * 1.5,
-              marginVertical: Spacing * 3,
-            }}
-          >
-            <ActivityIndicator size="large" color="#d2691e" />
-          </View>
-        ) : (
-          <TouchableOpacity
-            onPress={handleSubmit(onPressSend)}
-            style={{
-              padding: Spacing * 1.5,
-              backgroundColor: "#005050",
-              marginTop: 20,
-              borderRadius: Spacing,
-              shadowColor: Colors.primary,
-              shadowOffset: {
-                width: 0,
-                height: Spacing,
-              },
-              shadowOpacity: 0.3,
-              shadowRadius: Spacing,
-            }}
-          >
-            <Text
+
+          {loading ? (
+            <View
               style={{
-                fontFamily: Font["poppins-bold"],
-                color: Colors.onPrimary,
-                textAlign: "center",
-                fontSize: FontSize.large,
+                padding: Spacing * 1.5,
+                marginVertical: Spacing * 3,
               }}
             >
-              Buscar
-            </Text>
-          </TouchableOpacity>
-        )}
+              <ActivityIndicator size="large" color="#d2691e" />
+            </View>
+          ) : (
+            <TouchableOpacity
+              onPress={handleSubmit(onPressSend)}
+              style={{
+                padding: Spacing * 1.5,
+                backgroundColor: "#005050",
+                marginTop: 20,
+                borderRadius: Spacing,
+                shadowColor: Colors.primary,
+                shadowOffset: {
+                  width: 0,
+                  height: Spacing,
+                },
+                shadowOpacity: 0.3,
+                shadowRadius: Spacing,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: Font["poppins-bold"],
+                  color: Colors.onPrimary,
+                  textAlign: "center",
+                  fontSize: FontSize.large,
+                }}
+              >
+                Buscar
+              </Text>
+            </TouchableOpacity>
+          )}
 
-        <View style={{ height: 40, paddingTop: 20 }}>
-          {/* {error && (
+          <View style={{ height: 40, paddingTop: 20 }}>
+            {/* {error && (
             <Text style={{ color: "red", textAlign: "center" }}>
               {error.message}
             </Text>
           )} */}
-        </View>
-        <View style={{ marginBottom: 60 }}>
-          <ScrollView>
-            <View>
-              {projects.map((projects: any) => {
-                return (
-                  <TouchableOpacity
-                    style={{
-                      marginVertical: 20,
-                      backgroundColor: "#005050",
-                      height: 80,
-                      borderRadius: 10,
-                    }}
-                    key={projects.id}
-                    onPress={() => {
-                      // MANDAR A LA PANTALLA DEL PROYECTO
-                      navigation.navigate("EquiposNav", {
-                        nombreUser: nombre,
-                        idUser: 17,
-                        nombreProyecto: projects.name,
-                        idProyecto: 16,
-                      });
-                    }}
-                  >
-                    <Text
+          </View>
+
+          <View style={{ marginBottom: 60 }}>
+            <ScrollView>
+              <View>
+                {projects.map((equipos: any) => {
+                  return (
+                    <TouchableOpacity
                       style={{
-                        width: 350,
-                        color: "white",
-                        textAlign: "center",
-                        paddingTop: 25,
+                        marginVertical: 20,
+                        backgroundColor: "#005050",
+                        height: 80,
+                        borderRadius: 10,
+                      }}
+                      key={equipos.id}
+                      onPress={() => {
+                        // MANDAR A LA PANTALLA DE TAREAS
+                        // navigation.navigate("EquiposNav", {
+                        //   nombreUser: nombre,
+                        //   idUser: id,
+                        //   nombreProyecto: projects.name,
+                        //   idEquipo: equipos.id,
+                        // });
                       }}
                     >
-                      {projects.name}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </ScrollView>
+                      <Text
+                        style={{
+                          width: 350,
+                          color: "white",
+                          textAlign: "center",
+                          paddingTop: 25,
+                        }}
+                      >
+                        {equipos.name}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </ScrollView>
+          </View>
         </View>
       </View>
-    </SafeAreaView>
+    </PaperProvider>
   );
 }

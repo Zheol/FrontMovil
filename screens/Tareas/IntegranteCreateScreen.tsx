@@ -19,25 +19,33 @@ import AppTextInput from "../../components/AppTextInput";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
 import { ActivityIndicator } from "react-native-paper";
+import {
+  Button,
+  PaperProvider,
+  Divider,
+  Icon
+} from "react-native-paper";
+import UserProfileModal from "../../components/UserProfileModal";
+import { useState } from "react";
   
-  const { height } = Dimensions.get("window");
-  
-  const OBTENER_USUARIO = gql`
+const { height } = Dimensions.get("window");
+
+const OBTENER_USUARIO = gql`
   query user($email: String!) {
     user(email: $email) {
       id
       name
     }
   }
-  `;
+`;
 
-  const CREAR_INTEGRANTE = gql `
+const CREAR_INTEGRANTE = gql `
   mutation createIntegrante($input: CreateIntegranteInput!){
     createIntegrante(createIntegranteInput: $input){
       id,
     }
   }
-  `
+`;
 const schema = yup.object().shape({
     email: yup.string().required("email is required"),
     rol: yup.string().required("rol is required")
@@ -51,9 +59,13 @@ const schema = yup.object().shape({
       nombreProyecto,
       idEquipo,
       nombreEquipo,
+      email,
     } = route.params;
     const [getUser, { loading, error, data, refetch }] = useLazyQuery(OBTENER_USUARIO);
     const navigation = useNavigation();
+    const [modalVisible, setModalVisible] = useState(false);
+    const showModal = () => setModalVisible(true);
+    const hideModal = () => setModalVisible(false);
 
     const [newIntegrante, { loading: cargando, error: errores }] = useMutation(CREAR_INTEGRANTE);
 
@@ -82,7 +94,8 @@ const schema = yup.object().shape({
           const CreateIntegranteInput = {
             userId: userId,
             equipoId: idEquipo,
-            rol: formData.rol
+            rol: formData.rol,
+            idProyecto: idProyecto,
           };
       
           await newIntegrante({
@@ -97,7 +110,8 @@ const schema = yup.object().shape({
             idProyecto: idProyecto,
             nombreProyecto: nombreProyecto,
             nombreEquipo: nombreEquipo,
-            idEquipo: idEquipo
+            idEquipo: idEquipo,
+            email: email,
           });
         } catch (error) {
           console.error(error);
@@ -105,17 +119,31 @@ const schema = yup.object().shape({
       };
       
     return (
-        <SafeAreaView>
+      <PaperProvider>
         <View
           style={{
             padding: Spacing * 2,
-            marginTop: 30,
           }}
         >
+          <UserProfileModal 
+            visible={modalVisible}
+            hideModal={hideModal}
+            nombre= {nombreUser}
+            email= {email}
+          />
+          <View
+            style={{
+              marginTop: 30,
+              alignSelf: "flex-start",
+            }}
+          >
+            <Button onPress={showModal}>
+              <Icon source="magnify" size={30} />
+            </Button>
+          </View>
           <View
             style={{
               alignItems: "center",
-              paddingTop: 20,
             }}
           >
             <Text
@@ -124,10 +152,27 @@ const schema = yup.object().shape({
                 fontSize: FontSize.large,
                 maxWidth: "60%",
                 textAlign: "center",
+                marginTop: -43,
+                paddingBottom: 10,
               }}
             >
               Agregar Integrante
             </Text>
+
+            <View
+              style={{
+                alignSelf: "flex-end",
+                marginTop: -50,
+              }}
+            >
+              <Button onPress={showModal}>
+                <Icon source="account-details" size={30} />
+              </Button>
+            </View>
+          </View>
+
+          <View style={{ width: "100%" }}>
+            <Divider />
           </View>
   
           <View
@@ -149,6 +194,7 @@ const schema = yup.object().shape({
               )}
               name="email"
             />
+
             <View style={{ height: 15 }}>
               {errors.email && (
                 <Text style={{ color: "red" }}>{errors.email.message}</Text>
@@ -222,7 +268,7 @@ const schema = yup.object().shape({
             )} */}
           </View>
         </View>
-      </SafeAreaView>
+      </PaperProvider>
     );
   }
   

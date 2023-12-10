@@ -13,6 +13,13 @@ import { gql, useQuery } from "@apollo/client";
 import { Equipo } from "./types";
 import { useNavigation } from "@react-navigation/native";
 const { height } = Dimensions.get("window");
+import {
+  Button,
+  PaperProvider,
+  Divider,
+  Icon
+} from "react-native-paper";
+import UserProfileModal from "../../components/UserProfileModal";
 
 const OBTENER_EQUIPOS = gql`
   query getEquiposbyProyectoId($id: Int!) {
@@ -25,8 +32,11 @@ const OBTENER_EQUIPOS = gql`
 
 export default function EquiposScreen({ route }) {
   const [equipo, setEquipo] = useState<Equipo>();
-  const { idUser, nombreUser, idProyecto, nombreProyecto } = route.params;
+  const { idUser, nombreUser, idProyecto, nombreProyecto, email } = route.params;
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  const showModal = () => setModalVisible(true);
+  const hideModal = () => setModalVisible(false);
 
   const { loading, error, data, refetch } = useQuery(OBTENER_EQUIPOS, {
     variables: {
@@ -41,70 +51,105 @@ export default function EquiposScreen({ route }) {
     })) || [];
 
   return (
-    <View
-      style={{
-        padding: Spacing * 2,
-      }}
-    >
+    <PaperProvider>
       <View
         style={{
-          alignItems: "center",
-          marginVertical: 40,
+          padding: Spacing * 2,
         }}
       >
-        <Text
+        <UserProfileModal 
+          visible={modalVisible}
+          hideModal={hideModal}
+          nombre= {nombreUser}
+          email= {email}
+        />
+        <View
           style={{
-            fontFamily: Font["poppins-semiBold"],
-            fontSize: FontSize.large,
-            maxWidth: "60%",
-            textAlign: "center",
+            marginTop: 30,
+            alignSelf: "flex-start",
           }}
         >
-          {nombreProyecto}
-        </Text>
+          <Button onPress={showModal}>
+            <Icon source="magnify" size={30} />
+          </Button>
+        </View>
+        <View
+          style={{
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: Font["poppins-semiBold"],
+              fontSize: FontSize.large,
+              maxWidth: "60%",
+              textAlign: "center",
+              marginTop: -43,
+              paddingBottom: 10,
+            }}
+          >
+            {nombreProyecto}
+          </Text>
+          <View
+            style={{
+              alignSelf: "flex-end",
+              marginTop: -50,
+            }}
+          >
+            <Button onPress={showModal}>
+              <Icon source="account-details" size={30} />
+            </Button>
+          </View>
 
-        <View style={{ marginBottom: 60 }}>
-          <ScrollView>
-            <View>
-              {equipos.map((equipos: any) => {
-                return (
-                  <TouchableOpacity
-                    style={{
-                      marginVertical: 20,
-                      backgroundColor: "#005050",
-                      height: 80,
-                      borderRadius: 10,
-                    }}
-                    key={equipos.id}
-                    onPress={() => {
-                      // MANDAR A LA PANTALLA DEL Tareas
-                      navigation.navigate("TareasNav", {
-                        nombreUser: nombreUser,
-                        idUser: idUser,
-                        nombreProyecto: nombreProyecto,
-                        idProyecto: idProyecto,
-                        nombreEquipo: equipos.nombre,
-                        idEquipo: equipos.id,
-                      });
-                    }}
-                  >
-                    <Text
+          <View style={{ width: "100%" }}>
+            <Divider />
+          </View>
+
+          <View style={{ marginBottom: 60 }}>
+            <ScrollView>
+              <View>
+                {equipos.map((equipos: any) => {
+                  return (
+                    <TouchableOpacity
                       style={{
-                        width: 350,
-                        color: "white",
-                        textAlign: "center",
-                        paddingTop: 25,
+                        marginVertical: 20,
+                        backgroundColor: "#ffebcd",
+                        height: 100,
+                        borderRadius: 10,
+                      }}
+                      key={equipos.id}
+                      onPress={() => {
+                        // MANDAR A LA PANTALLA DEL Tareas
+                        navigation.navigate("TareasNav", {
+                          nombreUser: nombreUser,
+                          idUser: idUser,
+                          nombreProyecto: nombreProyecto,
+                          idProyecto: idProyecto,
+                          nombreEquipo: equipos.nombre,
+                          idEquipo: equipos.id,
+                          email: email,
+                        });
                       }}
                     >
-                      {equipos.nombre}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </ScrollView>
+                      <Text
+                        style={{
+                          width: 350,
+                          color: "black",
+                          textAlign: "center",
+                          paddingTop: 35,
+                          fontSize: 15,
+                        }}
+                      >
+                        {equipos.nombre}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </ScrollView>
+          </View>
         </View>
       </View>
-    </View>
+    </PaperProvider>
   );
 }

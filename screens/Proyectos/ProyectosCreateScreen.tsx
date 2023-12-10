@@ -100,15 +100,15 @@ export default function ProyectoCreateScreen({ route }) {
             email={email}
           />
           <View
-            style={{
-              marginTop: 30,
-              alignSelf: "flex-end",
-            }}
-          >
-            <Button onPress={showModal}>
-              <Icon source="account-details" size={30} />
-            </Button>
-          </View>
+          style={{
+            marginTop: 30,
+            alignSelf: "flex-start",
+          }}
+        >
+          <Button onPress={showModal}>
+            <Icon source="magnify" size={30} />
+          </Button>
+        </View>
           <View
             style={{
               alignItems: "center",
@@ -126,9 +126,22 @@ export default function ProyectoCreateScreen({ route }) {
             >
               Crear Proyecto
             </Text>
-            <View style={{ width: "100%" }}>
-            <Divider />
+
+            <View
+            style={{
+              alignSelf: "flex-end",
+              marginTop: -50,
+            }}
+          >
+            <Button onPress={showModal}>
+              <Icon source="account-details" size={30} />
+            </Button>
+
           </View>
+
+            <View style={{ width: "100%" }}>
+              <Divider />
+            </View>
           </View>
 
           <View

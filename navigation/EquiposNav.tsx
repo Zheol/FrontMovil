@@ -12,7 +12,7 @@ const Tab = createMaterialBottomTabNavigator();
 function EquiposNav({
   route,
 }: NativeStackScreenProps<RootStackParamList, "EquiposNav">) {
-  const { idUser, nombreUser, idProyecto, nombreProyecto } = route.params;
+  const { idUser, nombreUser, idProyecto, nombreProyecto, email } = route.params;
   return (
     <Tab.Navigator initialRouteName="MisEquipos">
       <Tab.Screen
@@ -28,7 +28,7 @@ function EquiposNav({
         }}
         name="Create"
         component={EquipoCreateScreen}
-        initialParams={{ idUser, nombreUser, idProyecto, nombreProyecto }}
+        initialParams={{ idUser, nombreUser, idProyecto, nombreProyecto, email }}
       />
 
       {/* Mis Equipos */}
@@ -41,7 +41,7 @@ function EquiposNav({
         }}
         name="MisEquipos"
         component={EquiposScreen}
-        initialParams={{ idUser, nombreUser, idProyecto, nombreProyecto }}
+        initialParams={{ idUser, nombreUser, idProyecto, nombreProyecto, email }}
       />
 
       <Tab.Screen
@@ -57,7 +57,7 @@ function EquiposNav({
         }}
         name="Find"
         component={EquipoFindScreen}
-        initialParams={{ idUser, nombreUser, idProyecto, nombreProyecto }}
+        initialParams={{ idUser, nombreUser, idProyecto, nombreProyecto, email }}
       />
     </Tab.Navigator>
   );
