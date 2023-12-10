@@ -40,11 +40,7 @@ const schema = yup.object().shape({
     .string()
     .required("Campo obligatorio")
     .min(8, "La contraseña debe tener minimo 8 caracteres")
-    .max(20, "La contraseña no debe superar los 20 caracteres")
-    .matches(
-      VALID_PASSWORD_REGEX,
-      "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter"
-    ),
+    .max(20, "La contraseña no debe superar los 20 caracteres"),
   newPassword: yup
     .string()
     .required("Campo obligatorio")
@@ -90,7 +86,6 @@ export default function ChangePasswordScreen({ route }) {
       oldpassword: formData.oldPassword,
       confirmpassword: formData.repeatPassword,
     };
-    console.log(formData);
     updatePassword({
       variables: {
         input: updatePasswordDto,
@@ -246,6 +241,14 @@ export default function ChangePasswordScreen({ route }) {
             </Text>
           </TouchableOpacity>
         )}
+
+        <View style={{ height: 40, paddingTop: 20 }}>
+          {error && (
+            <Text style={{ color: "red", textAlign: "center" }}>
+              {error.message}
+            </Text>
+          )}
+        </View>
       </View>
     </PaperProvider>
   );
