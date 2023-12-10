@@ -13,10 +13,18 @@ import * as yup from "yup";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AppTextInput from "../../components/AppTextInput";
-import { ActivityIndicator } from "react-native-paper";
 import Colors from "../../constants/Colors";
 import { formCreateEquipo } from "./types";
 import { useNavigation } from "@react-navigation/native";
+import {
+  Button,
+  PaperProvider,
+  Divider,
+  Icon,
+  ActivityIndicator
+} from "react-native-paper";
+import UserProfileModal from "../../components/UserProfileModal";
+import { useState } from "react";
 
 const { height } = Dimensions.get("window");
 
@@ -24,9 +32,11 @@ const CREATE_EQUIPO = gql`
   mutation createEquipo($input: CreateEquipoInput!) {
     createEquipo(createEquipoInput: $input) {
       nombre
+      id
     }
   }
 `;
+
 
 const schema = yup.object().shape({
   nombre: yup.string().required("Name is required"),
@@ -46,7 +56,10 @@ export default function EquipoCreateScreen({ route }) {
   });
 
   const navigation = useNavigation();
-  const { idUser, nombreUser, idProyecto, nombreProyecto } = route.params;
+  const { idUser, nombreUser, idProyecto, nombreProyecto, email } = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
+  const showModal = () => setModalVisible(true);
+  const hideModal = () => setModalVisible(false);
 
   const [createEquipo, { loading, error }] = useMutation(CREATE_EQUIPO);
 
@@ -72,17 +85,31 @@ export default function EquipoCreateScreen({ route }) {
   };
 
   return (
-    <SafeAreaView>
+    <PaperProvider>
       <View
         style={{
           padding: Spacing * 2,
-          marginTop: 20,
         }}
       >
+        <UserProfileModal 
+          visible={modalVisible}
+          hideModal={hideModal}
+          nombre= {nombreUser}
+          email= {email}
+        />
+        <View
+          style={{
+            marginTop: 30,
+            alignSelf: "flex-start",
+          }}
+        >
+          <Button onPress={showModal}>
+            <Icon source="magnify" size={30} />
+          </Button>
+        </View>
         <View
           style={{
             alignItems: "center",
-            marginVertical: 20,
           }}
         >
           <Text
@@ -91,11 +118,26 @@ export default function EquipoCreateScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
+              marginTop: -43,
+              paddingBottom: 10,
             }}
           >
             Crear Equipo
           </Text>
+          <View
+            style={{
+              alignSelf: "flex-end",
+              marginTop: -50,
+            }}
+          >
+            <Button onPress={showModal}>
+              <Icon source="account-details" size={30} />
+            </Button>
+          </View>
         </View>
+        <View style={{ width: "100%" }}>
+            <Divider />
+          </View>
 
         <View
           style={{
@@ -170,6 +212,6 @@ export default function EquipoCreateScreen({ route }) {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </PaperProvider>
   );
 }

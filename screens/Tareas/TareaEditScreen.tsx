@@ -23,7 +23,7 @@ import { ActivityIndicator } from "react-native-paper";
   const { height } = Dimensions.get("window");
 
 const EDITAR_TAREA = gql`
-mutation updateTarrea($input: UpdateTareaInput!){
+mutation updateTarea($input: UpdateTareaInput!){
 updateTarea(updateTareaInput: $input){
     id,
 }
@@ -39,23 +39,56 @@ updateTarea(updateTareaInput: $input){
       nombreProyecto,
       idEquipo,
       nombreEquipo,
+      idTarea,
       nombreTarea,
       estadoTarea,
     } = route.params;
     const navigation = useNavigation();
-    // const [editTarea, { loading: cargando, error: errores }] = useMutation(CREAR_INTEGRANTE);
-    // const onPressSend:() => {
-    //     const createProyectoInput = {
-    //       nombre: formData.nombre,
-    //       idAdmin: id,
-    //       area: formData.area,
-    //     };
-    //     editTarea({
-    //       variables: {
-    //         input: createProyectoInput,
-    //       },
-    //     })
-    //   };
+    const [editTarea, { loading: cargando, error: errores }] = useMutation(EDITAR_TAREA);
+    const onCursoPressSend = () => {
+      const updateTareaInput = {
+          id: idTarea,
+          estado: "En Curso",
+          descripcion: nombreTarea,
+      };
+      editTarea({
+          variables: {
+              input: updateTareaInput,
+          },
+      });
+
+      navigation.navigate("Tareas");
+    };
+
+    const onCompletadaPressSend = () => {
+      const updateTareaInput = {
+          id: idTarea,
+          estado: "Completada",
+          descripcion: nombreTarea,
+      };
+      editTarea({
+          variables: {
+              input: updateTareaInput,
+          },
+      });
+
+      navigation.navigate("Tareas");
+    };
+
+    const onEliminadaPressSend = () => {
+      const updateTareaInput = {
+          id: idTarea,
+          estado: "Eliminada",
+          descripcion: nombreTarea,
+      };
+      editTarea({
+          variables: {
+              input: updateTareaInput,
+          },
+      });
+
+      navigation.navigate("Tareas");
+    };
       
     return (
         <SafeAreaView>
@@ -108,10 +141,7 @@ updateTarea(updateTareaInput: $input){
                 height: 80,
                 borderRadius: 10,
             }}
-            onPress={() => {
-                // MANDAR A LA PANTALLA DEL PROYECTO
-                console.log("SI")
-            }}
+            onPress={onCursoPressSend}
             >
             <Text
                 style={{
@@ -141,10 +171,7 @@ updateTarea(updateTareaInput: $input){
                 height: 80,
                 borderRadius: 10,
             }}
-            onPress={() => {
-                // MANDAR A LA PANTALLA DEL PROYECTO
-                console.log("SI")
-            }}
+            onPress={onCompletadaPressSend}
             >
             <Text
                 style={{
@@ -173,10 +200,7 @@ updateTarea(updateTareaInput: $input){
                 height: 80,
                 borderRadius: 10,
             }}
-            onPress={() => {
-                // MANDAR A LA PANTALLA DEL PROYECTO
-                console.log("SI")
-            }}
+            onPress={onEliminadaPressSend}
             >
             <Text
                 style={{

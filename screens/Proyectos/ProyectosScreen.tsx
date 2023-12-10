@@ -10,7 +10,7 @@ import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
 import React, { useEffect, useState } from "react";
 import { Proyect } from "./types";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useApolloClient, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
@@ -18,6 +18,24 @@ import UserProyectoModal from "../../components/UpdateProyectoModal";
 import ProyectoUpdateModal from "../../components/UpdateProyectoModal";
 
 const { height } = Dimensions.get("window");
+
+const OBTENER_INTEGRANTES = gql`
+  query getIntegrantevyIdUser($id: Int!) {
+    getIntegrantebyIdUsuario(id: $id) {
+      idProyecto
+      rol
+    }
+  }
+`;
+
+const OBTENER_PROYECTO = gql`
+  query getProyectosbyId($id: Int!) {
+    getProyectosbyId(id: $id) {
+      nombre
+      id
+    }
+  }
+`;
 
 const OBTENER_PROYECTOS = gql`
   query getProyectosByUserId($input: getProyectosbyUserIdDto!) {
@@ -45,29 +63,50 @@ export default function ProyectosScreen({ route }) {
   const showModalUpdate = () => setModalUpdateVisible(true);
   const hideModalUpdate = () => setModalUpdateVisible(false);
 
-  const { loading, error, data, refetch } = useQuery(OBTENER_PROYECTOS, {
+  const { loading: loadPro, error: errProy, data: dataProyecto, refetch } = useQuery(OBTENER_PROYECTOS, {
     variables: {
       input: {
         id,
       },
     },
   });
-  refetch(data);
+  refetch(dataProyecto);
   const projects: Project[] =
-    data?.getProyectosbyUserId?.map((item) => ({
+    dataProyecto?.getProyectosbyUserId?.map((item) => ({
       id: item.id,
-      name: item.nombre,
+      nombre: item.nombre,
       area: item.area,
       idAdmin: item.idAdmin,
     })) || [];
 
-  console.log(data);
+  const { loading, error, data, refetch: refInte } = useQuery(OBTENER_INTEGRANTES, {
+    variables: { id: id },
+  });
+  refInte(data)
+
+  const [projectsMiembro, setProyectos] = useState<Project[]>([]);
+  const client = useApolloClient();
+
+  useEffect(() => {
+    if (data?.getIntegrantebyIdUsuario) {
+      data.getIntegrantebyIdUsuario.forEach(async integrante => {
+        const response = await client.query({
+          query: OBTENER_PROYECTO,
+          variables: { id: integrante.idProyecto }
+        });
+        if (response.data) {
+          setProyectos(currentProyectos => [...currentProyectos, response.data.getProyectosbyId]);
+        }
+      });
+    }
+  }, [data, client]);
 
   const navigation = useNavigation();
 
   const goToLogin = () => {
     navigation.navigate("Login");
   };
+
 
   return (
     <PaperProvider>
@@ -117,7 +156,8 @@ export default function ProyectosScreen({ route }) {
           </View>
 
           <View style={{ marginBottom: 60 }}>
-            <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
+            <ScrollView contentContainerStyle= {{paddingBottom: 70}}>
+              <Text> Creador </Text>
               <View>
                 {projects.map((projects: any) => {
                   return (
@@ -134,8 +174,9 @@ export default function ProyectosScreen({ route }) {
                         navigation.navigate("EquiposNav", {
                           nombreUser: nombre,
                           idUser: id,
-                          nombreProyecto: projects.name,
+                          nombreProyecto: projects.nombre,
                           idProyecto: projects.id,
+                          email: email
                         });
                       }}
                     >
@@ -160,9 +201,8 @@ export default function ProyectosScreen({ route }) {
                           fontSize: 15,
                         }}
                       >
-                        {projects.name}
+                        {projects.nombre}
                       </Text>
-
                       <View
                         style={{
                           alignSelf: "flex-end",
@@ -180,6 +220,55 @@ export default function ProyectosScreen({ route }) {
                         nombre={projects.name}
                         area={projects.area}
                       />
+                      {/* <View
+                        style={{
+                          alignSelf: "flex-end",
+                        }}
+                      >
+                        <Button onPress={goToLogin}>
+                          <Icon source="information-variant" size={17} />
+                        </Button>
+                      </View> */}
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+              <Text> Miembro </Text>
+              <View>
+                {projectsMiembro.map((projectsMiembro: any) => {
+                  return (
+                    <TouchableOpacity
+                      style={{
+                        marginVertical: 20,
+                        backgroundColor: "#ffebcd",
+                        height: 100,
+                        borderRadius: 10,
+                      }}
+                      key={projectsMiembro.id}
+                      onPress={() => {
+                        // MANDAR A LA PANTALLA DEL PROYECTO
+                        navigation.navigate("EquiposNav", {
+                          nombreUser: nombre,
+                          idUser: id,
+                          nombreProyecto: projectsMiembro.nombre,
+                          idProyecto: projectsMiembro.id,
+                          email: email
+                        });
+                      }}
+                    >
+                      <Text
+                        style={{
+                          width: 350,
+                          color: "black",
+                          textAlign: "center",
+                          paddingTop: 35,
+                          fontSize: 15,
+                        }}
+                      >
+                        {projectsMiembro.nombre}
+                      </Text>
+
+                      
 
                       {/* <View
                         style={{

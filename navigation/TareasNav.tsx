@@ -20,6 +20,7 @@ function TareasNav({
     nombreProyecto,
     idEquipo,
     nombreEquipo,
+    email,
   } = route.params;
 
   return (
@@ -44,6 +45,7 @@ function TareasNav({
           nombreProyecto,
           idEquipo,
           nombreEquipo,
+          email,
         }}
       />
 
@@ -64,6 +66,7 @@ function TareasNav({
           nombreProyecto,
           idEquipo,
           nombreEquipo,
+          email,
         }}
       />
 
@@ -87,6 +90,7 @@ function TareasNav({
           nombreProyecto,
           idEquipo,
           nombreEquipo,
+          email,
         }}
       />
     </Tab.Navigator>
