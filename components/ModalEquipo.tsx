@@ -6,7 +6,7 @@ import Font from "../constants/Font";
 import FontSize from "../constants/FontSize";
 import { useNavigation } from "@react-navigation/native";
 import AppTextInput from "./AppTextInput";
-import { UpdateProyectoModalProps, formCreateProyect } from "../types";
+import { UpdateEquipoModalProps, formCreateProyect, formUpdateTeam } from "../types";
 import { gql, useMutation } from "@apollo/client";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -33,10 +33,9 @@ const UPDATE_EQUIPO = gql`
 
 const schema = yup.object().shape({
   nombre: yup.string().required("Campo requerido"),
-  area: yup.string().required("Campo requerido"),
 });
 
-const ModalEquipo: React.FC<UpdateProyectoModalProps> = ({
+const ModalEquipo: React.FC<UpdateEquipoModalProps> = ({
   visible,
   hideModal,
   nombre,
@@ -66,7 +65,7 @@ const ModalEquipo: React.FC<UpdateProyectoModalProps> = ({
         console.error("Error al eliminar el equipo", error);
       });
   };
-  const funcActualizarEquipo: SubmitHandler<formCreateProyect> = (formData) => {
+  const funcActualizarEquipo: SubmitHandler<formUpdateTeam> = (formData) => {
     const findEquipoByIdInput = {
       id: idEquipo,
     };
@@ -97,7 +96,6 @@ const ModalEquipo: React.FC<UpdateProyectoModalProps> = ({
     resolver: yupResolver(schema),
     defaultValues: {
       nombre: "",
-      area: "",
     },
   });
 
