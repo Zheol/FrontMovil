@@ -8,7 +8,7 @@ import Navigation from "./navigation";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { UserProvider } from "./context/UserContext";
 const client = new ApolloClient({
-  uri: "http://192.168.1.111:4000/graphql",
+  uri: "http://192.168.100.3:4000/graphql",
   cache: new InMemoryCache(),
 });
 

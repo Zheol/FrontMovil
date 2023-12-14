@@ -111,6 +111,7 @@ export interface UpdateProyectoModalProps {
   hideModal: () => void;
   nombre: string;
   area: string;
+  idProyecto: number;
 }
 
 export type formChangePassword = {
