@@ -16,10 +16,7 @@ import { gql, useMutation } from "@apollo/client";
 import { UserContext } from "../context/UserContext";
 
 const UPDATE_USER = gql`
-  mutation updateUser(
-    $input: UpdateUserDto!
-    $inputId: FindUserByIdInput!
-  ) {
+  mutation updateUser($input: UpdateUserDto!, $inputId: FindUserByIdInput!) {
     updateUser(updateUserInput: $input, findUserByIdInput: $inputId) {
       id
     }
@@ -52,39 +49,37 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
   });
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
-
   const navigation = useNavigation();
 
   const goToLogin = () => {
     navigation.navigate("Login");
   };
 
-  const {
-    setnameUser,
-  } = useContext(UserContext);
+  const { setnameUser } = useContext(UserContext);
 
   const onPressSend = (formData: formUpdateUser) => {
     if (!formData.name.length) formData.name = nombre;
     if (!formData.email.length) formData.email = email;
     const updateUserInput = {
-      name: formData.name
-    }
+      name: formData.name,
+      email: formData.email,
+    };
     const findUserByIdInput = {
       id: idUser,
-    }
+    };
     updateUser({
       variables: {
         input: updateUserInput,
         inputId: findUserByIdInput,
-      }
+      },
     })
-    .then(() => {
-      setnameUser(formData.name)
-      hideModal();
-    })
-    .catch(error => {
-      console.error("Error al Actualizar el usuario", error);
-    })
+      .then(() => {
+        setnameUser(formData.name);
+        hideModal();
+      })
+      .catch((error) => {
+        console.error("Error al Actualizar el usuario", error);
+      });
   };
 
   return (
