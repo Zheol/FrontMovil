@@ -30,12 +30,12 @@ const OBTENER_INTEGRANTES = gql`
 `;
 
 const OBTENER_PROYECTO = gql`
-query getProyectosById($input: getProyectosbyIdDto!) {
-  getProyectosbyId(getProyectosbyIdinput: $input) {
-    id
-		nombre
+  query getProyectosById($input: getProyectosbyIdDto!) {
+    getProyectosbyId(getProyectosbyIdinput: $input) {
+      id
+      nombre
+    }
   }
-}
 `;
 
 const OBTENER_PROYECTOS = gql`
@@ -64,7 +64,6 @@ export default function ProyectosScreen() {
   const hideModal = () => setModalVisible(false);
   const [modalVisibleProjectId, setModalVisibleProjectId] = useState(null);
 
-  
   const showModalUpdate = (projectId) => {
     setModalVisibleProjectId(projectId);
   };
@@ -73,11 +72,7 @@ export default function ProyectosScreen() {
     setModalVisibleProjectId(null);
   };
 
-  const {
-    nameUser,
-    emailUser,
-    idUser,
-  } = useContext(UserContext);
+  const { nameUser, emailUser, idUser } = useContext(UserContext);
   const {
     loading: loadPro,
     error: errProy,
@@ -115,11 +110,13 @@ export default function ProyectosScreen() {
   useEffect(() => {
     if (data?.getIntegrantebyIdUsuario) {
       data.getIntegrantebyIdUsuario.forEach(async (integrante) => {
+        const getProyectosbyUserInput = {
+          id: integrante.idProyecto,
+        };
         const response = await client.query({
           query: OBTENER_PROYECTO,
-          variables: { id: integrante.idProyecto },
+          variables: { input: getProyectosbyUserInput },
         });
-        console.log(response);
         if (response.data) {
           setProyectos((currentProyectos) => [
             ...currentProyectos,
