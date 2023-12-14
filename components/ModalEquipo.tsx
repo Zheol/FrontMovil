@@ -12,25 +12,21 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-const DELETE_PROYECT = gql`
-  mutation removeProyecto($input: FindProyectoByIdInput!) {
-    removeProyecto(findProyectoByIdInput: $input) {
+const DELETE_EQUIPO = gql`
+  mutation removeEquipo($input: findEquipoByIdDto!) {
+    removeEquipo(findEquipoByIdInput: $input) {
       id
     }
   }
 `;
 
-const UPDATE_PROYECT = gql`
-  mutation updateProyecto(
-    $input: updateProyectoDto!
-    $inputId: FindProyectoByIdInput!
+const UPDATE_EQUIPO = gql`
+  mutation updateEquipo(
+    $input: updateEquipoDto!
+    $inputId: findEquipoByIdDto!
   ) {
-    updateProyecto(
-      updateProyectoInput: $input
-      findProyectoByIdInput: $inputId
-    ) {
+    updateEquipo(updateEquipoInput: $input, findEquipoByIdInput: $inputId) {
       nombre
-      area
     }
   }
 `;
@@ -40,63 +36,55 @@ const schema = yup.object().shape({
   area: yup.string().required("Campo requerido"),
 });
 
-const ProyectoUpdateModal: React.FC<UpdateProyectoModalProps> = ({
+const ModalEquipo: React.FC<UpdateProyectoModalProps> = ({
   visible,
   hideModal,
   nombre,
-  area,
-  idProyecto,
+  idEquipo,
 }) => {
-  const [deleteProyect, { loading: loadingDelete, error: errorDelete }] =
-    useMutation(DELETE_PROYECT);
-  const [updateProyect, { loading: loadingUpdate, error: errorUpdate }] =
-    useMutation(UPDATE_PROYECT);
+  const [deleteEquipo, { loading: loadingDelete, error: errorDelete }] =
+    useMutation(DELETE_EQUIPO);
+  const [updateEquipo, { loading: loadingUpdate, error: errorUpdate }] =
+    useMutation(UPDATE_EQUIPO);
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
   const navigation = useNavigation();
 
-  const funcDeleteProyect = () => {
-    const findProyectoByIdInput = {
-      id: idProyecto,
+  const funcDeleteEquipo = () => {
+    const findEquipoByIdInput = {
+      id: idEquipo,
     };
-    deleteProyect({
+    deleteEquipo({
       variables: {
-        input: findProyectoByIdInput,
+        input: findEquipoByIdInput,
       },
     })
       .then(() => {
         hideModal();
       })
       .catch((error) => {
-        console.error("Error al eliminar el proyecto", error);
+        console.error("Error al eliminar el equipo", error);
       });
   };
-  const funcActualizarProyect: SubmitHandler<formCreateProyect> = (
-    formData
-  ) => {
-    const findProyectoByIdInput = {
-      id: idProyecto,
+  const funcActualizarEquipo: SubmitHandler<formCreateProyect> = (formData) => {
+    const findEquipoByIdInput = {
+      id: idEquipo,
     };
-    const updateProyectoInput = {
+    const updateEquipoInput = {
       nombre: formData.nombre,
-      area: formData.area,
     };
-    updateProyect({
+    updateEquipo({
       variables: {
-        input: updateProyectoInput,
-        inputId: findProyectoByIdInput,
+        input: updateEquipoInput,
+        inputId: findEquipoByIdInput,
       },
     })
       .then(() => {
-        console.log(
-          "Proyecto Actualizado con exito",
-          formData.nombre,
-          formData.area
-        );
+        console.log("Equipo Actualizado con exito", formData.nombre);
         hideModal();
       })
       .catch((error) => {
-        console.error("Error al Actualizar el proyecto", error);
+        console.error("Error al Actualizar el equipo", error);
       });
   };
 
@@ -158,29 +146,6 @@ const ProyectoUpdateModal: React.FC<UpdateProyectoModalProps> = ({
           )}
           name="nombre"
         />
-        <View>
-          <Text
-            style={{
-              fontFamily: Font["poppins-semiBold"],
-            }}
-          >
-            Area
-          </Text>
-        </View>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, value } }) => (
-            <AppTextInput
-              value={value}
-              onChangeText={onChange}
-              placeholder={area}
-            />
-          )}
-          name="area"
-        />
 
         <View
           style={{
@@ -192,14 +157,14 @@ const ProyectoUpdateModal: React.FC<UpdateProyectoModalProps> = ({
         >
           <Button
             mode="outlined"
-            onPress={handleSubmit(funcActualizarProyect)}
+            onPress={handleSubmit(funcActualizarEquipo)}
             style={{ width: "45%", marginRight: 10 }}
           >
             Actualizar
           </Button>
           <Button
             mode="outlined"
-            onPress={funcDeleteProyect}
+            onPress={funcDeleteEquipo}
             style={{ width: "45%", marginLeft: 10 }}
           >
             Eliminar
@@ -214,4 +179,4 @@ const ProyectoUpdateModal: React.FC<UpdateProyectoModalProps> = ({
   );
 };
 
-export default ProyectoUpdateModal;
+export default ModalEquipo;
