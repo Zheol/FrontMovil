@@ -23,10 +23,11 @@ import { ActivityIndicator } from "react-native-paper";
   const { height } = Dimensions.get("window");
 
 const EDITAR_TAREA = gql`
-mutation updateTarea($input: UpdateTareaInput!){
-updateTarea(updateTareaInput: $input){
-    id,
-}
+mutation updateTarea($input: updateTareaDto!, $inputId: findTareaDto!) {
+  updateTarea(updateTareaInput: $input, findTareaByIdInput: $inputId) {
+    descripcion,
+    estado
+  }
 }
 `
 
@@ -44,14 +45,17 @@ updateTarea(updateTareaInput: $input){
     const navigation = useNavigation();
     const [editTarea, { loading: cargando, error: errores }] = useMutation(EDITAR_TAREA);
     const onCursoPressSend = () => {
+      const findTareaByIdInput = {
+        id: idTarea
+      }
       const updateTareaInput = {
-          id: idTarea,
           estado: "En Curso",
           descripcion: nombreTarea,
       };
       editTarea({
           variables: {
               input: updateTareaInput,
+              inputId: findTareaByIdInput
           },
       });
 
@@ -59,14 +63,17 @@ updateTarea(updateTareaInput: $input){
     };
 
     const onCompletadaPressSend = () => {
+      const findTareaByIdInput = {
+        id: idTarea
+      }
       const updateTareaInput = {
-          id: idTarea,
           estado: "Completada",
           descripcion: nombreTarea,
       };
       editTarea({
           variables: {
               input: updateTareaInput,
+              inputId: findTareaByIdInput
           },
       });
 
@@ -74,14 +81,17 @@ updateTarea(updateTareaInput: $input){
     };
 
     const onEliminadaPressSend = () => {
+      const findTareaByIdInput = {
+        id: idTarea
+      }
       const updateTareaInput = {
-          id: idTarea,
           estado: "Eliminada",
           descripcion: nombreTarea,
       };
       editTarea({
           variables: {
               input: updateTareaInput,
+              inputId: findTareaByIdInput
           },
       });
 
