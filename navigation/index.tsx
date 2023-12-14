@@ -13,6 +13,7 @@ import TareasNav from "./TareasNav";
 import IntegrantesCreateScreen from "../screens/Tareas/IntegranteCreateScreen";
 import TareaEditScreen from "../screens/Tareas/TareaEditScreen";
 import ChangePasswordScreen from "../components/changePassword";
+import ResetPasswordScreen from "../screens/ResetPassword";
 
 const theme = {
   ...DefaultTheme,
@@ -44,6 +45,7 @@ function RootNavigator() {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="ForgotPass" component={ForgotPassword} />
+      <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
       {/* ruta para usuario logeados */}
       <Stack.Screen name="ProyectosNav" component={ProyectosNav} />
       <Stack.Screen name="EquiposNav" component={EquiposNav} />

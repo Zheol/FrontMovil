@@ -17,6 +17,7 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   ForgotPass: undefined;
+  ResetPassword: undefined;
   ProyectosNav: {
     nombre: string;
     email: string;
@@ -80,6 +81,12 @@ export type formRegister = {
 
 export type formForgotPass = {
   email: string;
+};
+
+export type formResetPassword = {
+  token: string;
+  password: string;
+  confirmPassword: string;
 };
 
 export type formCreateProyect = {
