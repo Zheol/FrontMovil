@@ -17,13 +17,31 @@ const DELETE_PROYECT = gql`
   }
 `;
 
+const UPDATE_PROYECT = gql`
+  mutation updateProyecto(
+    $input: updateProyectoDto!
+    $inputId: FindProyectoByIdInput!
+  ) {
+    updateProyecto(
+      updateProyectoInput: $input
+      findProyectoByIdInput: $inputId
+    ) {
+      nombre
+      area
+    }
+  }
+`;
+
 const ProyectoUpdateModal: React.FC<UpdateProyectoModalProps> = ({
   visible,
   hideModal,
   nombre,
   area,
 }) => {
-  const [deleteProyect, { loading, error }] = useMutation(DELETE_PROYECT);
+  const [deleteProyect, { loading: loadingDelete, error: errorDelete }] =
+    useMutation(DELETE_PROYECT);
+  const [updateProyect, { loading: loadingUpdate, error: errorUpdate }] =
+    useMutation(UPDATE_PROYECT);
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
   const navigation = useNavigation();

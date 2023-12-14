@@ -7,13 +7,13 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Spacing from "../constants/Spacing";
 import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
 import Font from "../constants/Font";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList, VALID_PASSWORD_REGEX, formLogin } from "../types";
+import { RootStackParamList, formLogin } from "../types";
 import AppTextInput from "../components/AppTextInput";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
@@ -44,7 +44,6 @@ const schema = yup.object().shape({
 });
 
 const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
-
   const {
     control,
     handleSubmit,
@@ -57,12 +56,8 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
     },
   });
   const [login, { data, loading, error }] = useMutation(LOGIN_USER);
-  const {
-    setnameUser,
-    setEmailUser,
-    setIdUser,
-    setTokenUser
-  } = useContext(UserContext);
+  const { setnameUser, setEmailUser, setIdUser, setTokenUser } =
+    useContext(UserContext);
 
   const navigation = useNavigation();
 

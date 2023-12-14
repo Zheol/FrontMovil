@@ -103,6 +103,7 @@ export interface UserProfileModalProps {
   hideModal: () => void;
   nombre: string;
   email: string;
+  idUser: number;
 }
 
 export interface UpdateProyectoModalProps {
@@ -116,4 +117,9 @@ export type formChangePassword = {
   oldPassword: string;
   newPassword: string;
   repeatPassword: string;
+};
+
+export type formUpdateUser = {
+  name: string;
+  email: string;
 };

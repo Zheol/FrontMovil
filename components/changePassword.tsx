@@ -1,20 +1,13 @@
-import {
-  Dimensions,
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { Dimensions, View, Text, TouchableOpacity } from "react-native";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
-import { Schema } from "yup";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator } from "react-native-paper";
-import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
-import { useState } from "react";
+import { PaperProvider, Divider } from "react-native-paper";
 import { VALID_PASSWORD_REGEX, formChangePassword } from "../types";
 import Spacing from "../constants/Spacing";
 import Font from "../constants/Font";
@@ -237,7 +230,7 @@ export default function ChangePasswordScreen({ route }) {
                 fontSize: FontSize.large,
               }}
             >
-              Cambiar
+              Actualizar
             </Text>
           </TouchableOpacity>
         )}
