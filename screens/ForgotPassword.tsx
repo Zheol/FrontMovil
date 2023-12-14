@@ -41,7 +41,10 @@ const ForgotPassword: React.FC<Props> = ({ navigation: { navigate } }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const onPressSend = (formData: formForgotPass) => {
+    console.log(formData.email);
     setLoading(true);
+    navigate("ResetPassword");
+    setLoading(false);
   };
 
   return (
@@ -53,12 +56,12 @@ const ForgotPassword: React.FC<Props> = ({ navigation: { navigate } }) => {
       >
         <ImageBackground
           style={{
-            height: height / 2.2,
+            height: height / 4,
             marginTop: 50,
             marginBottom: 10,
           }}
           resizeMode="contain"
-          source={require("../assets/images/welcome.png")}
+          source={require("../assets/images/resetpassword.png")}
         />
         <View
           style={{
@@ -74,7 +77,7 @@ const ForgotPassword: React.FC<Props> = ({ navigation: { navigate } }) => {
               textAlign: "center",
             }}
           >
-            Forgot password
+            Reset password
           </Text>
         </View>
 
@@ -92,9 +95,16 @@ const ForgotPassword: React.FC<Props> = ({ navigation: { navigate } }) => {
           )}
           name="email"
         />
-        {errors.email && (
-          <Text style={{ color: "red" }}>{errors.email.message}</Text>
-        )}
+
+        <View
+          style={{
+            marginVertical: Spacing * 0.4,
+          }}
+        >
+          {errors.email && (
+            <Text style={{ color: "red" }}>{errors.email.message}</Text>
+          )}
+        </View>
 
         {loading ? (
           <View
@@ -130,7 +140,7 @@ const ForgotPassword: React.FC<Props> = ({ navigation: { navigate } }) => {
                 fontSize: FontSize.large,
               }}
             >
-              Submit
+              Enviar
             </Text>
           </TouchableOpacity>
         )}
