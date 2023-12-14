@@ -118,7 +118,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
             render={({ field: { onChange, value } }) => (
               <AppTextInput
                 value={value}
-                onChangeText={onChange}
+                editable={false}
                 placeholder={email}
               />
             )}

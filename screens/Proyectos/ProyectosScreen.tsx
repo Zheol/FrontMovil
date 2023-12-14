@@ -11,7 +11,7 @@ import FontSize from "../../constants/FontSize";
 import React, { useContext, useEffect, useState } from "react";
 import { Proyect } from "./types";
 import { gql, useApolloClient, useQuery } from "@apollo/client";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
 import UserProyectoModal from "../../components/UpdateProyectoModal";
@@ -90,7 +90,6 @@ export default function ProyectosScreen() {
       },
     },
   });
-  refetch();
   const projects: Project[] =
     dataProyecto?.getProyectosbyUserId?.map((item: Project) => ({
       id: item.id,
@@ -112,6 +111,8 @@ export default function ProyectosScreen() {
   const [projectsMiembro, setProyectos] = useState<Project[]>([]);
   const client = useApolloClient();
 
+  refetch()
+
   useEffect(() => {
     if (data?.getIntegrantebyIdUsuario) {
       data.getIntegrantebyIdUsuario.forEach(async (integrante) => {
@@ -131,6 +132,14 @@ export default function ProyectosScreen() {
   }, [data, client]);
 
   const navigation = useNavigation();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      refInte();
+      return () => {};
+    },[])
+  );
 
   return (
     <PaperProvider>
@@ -199,11 +208,8 @@ export default function ProyectosScreen() {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL PROYECTO
                         navigation.navigate("EquiposNav", {
-                          nombreUser: nameUser,
-                          idUser: idUser,
                           nombreProyecto: projects.nombre,
                           idProyecto: projects.id,
-                          email: emailUser,
                         });
                       }}
                     >
@@ -246,6 +252,7 @@ export default function ProyectosScreen() {
                         hideModal={hideModalUpdate}
                         nombre={projects.nombre}
                         area={projects.area}
+                        idProyecto={projects.id}
                       />
                     </TouchableOpacity>
                   );
@@ -269,11 +276,8 @@ export default function ProyectosScreen() {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL PROYECTO
                         navigation.navigate("EquiposNav", {
-                          nombreUser: nameUser,
-                          idUser: idUser,
                           nombreProyecto: projectsMiembro.nombre,
                           idProyecto: projectsMiembro.id,
-                          email: emailUser,
                         });
                       }}
                     >
