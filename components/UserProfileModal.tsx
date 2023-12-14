@@ -1,5 +1,5 @@
 // UserProfileModal.tsx
-import React from "react";
+import React, { useContext } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { Modal, Portal, Divider, ActivityIndicator } from "react-native-paper";
 import Font from "../constants/Font";
@@ -13,13 +13,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { UserProfileModalProps, formUpdateUser } from "../types";
 import Spacing from "../constants/Spacing";
 import { gql, useMutation } from "@apollo/client";
+import { UserContext } from "../context/UserContext";
 
 const UPDATE_USER = gql`
-  mutation updatePassword(
-    $input: updatePasswordDto!
+  mutation updateUser(
+    $input: UpdateUserDto!
     $inputId: FindUserByIdInput!
   ) {
-    updatePassword(updateUserInput: $input, findUserByIdInput: $inputId) {
+    updateUser(updateUserInput: $input, findUserByIdInput: $inputId) {
       id
     }
   }
@@ -51,16 +52,39 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
   });
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
+
   const navigation = useNavigation();
 
   const goToLogin = () => {
     navigation.navigate("Login");
   };
 
+  const {
+    setnameUser,
+  } = useContext(UserContext);
+
   const onPressSend = (formData: formUpdateUser) => {
     if (!formData.name.length) formData.name = nombre;
     if (!formData.email.length) formData.email = email;
-    console.log(formData);
+    const updateUserInput = {
+      name: formData.name
+    }
+    const findUserByIdInput = {
+      id: idUser,
+    }
+    updateUser({
+      variables: {
+        input: updateUserInput,
+        inputId: findUserByIdInput,
+      }
+    })
+    .then(() => {
+      setnameUser(formData.name)
+      hideModal();
+    })
+    .catch(error => {
+      console.error("Error al Actualizar el usuario", error);
+    })
   };
 
   return (

@@ -118,7 +118,7 @@ export default function ProyectosScreen() {
       data.getIntegrantebyIdUsuario.forEach(async (integrante) => {
         const response = await client.query({
           query: OBTENER_PROYECTO,
-          variables: { id: integrante.idProyecto },
+          variables: { input: integrante.idProyecto },
         });
         console.log(response);
         if (response.data) {

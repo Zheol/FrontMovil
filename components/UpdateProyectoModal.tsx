@@ -65,7 +65,6 @@ const ProyectoUpdateModal: React.FC<UpdateProyectoModalProps> = ({
       }
     })
     .then(() => {
-      console.log("Proyecto Eliminado con exito", nombre, area);
       hideModal();
     })
     .catch(error => {
