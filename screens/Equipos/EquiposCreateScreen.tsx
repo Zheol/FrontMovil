@@ -24,7 +24,8 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const { height } = Dimensions.get("window");
 
@@ -55,8 +56,13 @@ export default function EquipoCreateScreen({ route }) {
   });
 
   const navigation = useNavigation();
-  const { idUser, nombreUser, idProyecto, nombreProyecto, email } =
+  const { idProyecto, nombreProyecto} =
     route.params;
+  const {
+    nameUser,
+    emailUser,
+    idUser,
+  } = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
@@ -94,8 +100,9 @@ export default function EquipoCreateScreen({ route }) {
         <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre={nombreUser}
-          email={email}
+          nombre={nameUser}
+          email={emailUser}
+          idUser={idUser}
         />
         <View
           style={{

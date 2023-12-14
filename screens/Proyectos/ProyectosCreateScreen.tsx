@@ -6,7 +6,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import * as yup from "yup";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,6 +21,7 @@ const { height } = Dimensions.get("window");
 import { useNavigation } from "@react-navigation/native";
 import UserProfileModal from "../../components/UserProfileModal";
 import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
+import { UserContext } from "../../context/UserContext";
 
 const CREATE_PROYECTO = gql`
   mutation createProyecto($input: CreateProyectoInput!) {
@@ -35,7 +36,7 @@ const schema = yup.object().shape({
   area: yup.string().required("Campo requerido"),
 });
 
-export default function ProyectoCreateScreen({ route }) {
+export default function ProyectoCreateScreen() {
   const {
     reset,
     control,
@@ -52,7 +53,11 @@ export default function ProyectoCreateScreen({ route }) {
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
 
-  const { nombre, email, id } = route.params;
+  const {
+    nameUser,
+    emailUser,
+    idUser,
+  } = useContext(UserContext);
 
   const navigation = useNavigation();
 
@@ -61,7 +66,7 @@ export default function ProyectoCreateScreen({ route }) {
   const onPressSend: SubmitHandler<formCreateProyect> = (formData) => {
     const createProyectoInput = {
       nombre: formData.nombre,
-      idAdmin: id,
+      idAdmin: idUser,
       area: formData.area,
     };
     createProyecto({
@@ -90,8 +95,9 @@ export default function ProyectoCreateScreen({ route }) {
         <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre={nombre}
-          email={email}
+          nombre={nameUser}
+          email={emailUser}
+          idUser={idUser}
         />
         <View
           style={{

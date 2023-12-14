@@ -8,7 +8,7 @@ import {
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 const { height } = Dimensions.get("window");
@@ -19,6 +19,7 @@ import {
   Icon
 } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
+import { UserContext } from "../../context/UserContext";
 
 const OBTENER_TAREAS = gql`
   query getTareasbyEquipoId($id: Int!) {
@@ -39,14 +40,16 @@ interface Tarea {
 export default function TareasScreen({ route }) {
   const [proyect, setProyect] = useState<Tarea>();
   const {
-    idUser,
-    nombreUser,
     idProyecto,
     nombreProyecto,
     idEquipo,
     nombreEquipo,
-    email,
   } = route.params;
+  const {
+    nameUser,
+    emailUser,
+    idUser,
+  } = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
@@ -114,8 +117,9 @@ export default function TareasScreen({ route }) {
         <UserProfileModal 
           visible={modalVisible}
           hideModal={hideModal}
-          nombre= {nombreUser}
-          email= {email}
+          nombre= {nameUser}
+          email= {emailUser}
+          idUser={idUser}
         />
         <View
           style={{
@@ -178,7 +182,7 @@ export default function TareasScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL PROYECTO
                         navigation.navigate("EditarTarea", {
-                          nombreUser: nombreUser,
+                          nombreUser: nameUser,
                           idUser: idUser,
                           idProyecto:idProyecto,
                           nombreProyecto: nombreProyecto,
@@ -233,7 +237,7 @@ export default function TareasScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL PROYECTO
                         navigation.navigate("EditarTarea", {
-                          nombreUser: nombreUser,
+                          nombreUser: nameUser,
                           idUser: idUser,
                           idProyecto:idProyecto,
                           nombreProyecto: nombreProyecto,
@@ -288,7 +292,7 @@ export default function TareasScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL PROYECTO
                         navigation.navigate("EditarTarea", {
-                          nombreUser: nombreUser,
+                          nombreUser: nameUser,
                           idUser: idUser,
                           idProyecto:idProyecto,
                           nombreProyecto: nombreProyecto,
@@ -343,7 +347,7 @@ export default function TareasScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL PROYECTO
                         navigation.navigate("EditarTarea", {
-                          nombreUser: nombreUser,
+                          nombreUser: nameUser,
                           idUser: idUser,
                           idProyecto:idProyecto,
                           nombreProyecto: nombreProyecto,

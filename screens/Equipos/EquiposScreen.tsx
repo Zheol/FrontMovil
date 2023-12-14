@@ -8,13 +8,14 @@ import {
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Equipo } from "./types";
 import { useNavigation } from "@react-navigation/native";
 const { height } = Dimensions.get("window");
 import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
+import { UserContext } from "../../context/UserContext";
 
 const OBTENER_EQUIPOS = gql`
   query getEquiposbyProyectoId($id: Int!) {
@@ -27,8 +28,13 @@ const OBTENER_EQUIPOS = gql`
 
 export default function EquiposScreen({ route }) {
   const [equipo, setEquipo] = useState<Equipo>();
-  const { idUser, nombreUser, idProyecto, nombreProyecto, email } =
+  const {idProyecto, nombreProyecto} =
     route.params;
+  const {
+    nameUser,
+    emailUser,
+    idUser,
+  } = useContext(UserContext);
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
@@ -56,8 +62,9 @@ export default function EquiposScreen({ route }) {
         <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre={nombreUser}
-          email={email}
+          nombre={nameUser}
+          email={emailUser}
+          idUser={idUser}
         />
 
         <View
@@ -108,13 +115,13 @@ export default function EquiposScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL Tareas
                         navigation.navigate("TareasNav", {
-                          nombreUser: nombreUser,
+                          nombreUser: nameUser,
                           idUser: idUser,
                           nombreProyecto: nombreProyecto,
                           idProyecto: idProyecto,
                           nombreEquipo: equipos.nombre,
                           idEquipo: equipos.id,
-                          email: email,
+                          email: emailUser,
                         });
                       }}
                     >

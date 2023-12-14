@@ -33,8 +33,6 @@ updateTarea(updateTareaInput: $input){
   
   export default function TareaEditScreen({ route }) {
     const {
-      idUser,
-      nombreUser,
       idProyecto,
       nombreProyecto,
       idEquipo,

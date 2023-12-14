@@ -7,7 +7,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Spacing from "../constants/Spacing";
 import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
@@ -20,6 +20,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { gql, useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
+import { UserContext } from "../context/UserContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 const { height } = Dimensions.get("window");
@@ -43,6 +44,7 @@ const schema = yup.object().shape({
 });
 
 const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
+
   const {
     control,
     handleSubmit,
@@ -55,6 +57,12 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
     },
   });
   const [login, { data, loading, error }] = useMutation(LOGIN_USER);
+  const {
+    setnameUser,
+    setEmailUser,
+    setIdUser,
+    setTokenUser
+  } = useContext(UserContext);
 
   const navigation = useNavigation();
 
@@ -73,12 +81,10 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
         .then((response) => {
           const data = response.data;
           if (data && data.login) {
-            navigation.navigate("ProyectosNav", {
-              nombre: data.login.user.name,
-              email: data.login.user.email,
-              id: data.login.user.id,
-              accessToken: data.login.access_token,
-            });
+            setnameUser(data.login.user.name);
+            setEmailUser(data.login.user.email);
+            setIdUser(data.login.user.id);
+            navigation.navigate("ProyectosNav");
           }
         })
         .catch((error) => {});
