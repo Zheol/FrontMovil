@@ -2,8 +2,6 @@ import {
   Dimensions,
   View,
   Text,
-  ImageBackground,
-  SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
@@ -19,7 +17,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { formFindProyect } from "../../types";
 import { useNavigation } from "@react-navigation/native";
-import { Divider } from "react-native-paper";
+import { Divider, PaperProvider } from "react-native-paper";
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
 
@@ -35,6 +33,7 @@ const FIND_PROYECT = gql`
     getProyectobyUserIdName(getProyectoInput: $getProyectoInput) {
       id
       nombre
+      area
     }
   }
 `;
@@ -42,6 +41,7 @@ const FIND_PROYECT = gql`
 interface Project {
   id: number;
   name: string;
+  area: string;
 }
 
 export default function ProyectoFindScreen() {
@@ -81,10 +81,11 @@ export default function ProyectoFindScreen() {
     data?.getProyectobyUserIdName?.map((item) => ({
       id: item.id,
       name: item.nombre,
+      area: item.area,
     })) || [];
 
   return (
-    <SafeAreaView>
+    <PaperProvider>
       <View
         style={{
           padding: Spacing * 2,
@@ -107,6 +108,10 @@ export default function ProyectoFindScreen() {
           >
             Buscar Proyecto
           </Text>
+        </View>
+
+        <View style={{ width: "100%" }}>
+          <Divider />
         </View>
 
         <View
@@ -173,45 +178,51 @@ export default function ProyectoFindScreen() {
             </Text>
           </TouchableOpacity>
         )}
-
-        <View style={{ width: "100%" }}>
-          <Divider />
-        </View>
-
-        <View style={{ marginBottom: 60 }}>
-          <ScrollView>
-            <View style={{ paddingTop: 20 }}>
+        <View style={{paddingTop: 20}}>
+          <ScrollView style={{maxHeight:380}} >
+            <View>
               {projects.map((projects: Project) => {
                 return (
                   <TouchableOpacity
+                    key={projects.id}
                     style={{
-                      marginVertical: 20,
+                      marginVertical: 10,
                       backgroundColor: "#ffebcd",
                       height: 120,
                       borderRadius: 10,
                     }}
-                    key={projects.id}
                     onPress={() => {
                       // MANDAR A LA PANTALLA DEL PROYECTO
                       navigation.navigate("EquiposNav", {
-                        nombreUser: nameUser,
-                        idUser: idUser,
                         nombreProyecto: projects.name,
                         idProyecto: projects.id,
-                        email: emailUser,
                       });
                     }}
                   >
                     <Text
                       style={{
                         width: 350,
+                        color: "grey",
+                        fontSize: 13,
+                        alignSelf: "flex-start",
+                        paddingTop: 10,
+                        paddingLeft: 15,
+                      }}
+                    >
+                      {projects.area}
+                    </Text>
+                    <Text
+                      style={{
+                        width: 350,
                         color: "black",
                         textAlign: "center",
-                        paddingTop: 45,
+                        paddingTop: 20,
+                        fontSize: 15,
                       }}
                     >
                       {projects.name}
                     </Text>
+
                   </TouchableOpacity>
                 );
               })}
@@ -219,6 +230,6 @@ export default function ProyectoFindScreen() {
           </ScrollView>
         </View>
       </View>
-    </SafeAreaView>
+    </PaperProvider>
   );
 }
