@@ -1,24 +1,16 @@
 import {
   ActivityIndicator,
-  Dimensions,
-  ImageBackground,
   SafeAreaView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import Spacing from "../constants/Spacing";
 import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
 import Font from "../constants/Font";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import {
-  RootStackParamList,
-  VALID_PASSWORD_REGEX,
-  formRegister,
-  formResetPassword,
-} from "../types";
+import { VALID_PASSWORD_REGEX, formResetPassword } from "../types";
 import AppTextInput from "../components/AppTextInput";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
@@ -26,13 +18,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { gql, useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 
-const REGISTER_USER = gql`
-  mutation register($input: RegisterUserInput!) {
-    register(registerUserInput: $input) {
-      user {
-        email
-      }
-      access_token
+const RESET_PASSWORD = gql`
+  mutation sendResetPassword($input: ResetPasswordDto!) {
+    sendResetPassword(ResetPasswordInput: $input) {
+      message
     }
   }
 `;
@@ -67,11 +56,30 @@ const ResetPasswordScreen: React.FC = () => {
       confirmPassword: "",
     },
   });
-  const [register, { loading, error }] = useMutation(REGISTER_USER);
+  const [resetPassword, { loading, error }] = useMutation(RESET_PASSWORD);
 
   const navigation = useNavigation();
 
-  const onPressSend = (formData: formResetPassword) => {};
+  const onPressSend = (formData: formResetPassword) => {
+    const ResetPasswordInput = {
+      token: formData.token,
+      newPassword: formData.password,
+    };
+    resetPassword({
+      variables: {
+        input: ResetPasswordInput,
+      },
+    })
+      .then((response) => {
+        const data = response.data;
+        if (data && data.sendResetPassword) {
+          navigation.navigate("Login");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <SafeAreaView>
@@ -80,15 +88,6 @@ const ResetPasswordScreen: React.FC = () => {
           padding: Spacing * 2,
         }}
       >
-        {/* <ImageBackground
-          style={{
-            height: height / 6,
-            marginTop: 10,
-            marginBottom: 10,
-          }}
-          resizeMode="contain"
-          source={require("../assets/images/welcome.png")}
-        /> */}
         <View
           style={{
             alignItems: "center",

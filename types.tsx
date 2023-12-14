@@ -17,6 +17,7 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   ForgotPass: undefined;
+  ResetPassword: undefined;
   ProyectosNav: {
     nombre: string;
     email: string;

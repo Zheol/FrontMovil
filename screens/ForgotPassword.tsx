@@ -18,8 +18,18 @@ import * as yup from "yup";
 import Colors from "../constants/Colors";
 import { RootStackParamList, formForgotPass } from "../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { gql, useMutation } from "@apollo/client";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = NativeStackScreenProps<RootStackParamList, "ForgotPass">;
+
+const SEND_EMAIL = gql`
+  mutation sendEmailToken($input: emailUserDto!) {
+    sendEmailToken(emailUserInput: $input) {
+      message
+    }
+  }
+`;
 
 const { height } = Dimensions.get("window");
 
@@ -38,13 +48,27 @@ const ForgotPassword: React.FC<Props> = ({ navigation: { navigate } }) => {
       email: "",
     },
   });
-  const [loading, setLoading] = useState<boolean>(false);
+  const [sendEmailToken, { loading, error }] = useMutation(SEND_EMAIL);
+  const navigation = useNavigation();
 
   const onPressSend = (formData: formForgotPass) => {
-    console.log(formData.email);
-    setLoading(true);
-    navigate("ResetPassword");
-    setLoading(false);
+    const emailUserInput = {
+      email: formData.email,
+    };
+    sendEmailToken({
+      variables: {
+        input: emailUserInput,
+      },
+    })
+      .then((response) => {
+        const data = response.data;
+        if (data && data.sendEmailToken) {
+          navigation.navigate("ResetPassword");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -143,6 +167,14 @@ const ForgotPassword: React.FC<Props> = ({ navigation: { navigate } }) => {
               Enviar
             </Text>
           </TouchableOpacity>
+        )}
+      </View>
+
+      <View style={{ height: 40, paddingTop: 15 }}>
+        {error && (
+          <Text style={{ color: "red", textAlign: "center" }}>
+            {error.message}
+          </Text>
         )}
       </View>
     </SafeAreaView>
