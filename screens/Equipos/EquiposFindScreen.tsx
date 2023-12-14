@@ -26,7 +26,8 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const schema = yup.object().shape({
   nombre: yup.string().required("Name is required"),
@@ -58,8 +59,13 @@ export default function EquipoFindScreen({ route }) {
       nombre: "",
     },
   });
-  const { idUser, nombreUser, idProyecto, nombreProyecto, email } =
+  const { idProyecto, nombreProyecto} =
     route.params;
+  const {
+    nameUser,
+    emailUser,
+    idUser,
+  } = useContext(UserContext);
   const [getEquipo, { loading, error, data }] = useLazyQuery(FIND_EQUIPO);
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
@@ -96,8 +102,9 @@ export default function EquipoFindScreen({ route }) {
         <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre={nombreUser}
-          email={email}
+          nombre={nameUser}
+          email={emailUser}
+          idUser={idUser}
         />
         <View
           style={{
@@ -201,13 +208,13 @@ export default function EquipoFindScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL Tareas
                         navigation.navigate("TareasNav", {
-                          nombreUser: nombreUser,
+                          nombreUser: nameUser,
                           idUser: idUser,
                           nombreProyecto: nombreProyecto,
                           idProyecto: idProyecto,
                           nombreEquipo: equipos.nombre,
                           idEquipo: equipos.id,
-                          email: email,
+                          email: emailUser,
                         });
                       }}
                     >

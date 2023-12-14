@@ -8,7 +8,7 @@ import {
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Proyect } from "./types";
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
@@ -16,6 +16,7 @@ import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
 import UserProyectoModal from "../../components/UpdateProyectoModal";
 import ProyectoUpdateModal from "../../components/UpdateProyectoModal";
+import { UserContext } from "../../context/UserContext";
 
 const { height } = Dimensions.get("window");
 
@@ -29,12 +30,12 @@ const OBTENER_INTEGRANTES = gql`
 `;
 
 const OBTENER_PROYECTO = gql`
-  query getProyectosbyId($id: Int!) {
-    getProyectosbyId(id: $id) {
-      nombre
-      id
-    }
+query getProyectosById($input: getProyectosbyIdDto!) {
+  getProyectosbyId(getProyectosbyIdinput: $input) {
+    id
+		nombre
   }
+}
 `;
 
 const OBTENER_PROYECTOS = gql`
@@ -55,16 +56,28 @@ interface Project {
   idAdmin: number;
 }
 
-export default function ProyectosScreen({ route }) {
+export default function ProyectosScreen() {
   const [proyect, setProyect] = useState<Proyect[]>();
-  const { id, nombre, email } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [modalUpdateVisible, setModalUpdateVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
-  const showModalUpdate = () => setModalUpdateVisible(true);
-  const hideModalUpdate = () => setModalUpdateVisible(false);
+  const [modalVisibleProjectId, setModalVisibleProjectId] = useState(null);
 
+  
+  const showModalUpdate = (projectId) => {
+    setModalVisibleProjectId(projectId);
+  };
+
+  const hideModalUpdate = () => {
+    setModalVisibleProjectId(null);
+  };
+
+  const {
+    nameUser,
+    emailUser,
+    idUser,
+  } = useContext(UserContext);
   const {
     loading: loadPro,
     error: errProy,
@@ -73,11 +86,11 @@ export default function ProyectosScreen({ route }) {
   } = useQuery(OBTENER_PROYECTOS, {
     variables: {
       input: {
-        id,
+        id: idUser,
       },
     },
   });
-  refetch(dataProyecto);
+  refetch();
   const projects: Project[] =
     dataProyecto?.getProyectosbyUserId?.map((item: Project) => ({
       id: item.id,
@@ -92,30 +105,30 @@ export default function ProyectosScreen({ route }) {
     data,
     refetch: refInte,
   } = useQuery(OBTENER_INTEGRANTES, {
-    variables: { id: id },
+    variables: { id: idUser },
   });
   refInte(data);
 
   const [projectsMiembro, setProyectos] = useState<Project[]>([]);
   const client = useApolloClient();
 
-  // useEffect(() => {
-  //   if (data?.getIntegrantebyIdUsuario) {
-  //     data.getIntegrantebyIdUsuario.forEach(async (integrante) => {
-  //       const response = await client.query({
-  //         query: OBTENER_PROYECTO,
-  //         variables: { id: integrante.idProyecto },
-  //       });
-  //       console.log(response);
-  //       if (response.data) {
-  //         setProyectos((currentProyectos) => [
-  //           ...currentProyectos,
-  //           response.data.getProyectosbyId,
-  //         ]);
-  //       }
-  //     });
-  //   }
-  // }, [data, client]);
+  useEffect(() => {
+    if (data?.getIntegrantebyIdUsuario) {
+      data.getIntegrantebyIdUsuario.forEach(async (integrante) => {
+        const response = await client.query({
+          query: OBTENER_PROYECTO,
+          variables: { id: integrante.idProyecto },
+        });
+        console.log(response);
+        if (response.data) {
+          setProyectos((currentProyectos) => [
+            ...currentProyectos,
+            response.data.getProyectosbyId,
+          ]);
+        }
+      });
+    }
+  }, [data, client]);
 
   const navigation = useNavigation();
 
@@ -129,9 +142,9 @@ export default function ProyectosScreen({ route }) {
         <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre={nombre}
-          email={email}
-          idUser={id}
+          nombre={nameUser}
+          email={emailUser}
+          idUser={idUser}
         />
 
         <View
@@ -186,11 +199,11 @@ export default function ProyectosScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL PROYECTO
                         navigation.navigate("EquiposNav", {
-                          nombreUser: nombre,
-                          idUser: id,
+                          nombreUser: nameUser,
+                          idUser: idUser,
                           nombreProyecto: projects.nombre,
                           idProyecto: projects.id,
-                          email: email,
+                          email: emailUser,
                         });
                       }}
                     >
@@ -223,13 +236,13 @@ export default function ProyectosScreen({ route }) {
                           paddingTop: 10,
                         }}
                       >
-                        <Button onPress={showModalUpdate}>
+                        <Button onPress={() => showModalUpdate(projects.id)}>
                           <Icon source="format-list-checkbox" size={17} />
                         </Button>
                       </View>
 
                       <ProyectoUpdateModal
-                        visible={modalUpdateVisible}
+                        visible={modalVisibleProjectId === projects.id}
                         hideModal={hideModalUpdate}
                         nombre={projects.nombre}
                         area={projects.area}
@@ -256,11 +269,11 @@ export default function ProyectosScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL PROYECTO
                         navigation.navigate("EquiposNav", {
-                          nombreUser: nombre,
-                          idUser: id,
+                          nombreUser: nameUser,
+                          idUser: idUser,
                           nombreProyecto: projectsMiembro.nombre,
                           idProyecto: projectsMiembro.id,
-                          email: email,
+                          email: emailUser,
                         });
                       }}
                     >

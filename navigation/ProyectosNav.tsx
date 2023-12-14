@@ -11,7 +11,6 @@ const Tab = createMaterialBottomTabNavigator();
 function ProyectosNav({
   route,
 }: NativeStackScreenProps<RootStackParamList, "ProyectosNav">) {
-  const { nombre, email, id } = route.params;
 
   return (
     <Tab.Navigator initialRouteName="MisProyectos">
@@ -29,7 +28,6 @@ function ProyectosNav({
         }}
         name="Create"
         component={ProyectoCreateScreen}
-        initialParams={{ nombre, email, id }}
       />
 
       {/* Mis Proyecto */}
@@ -42,7 +40,6 @@ function ProyectosNav({
         }}
         name="MisProyectos"
         component={ProyectosScreen}
-        initialParams={{ nombre, email, id }}
       />
 
       {/* Buscar Proyecto */}
@@ -59,7 +56,6 @@ function ProyectosNav({
         }}
         name="Find"
         component={ProyectoFindScreen}
-        initialParams={{ nombre, email, id }}
       />
     </Tab.Navigator>
   );

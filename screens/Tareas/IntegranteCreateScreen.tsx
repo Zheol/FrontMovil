@@ -26,7 +26,8 @@ import {
   Icon
 } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../context/UserContext";
   
 const { height } = Dimensions.get("window");
 
@@ -53,14 +54,17 @@ const schema = yup.object().shape({
   
   export default function IntegrantesCreateScreen({ route }) {
     const {
-      idUser,
-      nombreUser,
       idProyecto,
       nombreProyecto,
       idEquipo,
       nombreEquipo,
-      email,
     } = route.params;
+
+    const {
+      nameUser,
+      emailUser,
+      idUser,
+    } = useContext(UserContext);
     const [getUser, { loading, error, data, refetch }] = useLazyQuery(OBTENER_USUARIO);
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
@@ -105,13 +109,13 @@ const schema = yup.object().shape({
           });
       
           navigation.navigate("TareasNav", {
-            nombreUser: nombreUser,
+            nombreUser: nameUser,
             idUser: idUser,
             idProyecto: idProyecto,
             nombreProyecto: nombreProyecto,
             nombreEquipo: nombreEquipo,
             idEquipo: idEquipo,
-            email: email,
+            email: emailUser,
           });
         } catch (error) {
           console.error(error);
@@ -128,8 +132,9 @@ const schema = yup.object().shape({
           <UserProfileModal 
             visible={modalVisible}
             hideModal={hideModal}
-            nombre= {nombreUser}
-            email= {email}
+            nombre= {nameUser}
+            email= {emailUser}
+            idUser={idUser}
           />
           <View
             style={{

@@ -17,31 +17,18 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   ForgotPass: undefined;
-  ProyectosNav: {
-    nombre: string;
-    email: string;
-    id: Float;
-    accessToken: string;
-  };
+  ProyectosNav: undefined;
   EquiposNav: {
-    nombreUser: string;
-    idUser: number;
     nombreProyecto: string;
     idProyecto: number;
-    email: string;
   };
   TareasNav: {
-    nombreUser: string;
-    idUser: number;
     nombreProyecto: string;
     idProyecto: number;
     nombreEquipo: string;
     idEquipo: number;
-    email: string;
   };
   CrearIntegrante: {
-    nombreUser: string;
-    idUser: number;
     nombreProyecto: string;
     idProyecto: number;
     nombreEquipo: string;

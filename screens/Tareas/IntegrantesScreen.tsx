@@ -13,7 +13,8 @@ import { SubmitHandler } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const { height } = Dimensions.get("window");
 
@@ -31,14 +32,16 @@ const OBTENER_INTEGRANTES = gql`
 
 export default function IntegrantesScreen({ route }) {
   const {
-    idUser,
-    nombreUser,
     idProyecto,
     nombreProyecto,
     idEquipo,
     nombreEquipo,
-    email,
   } = route.params;
+  const {
+    nameUser,
+    emailUser,
+    idUser,
+  } = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
@@ -67,8 +70,9 @@ export default function IntegrantesScreen({ route }) {
         <UserProfileModal
           visible={modalVisible}
           hideModal={hideModal}
-          nombre={nombreUser}
-          email={email}
+          nombre={nameUser}
+          email={emailUser}
+          idUser={idUser}
         />
 
         <View
@@ -169,7 +173,7 @@ export default function IntegrantesScreen({ route }) {
                 onPress={() => {
                   // MANDAR A LA PANTALLA DE CREAR INTEGRANTE
                   navigation.navigate("CrearIntegrante", {
-                    nombreUser: nombreUser,
+                    nombreUser: nameUser,
                     idUser: idUser,
                     idProyecto: idProyecto,
                     nombreProyecto: nombreProyecto,

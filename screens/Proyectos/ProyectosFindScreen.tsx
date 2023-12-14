@@ -20,6 +20,8 @@ import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { formFindProyect } from "../../types";
 import { useNavigation } from "@react-navigation/native";
 import { Divider } from "react-native-paper";
+import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
 
 const { height } = Dimensions.get("window");
 
@@ -42,7 +44,7 @@ interface Project {
   name: string;
 }
 
-export default function ProyectoFindScreen({ route }) {
+export default function ProyectoFindScreen() {
   const {
     reset,
     control,
@@ -55,7 +57,11 @@ export default function ProyectoFindScreen({ route }) {
     },
   });
 
-  const { nombre, email, id } = route.params;
+  const {
+    nameUser,
+    emailUser,
+    idUser,
+  } = useContext(UserContext);
   const [getProyecto, { loading, error, data }] = useLazyQuery(FIND_PROYECT);
   const navigation = useNavigation();
 
@@ -64,7 +70,7 @@ export default function ProyectoFindScreen({ route }) {
       variables: {
         getProyectoInput: {
           nombre: formData.nombre,
-          idUser: id,
+          idUser: idUser,
         },
       },
     });
@@ -188,11 +194,11 @@ export default function ProyectoFindScreen({ route }) {
                     onPress={() => {
                       // MANDAR A LA PANTALLA DEL PROYECTO
                       navigation.navigate("EquiposNav", {
-                        nombreUser: nombre,
-                        idUser: id,
+                        nombreUser: nameUser,
+                        idUser: idUser,
                         nombreProyecto: projects.name,
                         idProyecto: projects.id,
-                        email: email,
+                        email: emailUser,
                       });
                     }}
                   >
