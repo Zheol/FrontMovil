@@ -16,6 +16,7 @@ import UserProfileModal from "../../components/UserProfileModal";
 import UserModal from "../../components/UserModal";
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
+import { Integrante } from "../../types";
 
 const { height } = Dimensions.get("window");
 
@@ -32,30 +33,12 @@ const OBTENER_INTEGRANTES = gql`
   }
 `;
 
-interface Integrante {
-  id: number;
-  user: User;
-  rol: string;
-}
-
-interface User {
-  name: string;
-  email: string;
-}
-
 export default function IntegrantesScreen({ route }) {
-  const {
-    idProyecto,
-    nombreProyecto,
-    idEquipo,
-    nombreEquipo,
-  } = route.params;
-  const {
-    nameUser,
-    emailUser,
-    idUser,
-  } = useContext(UserContext);
-  const [modalVisibleUserId, setModalVisibleUserId] = useState<number | null>(null);
+  const { idProyecto, nombreProyecto, idEquipo, nombreEquipo } = route.params;
+  const { nameUser, emailUser, idUser } = useContext(UserContext);
+  const [modalVisibleUserId, setModalVisibleUserId] = useState<number | null>(
+    null
+  );
 
   const showModalUpdate = (userId: number) => {
     setModalVisibleUserId(userId);
@@ -86,7 +69,7 @@ export default function IntegrantesScreen({ route }) {
       id: item.id,
       name: item.user.name,
       rol: item.rol,
-      email: item.user.email
+      email: item.user.email,
     })) || [];
 
   return (
@@ -190,7 +173,6 @@ export default function IntegrantesScreen({ route }) {
                       nombre={integrante.name}
                       idUser={integrante.id}
                       email={integrante.email}
-
                     />
                   </TouchableOpacity>
                 );

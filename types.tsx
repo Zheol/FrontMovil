@@ -118,6 +118,7 @@ export interface UpdateTareaModalProps {
   idTarea: number;
   descripcion: string;
   estado: string;
+  idEquipo: number;
 }
 
 export interface UpdateEquipoModalProps {
@@ -137,3 +138,14 @@ export type formUpdateUser = {
   name?: string;
   email?: string;
 };
+
+export interface Integrante {
+  id: number;
+  user: User;
+  rol: string;
+}
+
+export interface User {
+  name: string;
+  email: string;
+}

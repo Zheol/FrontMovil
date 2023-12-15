@@ -67,6 +67,7 @@ export default function TareasScreen({ route }) {
       return () => {};
     }, [])
   );
+  refetch();
 
   const tareasCreadas: Tarea[] = [];
   const tareasEnCurso: Tarea[] = [];
@@ -294,6 +295,7 @@ export default function TareasScreen({ route }) {
                         descripcion={tareas.descripcion}
                         idTarea={tareas.id}
                         estado={tareas.estado}
+                        idEquipo={idEquipo}
                       />
                     </TouchableOpacity>
                   );
@@ -364,6 +366,7 @@ export default function TareasScreen({ route }) {
                         descripcion={tareas.descripcion}
                         idTarea={tareas.id}
                         estado={tareas.estado}
+                        idEquipo={idEquipo}
                       />
                     </TouchableOpacity>
                   );
@@ -434,6 +437,7 @@ export default function TareasScreen({ route }) {
                         descripcion={tareas.name}
                         estado={tareas.estado}
                         idTarea={tareas.id}
+                        idEquipo={idEquipo}
                       />
                     </TouchableOpacity>
                   );

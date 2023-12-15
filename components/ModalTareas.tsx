@@ -6,8 +6,8 @@ import Font from "../constants/Font";
 import FontSize from "../constants/FontSize";
 import { useNavigation } from "@react-navigation/native";
 import AppTextInput from "./AppTextInput";
-import { UpdateTareaModalProps } from "../types";
-import { gql, useMutation } from "@apollo/client";
+import { Integrante, UpdateTareaModalProps } from "../types";
+import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import RNPickerSelect from "react-native-picker-select";
 import SelectDropdown from "react-native-select-dropdown";
 import { Controller, useForm } from "react-hook-form";
@@ -27,9 +27,29 @@ const UPDATE_TAREA = gql`
 `;
 
 const GET_INTEGRANTES = gql`
-  mutation updateTarea($input: updateTareaDto!, $inputId: findTareaDto!) {
-    updateTarea(updateTareaInput: $input, findTareaByIdInput: $inputId) {
-      descripcion
+  query getIntegrantebyIdEquipo($id: Int!) {
+    getIntegrantebyIdEquipo(id: $id) {
+      id
+      user {
+        name
+        email
+      }
+      rol
+    }
+  }
+`;
+
+const UPDATE_INTEGRANTE = gql`
+  mutation updateTareaIntegrante(
+    $input: UpdateIntegranteDto!
+    $inputId: findTareaDto!
+  ) {
+    updateTareaIntegrante(
+      updateIntegranteInput: $input
+      findTareaByIdInput: $inputId
+    ) {
+      id
+      idResponsable
       estado
     }
   }
@@ -41,17 +61,32 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
   idTarea,
   descripcion,
   estado,
+  idEquipo,
 }) => {
-  const [updateTarea, { loading: loadingDelete, error: errorDelete }] =
+  const [updateTarea, { loading: loadingUpdate, error: errorUpdate }] =
     useMutation(UPDATE_TAREA);
+  const [updateIntegrante, { loading: loadingUpdateI, error: errorUpdateI }] =
+    useMutation(UPDATE_INTEGRANTE);
+
+  const { loading, error, data, refetch } = useQuery(GET_INTEGRANTES, {
+    variables: {
+      id: idEquipo,
+    },
+  });
+
+  const integrantes =
+    data?.getIntegrantebyIdEquipo?.map((item: Integrante) => ({
+      id: item.id,
+      name: item.user.name,
+      rol: item.rol,
+      email: item.user.email,
+    })) || [];
 
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
   const navigation = useNavigation();
 
   const funcUpdateTarea = (selectedItem: string) => {
-    console.log(selectedItem);
-    console.log(idTarea);
     const findTareaByIdInput = {
       id: idTarea,
     };
@@ -69,6 +104,29 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
       })
       .catch((error) => {
         console.error("Error al actualizar la tarea", error);
+      });
+  };
+
+  const funcSelectedIntegrante = (selectedItem: number) => {
+    const findTareaByIdInput = {
+      id: idTarea,
+    };
+    const updateIntegranteInput = {
+      idResponsable: selectedItem,
+    };
+
+    console.log(findTareaByIdInput, updateIntegranteInput);
+    updateIntegrante({
+      variables: {
+        input: updateIntegranteInput,
+        inputId: findTareaByIdInput,
+      },
+    })
+      .then(() => {
+        hideModal();
+      })
+      .catch((error) => {
+        console.error("Error al actualizar responsable", error);
       });
   };
 
@@ -160,6 +218,43 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
 
         <View style={{ width: "100%", marginBottom: 10, marginTop: 10 }}>
           <Text>Asignar Responsable </Text>
+        </View>
+
+        <View
+          style={{
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <SelectDropdown
+            dropdownIconPosition={"left"}
+            dropdownStyle={{
+              height: 100,
+              borderRadius: 8,
+              backgroundColor: "#FFF",
+              borderWidth: 1,
+              borderColor: "#444",
+            }}
+            buttonStyle={{
+              width: "100%",
+              height: 50,
+              backgroundColor: "#FFF",
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: "#444",
+            }}
+            defaultButtonText={"Responsable"}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              return selectedItem.name;
+            }}
+            rowTextForSelection={(item, index) => {
+              return item.name;
+            }}
+            data={integrantes}
+            onSelect={(selectedItem) => {
+              funcSelectedIntegrante(selectedItem.id);
+            }}
+          />
         </View>
 
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
