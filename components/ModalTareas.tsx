@@ -1,19 +1,14 @@
-// UserProfileModal.tsx
 import React from "react";
 import { Text, View } from "react-native";
-import { Modal, Portal, Button, Divider } from "react-native-paper";
+import { Modal, Portal, Divider } from "react-native-paper";
 import Font from "../constants/Font";
 import FontSize from "../constants/FontSize";
 import { useNavigation } from "@react-navigation/native";
-import AppTextInput from "./AppTextInput";
+
 import { Integrante, UpdateTareaModalProps } from "../types";
-import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import RNPickerSelect from "react-native-picker-select";
+import { gql, useMutation, useQuery } from "@apollo/client";
+
 import SelectDropdown from "react-native-select-dropdown";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { ceil } from "react-native-reanimated";
 
 const estados = ["Completada", "En Curso"];
 
@@ -62,6 +57,8 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
   descripcion,
   estado,
   idEquipo,
+  created,
+  updated,
 }) => {
   const [updateTarea, { loading: loadingUpdate, error: errorUpdate }] =
     useMutation(UPDATE_TAREA);
@@ -151,35 +148,6 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
         <View style={{ width: "100%", marginBottom: 10 }}>
           <Divider />
         </View>
-        {/* <View style={{ backgroundColor: "#fff" }}>
-          <RNPickerSelect
-            useNativeAndroidPickerStyle={false}
-            placeholder={{
-              label: "Seleciona un estado...",
-              color: "black",
-            }}
-            style={{
-              inputAndroid: {
-                fontSize: 14,
-                paddingHorizontal: 10,
-                paddingVertical: 8,
-                borderWidth: 1,
-                borderColor: "black",
-                borderRadius: 8,
-                color: "black",
-                paddingRight: 30, // to ensure the text is never behind the icon
-              },
-              placeholder: {
-                color: "black",
-              },
-            }}
-            onValueChange={(value) => console.log(value)}
-            items={[
-              { label: "En curso", value: "En curso" },
-              { label: "Completada", value: "Completada" },
-            ]}
-          />
-        </View> */}
 
         <View style={{ width: "100%", marginBottom: 10 }}>
           <Text>Actualizar estado </Text>
@@ -243,7 +211,7 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
               borderWidth: 1,
               borderColor: "#444",
             }}
-            defaultButtonText={"Responsable"}
+            defaultButtonText={"Definir Responsable"}
             buttonTextAfterSelection={(selectedItem, index) => {
               return selectedItem.name;
             }}
@@ -257,6 +225,12 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
           />
         </View>
 
+        <View style={{ width: "100%", marginTop: 15 }}>
+          <Text>Fecha creación: </Text>
+        </View>
+        <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
+          <Text>Última actualización: </Text>
+        </View>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
           <Divider />
         </View>
