@@ -9,7 +9,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { UserProvider } from "./context/UserContext";
 import { ProyectProvider } from "./context/ProyectContext";
 const client = new ApolloClient({
-  uri: "http://172.29.32.1:4000/graphql",
+  uri: "http://172.21.48.1:4000/graphql",
   cache: new InMemoryCache(),
 });
 

@@ -23,8 +23,8 @@ const OBTENER_TAREAS = gql`
       descripcion
       id
       estado
-      created_at
-      updated_at
+      created
+      updated
     }
   }
 `;
@@ -72,7 +72,6 @@ export default function TareasScreen({ route }) {
   const tareasCompletadas: Tarea[] = [];
   const tareasEliminadas: Tarea[] = [];
 
-  console.log(data)
 
   if (data && data.getTareasbyEquipoId) {
     data.getTareasbyEquipoId.forEach((item: Tarea) => {
@@ -145,7 +144,7 @@ export default function TareasScreen({ route }) {
             }}
           >
             <Button onPress={showModal}>
-              <Icon source="dots-vertical" size={25} />
+              <Icon source="account-details" size={30} />
             </Button>
           </View>
           <View style={{ width: "100%" }}>
@@ -364,79 +363,6 @@ export default function TareasScreen({ route }) {
                         descripcion={tareas.descripcion}
                         idTarea={tareas.id}
                         estado={tareas.estado}
-                        idEquipo={idEquipo}
-                      />
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-
-              <Text>Tareas Eliminadas</Text>
-
-              <View>
-                {tareasEliminadas.map((tareas: any) => {
-                  return (
-                    <TouchableOpacity
-                      style={{
-                        marginVertical: 20,
-                        backgroundColor: "#ffebcd",
-                        height: 90,
-                        borderRadius: 10,
-                      }}
-                      key={tareas.id}
-                      onPress={() => {
-                        // MANDAR A LA PANTALLA DEL PROYECTO
-                        navigation.navigate("EditarTarea", {
-                          nombreUser: nameUser,
-                          idUser: idUser,
-                          idProyecto: idProyecto,
-                          nombreProyecto: nombreProyecto,
-                          nombreEquipo: nombreEquipo,
-                          idEquipo: idEquipo,
-                          nombreTarea: tareas.descripcion,
-                          idTarea: tareas.id,
-                          estadoTarea: tareas.estado,
-                        });
-                      }}
-                    >
-                      <Text
-                        style={{
-                          width: 350,
-                          color: "grey",
-                          fontSize: 13,
-                          alignSelf: "flex-start",
-                          paddingTop: 10,
-                          paddingLeft: 15,
-                        }}
-                      >
-                        C: {tareas.created}
-                      </Text>
-                      <Text
-                        style={{
-                          width: 350,
-                          color: "black",
-                          textAlign: "center",
-                          fontSize: 15,
-                        }}
-                      >
-                        {tareas.descripcion}
-                      </Text>
-                      <View
-                        style={{
-                          alignSelf: "flex-end",
-                          paddingTop: 5,
-                        }}
-                      >
-                        <Button onPress={() => showModalUpdate(tareas.id)}>
-                          <Icon source="format-list-checkbox" size={17} />
-                        </Button>
-                      </View>
-                      <ModalTarea
-                        visible={modalVisibleTareaId === tareas.id}
-                        hideModal={hideModalUpdate}
-                        descripcion={tareas.name}
-                        estado={tareas.estado}
-                        idTarea={tareas.id}
                         idEquipo={idEquipo}
                       />
                     </TouchableOpacity>

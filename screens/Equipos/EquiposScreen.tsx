@@ -33,7 +33,6 @@ export default function EquiposScreen() {
   const [equipo, setEquipo] = useState<Equipo>();
   const { nameUser, emailUser, idUser } = useContext(UserContext);
   const { nameProyect, idProyect} = useContext(ProyectContext);
-  console.log(nameProyect, idProyect)
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);

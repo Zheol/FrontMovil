@@ -80,7 +80,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
       },
     })
       .then(() => {
-        setnameUser(updateUser.name);
+        setnameUser(updateUser.name)
         hideModal();
       })
       .catch((error) => {
