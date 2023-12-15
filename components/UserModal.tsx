@@ -1,26 +1,24 @@
 // UserProfileModal.tsx
-import React, { useContext } from "react";
+import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { Modal, Portal, Divider, ActivityIndicator } from "react-native-paper";
 import Font from "../constants/Font";
 import FontSize from "../constants/FontSize";
-import { useNavigation } from "@react-navigation/native";
 import AppTextInput from "./AppTextInput";
 import Colors from "../constants/Colors";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { UserProfileModalProps, formUpdateUser } from "../types";
+import { UserProfileModalProps } from "../types";
 import Spacing from "../constants/Spacing";
 import { gql, useMutation } from "@apollo/client";
-import { UserContext } from "../context/UserContext";
 
 const DELETE_INTEGRANTE = gql`
-    mutation removeIntegrante($input: findIntegranteDto!){
-        removeIntegrante(findIntegranteDto: $input){
-        userId
-        }
+  mutation removeIntegrante($input: findIntegranteDto!) {
+    removeIntegrante(findIntegranteDto: $input) {
+      userId
     }
+  }
 `;
 
 const schema = yup.object().shape({
@@ -35,7 +33,8 @@ const UserModal: React.FC<UserProfileModalProps> = ({
   email,
   idUser,
 }) => {
-  const [deleteIntegrante, { data, loading, error }] = useMutation(DELETE_INTEGRANTE);
+  const [deleteIntegrante, { data, loading, error }] =
+    useMutation(DELETE_INTEGRANTE);
   const {
     control,
     handleSubmit,
@@ -49,7 +48,7 @@ const UserModal: React.FC<UserProfileModalProps> = ({
   });
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
-  const onPressSend = () => {    
+  const onPressSend = () => {
     const findUserByIdInput = {
       id: idUser,
     };

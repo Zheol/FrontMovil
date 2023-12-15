@@ -63,6 +63,14 @@ const UPDATE_INTEGRANTE = gql`
   }
 `;
 
+interface Tarea {
+  id: number;
+  descripcion: string;
+  estado: string;
+  created: Date;
+  updated: Date;
+}
+
 const ModalTarea: React.FC<UpdateTareaModalProps> = ({
   visible,
   hideModal,
@@ -93,6 +101,9 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
       rol: item.rol,
       email: item.user.email,
     })) || [];
+
+  const TareaDB = dataTarea;
+  console.log(TareaDB.estado);
 
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
