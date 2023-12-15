@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { Modal, Portal, Divider } from "react-native-paper";
+import { Modal, Portal, Divider, Button } from "react-native-paper";
 import Font from "../constants/Font";
 import FontSize from "../constants/FontSize";
 import { useNavigation } from "@react-navigation/native";
@@ -18,8 +18,8 @@ const OBTENER_TAREA = gql`
       descripcion
       id
       estado
-      created_at
-      updated_at
+      created
+      updated
       idResponsable
     }
   }
@@ -34,6 +34,14 @@ const UPDATE_TAREA = gql`
   }
 `;
 
+const DELETE_TAREA = gql`
+  mutation removeTarea($input: findTareaDto!) {
+    removeTarea(findTareaByIdDto: $input) {
+      id
+    }
+  }
+`;
+
 const GET_INTEGRANTES = gql`
   query getIntegrantebyIdEquipo($id: Int!) {
     getIntegrantebyIdEquipo(id: $id) {
@@ -43,6 +51,16 @@ const GET_INTEGRANTES = gql`
         email
       }
       rol
+    }
+  }
+`;
+
+const GET_INTEGRANTE = gql`
+  query getIntegrantebyId($input: findIntegranteDto!) {
+    getIntegrantebyId(getIntegrantebyId: $input) {
+      user {
+        id
+      }
     }
   }
 `;
@@ -63,15 +81,6 @@ const UPDATE_INTEGRANTE = gql`
   }
 `;
 
-interface Tarea {
-  id: number;
-  descripcion: string;
-  estado: string;
-  created: Date;
-  updated: Date;
-  idResponsable: number;
-}
-
 const ModalTarea: React.FC<UpdateTareaModalProps> = ({
   visible,
   hideModal,
@@ -89,6 +98,9 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
       id: idEquipo,
     },
   });
+  const [deleteTarea, { loading: loadingDelete, error: errorDelete }] =
+    useMutation(DELETE_TAREA);
+
   const { data: dataTarea } = useQuery(OBTENER_TAREA, {
     variables: {
       id: idTarea,
@@ -106,9 +118,12 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
   const TareaDB = dataTarea?.getTareaById;
   
 
-  // if (TareaDB.idResponsable == null) {
-  //   console.log("aun no tiene responsable");
-  // }
+  if (TareaDB.idResponsable != null) {
+    const getIntegrantebyId = {
+      id: TareaDB.idResponsable,
+    };
+    //console.log(getIntegrantebyId);
+  }
 
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
@@ -158,6 +173,23 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
       });
   };
 
+  const funcDeleteTarea = () => {
+    const findTareaByIdDto = {
+      id: idTarea,
+    };
+    deleteTarea({
+      variables: {
+        input: findTareaByIdDto,
+      },
+    })
+      .then(() => {
+        hideModal();
+      })
+      .catch((error) => {
+        console.error("Error al eliminar la tarea", error);
+      });
+  };
+
   return (
     <Portal>
       <Modal
@@ -170,13 +202,12 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
             fontFamily: Font["poppins-semiBold"],
             fontSize: FontSize.large,
             textAlign: "center",
-            marginBottom: 10,
+            marginVertical: 10,
           }}
         >
           {descripcion}
         </Text>
-
-        <View style={{ width: "100%", marginBottom: 10 }}>
+        <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
           <Divider />
         </View>
 
@@ -256,19 +287,27 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
           />
         </View>
 
-        <View style={{ width: "100%", marginTop: 15 }}>
+        <View style={{ width: "100%", marginTop: 25 }}>
           <Text>Responsable: {TareaDB.idResponsable}</Text>
         </View>
 
         <View style={{ width: "100%", marginTop: 15 }}>
-          <Text>Fecha creación: {TareaDB.created_at}</Text>
+          <Text>Fecha creación: {TareaDB.created}</Text>
         </View>
-        <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
-          <Text>Última actualización: {TareaDB.updated_at}</Text>
+        <View style={{ width: "100%", marginTop: 15, marginBottom: 10 }}>
+          <Text>Última actualización: {TareaDB.updated}</Text>
         </View>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
           <Divider />
         </View>
+
+        <Button
+          mode="outlined"
+          onPress={funcDeleteTarea}
+          style={{ width: "100%" }}
+        >
+          Eliminar
+        </Button>
       </Modal>
     </Portal>
   );

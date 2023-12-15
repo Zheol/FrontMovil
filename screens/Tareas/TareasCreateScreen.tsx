@@ -114,11 +114,11 @@ export default function TareasCreateScreen({ route }) {
           <View
             style={{
               alignSelf: "flex-end",
-              marginTop: -50,
+              marginTop: -45,
             }}
           >
             <Button onPress={showModal}>
-              <Icon source="account-details" size={30} />
+              <Icon source="dots-vertical" size={25} />
             </Button>
           </View>
 
