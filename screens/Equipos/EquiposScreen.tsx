@@ -16,6 +16,7 @@ import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
 import { UserContext } from "../../context/UserContext";
 import ModalEquipo from "../../components/ModalEquipo";
+import { ProyectContext } from "../../context/ProyectContext";
 
 const { height } = Dimensions.get("window");
 
@@ -28,10 +29,11 @@ const OBTENER_EQUIPOS = gql`
   }
 `;
 
-export default function EquiposScreen({ route }) {
+export default function EquiposScreen() {
   const [equipo, setEquipo] = useState<Equipo>();
-  const { idProyecto, nombreProyecto } = route.params;
   const { nameUser, emailUser, idUser } = useContext(UserContext);
+  const { nameProyect, idProyect} = useContext(ProyectContext);
+  console.log(nameProyect, idProyect)
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
@@ -49,7 +51,7 @@ export default function EquiposScreen({ route }) {
 
   const { loading, error, data, refetch } = useQuery(OBTENER_EQUIPOS, {
     variables: {
-      id: idProyecto,
+      id: idProyect,
     },
   });
   const equipos: Equipo[] =
@@ -104,7 +106,7 @@ export default function EquiposScreen({ route }) {
               paddingBottom: 10,
             }}
           >
-            {nombreProyecto}
+            {nameProyect}
           </Text>
 
           <View style={{ width: "100%" }}>
@@ -127,8 +129,8 @@ export default function EquiposScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL Tareas
                         navigation.navigate("TareasNav", {
-                          nombreProyecto: nombreProyecto,
-                          idProyecto: idProyecto,
+                          nombreProyecto: nameProyect,
+                          idProyecto: idProyect,
                           nombreEquipo: equipos.nombre,
                           idEquipo: equipos.id,
                         });

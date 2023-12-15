@@ -29,7 +29,6 @@ const CommentBox: React.FC<CreateCommentProps> = ({ idTarea, onCommentAdded, nom
 
   const handleAddComment = () => {
     if (loading) return;
-    console.log(nombreUser)
     const comentario: string = nombreUser + ": " + comment;
     
     const createComentarioInput = {

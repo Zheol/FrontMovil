@@ -28,6 +28,7 @@ import {
 import UserProfileModal from "../../components/UserProfileModal";
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
+import { ProyectContext } from "../../context/ProyectContext";
 
 const schema = yup.object().shape({
   nombre: yup.string().required("Name is required"),
@@ -47,7 +48,7 @@ interface Equipo {
   nombre: string;
 }
 
-export default function EquipoFindScreen({ route }) {
+export default function EquipoFindScreen() {
   const {
     reset,
     control,
@@ -59,8 +60,7 @@ export default function EquipoFindScreen({ route }) {
       nombre: "",
     },
   });
-  const { idProyecto, nombreProyecto} =
-    route.params;
+  const { nameProyect, idProyect} = useContext(ProyectContext);
   const {
     nameUser,
     emailUser,
@@ -76,7 +76,7 @@ export default function EquipoFindScreen({ route }) {
       variables: {
         getEquipoInput: {
           nombre: formData.nombre,
-          idProyecto: idProyecto,
+          idProyecto: idProyect,
         },
       },
     });
@@ -208,8 +208,8 @@ export default function EquipoFindScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL Tareas
                         navigation.navigate("TareasNav", {
-                          nombreProyecto: nombreProyecto,
-                          idProyecto: idProyecto,
+                          nombreProyecto: nameProyect,
+                          idProyecto: idProyect,
                           nombreEquipo: equipos.nombre,
                           idEquipo: equipos.id,
                         });

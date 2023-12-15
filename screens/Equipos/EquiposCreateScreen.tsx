@@ -26,6 +26,7 @@ import {
 import UserProfileModal from "../../components/UserProfileModal";
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
+import { ProyectContext } from "../../context/ProyectContext";
 
 const { height } = Dimensions.get("window");
 
@@ -42,7 +43,7 @@ const schema = yup.object().shape({
   nombre: yup.string().required("Name is required"),
 });
 
-export default function EquipoCreateScreen({ route }) {
+export default function EquipoCreateScreen() {
   const {
     reset,
     control,
@@ -56,13 +57,12 @@ export default function EquipoCreateScreen({ route }) {
   });
 
   const navigation = useNavigation();
-  const { idProyecto, nombreProyecto} =
-    route.params;
   const {
     nameUser,
     emailUser,
     idUser,
   } = useContext(UserContext);
+  const {idProyect} = useContext(ProyectContext)
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
@@ -73,7 +73,7 @@ export default function EquipoCreateScreen({ route }) {
     const createProyectoInput = {
       nombre: formData.nombre,
       idAdmin: idUser,
-      idProyecto: idProyecto,
+      idProyecto: idProyect,
     };
     createEquipo({
       variables: {

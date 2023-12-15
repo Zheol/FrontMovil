@@ -6,13 +6,12 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { ProyectContext } from "../context/ProyectContext";
+import { useContext } from "react";
 
 const Tab = createMaterialBottomTabNavigator();
 
-function EquiposNav({
-  route,
-}: NativeStackScreenProps<RootStackParamList, "EquiposNav">) {
-  const {idProyecto, nombreProyecto} = route.params;
+function EquiposNav() {
   return (
     <Tab.Navigator initialRouteName="MisEquipos">
       <Tab.Screen
@@ -28,7 +27,6 @@ function EquiposNav({
         }}
         name="Create"
         component={EquipoCreateScreen}
-        initialParams={{idProyecto, nombreProyecto}}
       />
 
       {/* Mis Equipos */}
@@ -41,7 +39,6 @@ function EquiposNav({
         }}
         name="MisEquipos"
         component={EquiposScreen}
-        initialParams={{idProyecto, nombreProyecto}}
       />
 
       <Tab.Screen
@@ -57,7 +54,6 @@ function EquiposNav({
         }}
         name="Find"
         component={EquipoFindScreen}
-        initialParams={{idProyecto, nombreProyecto}}
       />
     </Tab.Navigator>
   );

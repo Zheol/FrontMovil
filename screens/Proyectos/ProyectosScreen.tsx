@@ -16,6 +16,7 @@ import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
 import ProyectoUpdateModal from "../../components/UpdateProyectoModal";
 import { UserContext } from "../../context/UserContext";
+import { ProyectContext } from "../../context/ProyectContext";
 
 const { height } = Dimensions.get("window");
 
@@ -76,6 +77,8 @@ export default function ProyectosScreen() {
   };
 
   const { nameUser, emailUser, idUser } = useContext(UserContext);
+  
+  const {setnameProyect, setIdProyect } = useContext(ProyectContext);
   const {
     loading: loadPro,
     error: errProy,
@@ -206,7 +209,8 @@ export default function ProyectosScreen() {
                         borderRadius: 10,
                       }}
                       onPress={() => {
-                        // MANDAR A LA PANTALLA DEL PROYECTO
+                        setIdProyect(projects.id);
+                        setnameProyect(projects.nombre);
                         navigation.navigate("EquiposNav", {
                           nombreProyecto: projects.nombre,
                           idProyecto: projects.id,

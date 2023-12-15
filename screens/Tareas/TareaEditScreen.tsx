@@ -51,7 +51,6 @@ export default function TareaEditScreen({ route }) {
       <Text style={styles.commentText}>{item.comentario}</Text>
     </View>
   );
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View
