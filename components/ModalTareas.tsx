@@ -114,16 +114,15 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
       rol: item.rol,
       email: item.user.email,
     })) || [];
-  
-  const TareaDB = dataTarea?.getTareaById;
-  
 
-  if (TareaDB.idResponsable != null) {
-    const getIntegrantebyId = {
-      id: TareaDB.idResponsable,
-    };
-    //console.log(getIntegrantebyId);
-  }
+  //const TareaDB = dataTarea.getTareaById;
+
+  // if (TareaDB.idResponsable != null) {
+  //   const getIntegrantebyId = {
+  //     id: TareaDB.idResponsable,
+  //   };
+  //   //console.log(getIntegrantebyId);
+  // }
 
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
@@ -158,7 +157,6 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
       idResponsable: selectedItem,
     };
 
-    console.log(findTareaByIdInput, updateIntegranteInput);
     updateIntegrante({
       variables: {
         input: updateIntegranteInput,
@@ -288,14 +286,14 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
         </View>
 
         <View style={{ width: "100%", marginTop: 25 }}>
-          <Text>Responsable: {TareaDB.idResponsable}</Text>
+          <Text>Responsable: {}</Text>
         </View>
 
         <View style={{ width: "100%", marginTop: 15 }}>
-          <Text>Fecha creación: {TareaDB.created}</Text>
+          <Text>Fecha creación: {}</Text>
         </View>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 10 }}>
-          <Text>Última actualización: {TareaDB.updated}</Text>
+          <Text>Última actualización: {}</Text>
         </View>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
           <Divider />

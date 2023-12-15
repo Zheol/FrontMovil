@@ -111,7 +111,7 @@ export default function IntegrantesScreen({ route }) {
             }}
           >
             <Button onPress={showModal}>
-              <Icon source="dots-vertical" size={25} />
+              <Icon source="account-details" size={30} />
             </Button>
           </View>
 

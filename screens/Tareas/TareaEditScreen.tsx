@@ -68,12 +68,12 @@ export default function TareaEditScreen({ route }) {
           <Text
             style={{
               fontFamily: Font["poppins-semiBold"],
-              fontSize: 20,
+              fontSize: 30,
               maxWidth: "60%",
               textAlign: "center",
             }}
           >
-            {nombreTarea}
+            Tarea: {nombreTarea}
           </Text>
         </View>
 
@@ -81,21 +81,28 @@ export default function TareaEditScreen({ route }) {
           style={{
             alignItems: "center",
             paddingTop: 20,
-            marginBottom: 20,
           }}
-        ></View>
-        <CommentBox
-          idTarea={idTarea}
-          onCommentAdded={refetch}
-          nombreUser={nameUser}
-        />
-
+        >
+          <Text
+            style={{
+              fontFamily: Font["poppins-semiBold"],
+              fontSize: 30,
+              maxWidth: "60%",
+              textAlign: "center",
+            }}
+          >
+            Estado: {estadoTarea}
+          </Text>
+        </View>
+        <CommentBox idTarea={idTarea} onCommentAdded={refetch} nombreUser={nameUser} />
+            
         <FlatList
           data={data?.getComentariosbyIdTarea}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           ListFooterComponent={<View style={{ height: 320 }} />}
         />
+
       </View>
     </SafeAreaView>
   );
