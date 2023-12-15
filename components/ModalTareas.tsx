@@ -285,16 +285,16 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
           />
         </View>
 
-        <View style={{ width: "100%", marginTop: 25 }}>
-          <Text>Responsable: {}</Text>
+        {/* <View style={{ width: "100%", marginTop: 25 }}>
+          <Text>Responsable: {TareaDB.idResponsable}</Text>
         </View>
 
         <View style={{ width: "100%", marginTop: 15 }}>
           <Text>Fecha creación: {}</Text>
         </View>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 10 }}>
-          <Text>Última actualización: {}</Text>
-        </View>
+          <Text>Última actualización: {TareaDB.updated}</Text>
+        </View> */}
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
           <Divider />
         </View>
