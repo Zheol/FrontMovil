@@ -30,18 +30,15 @@ const OBTENER_EQUIPOS = gql`
 
 export default function EquiposScreen({ route }) {
   const [equipo, setEquipo] = useState<Equipo>();
-  const {idProyecto, nombreProyecto} =
-    route.params;
-  const {
-    nameUser,
-    emailUser,
-    idUser,
-  } = useContext(UserContext);
+  const { idProyecto, nombreProyecto } = route.params;
+  const { nameUser, emailUser, idUser } = useContext(UserContext);
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
-  const [modalVisibleEquipoId, setModalVisibleEquipotId] = useState<number | null>(null);
+  const [modalVisibleEquipoId, setModalVisibleEquipotId] = useState<
+    number | null
+  >(null);
   const showModalUpdate = (equipoId: number) => {
     setModalVisibleEquipotId(equipoId);
   };
@@ -66,7 +63,6 @@ export default function EquiposScreen({ route }) {
       return () => {};
     }, [])
   );
- 
 
   return (
     <PaperProvider>
@@ -159,11 +155,11 @@ export default function EquiposScreen({ route }) {
                           <Icon source="format-list-checkbox" size={17} />
                         </Button>
                       </View>
-                      <ModalEquipo 
+                      <ModalEquipo
                         visible={modalVisibleEquipoId === equipos.id}
                         hideModal={hideModalUpdate}
-                        nombre={equipos.name}
-                        idEquipo={equipos.id}  
+                        nombre={equipos.nombre}
+                        idEquipo={equipos.id}
                       />
                     </TouchableOpacity>
                   );
