@@ -4,6 +4,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  StyleSheet
 } from "react-native";
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
@@ -19,84 +20,55 @@ import AppTextInput from "../../components/AppTextInput";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
 import { ActivityIndicator } from "react-native-paper";
+import CommentBox from "../../components/CommnetBox";
+import { FlatList } from "react-native-gesture-handler";
 
 const { height } = Dimensions.get("window");
 
-const EDITAR_TAREA = gql`
-  mutation updateTarea($input: updateTareaDto!, $inputId: findTareaDto!) {
-    updateTarea(updateTareaInput: $input, findTareaByIdInput: $inputId) {
-      descripcion
-      estado
+const GET_COMENTARIOS = gql`
+query getComentariosbyIdTarea ($input: getComentariosByIdTareaDto!) {
+    getComentariosbyIdTarea(getComentariosbyIdTarea: $input ) {
+        id,
+        comentario,
+        created_at
     }
-  }
-`;
+}
+`
+
+interface Comentario {
+  __typename: string;
+  comentario: string;
+  created_at: string;
+  id: number;
+}
 
 export default function TareaEditScreen({ route }) {
   const {
-    idProyecto,
-    nombreProyecto,
-    idEquipo,
-    nombreEquipo,
     idTarea,
     nombreTarea,
     estadoTarea,
   } = route.params;
   const navigation = useNavigation();
-  const [editTarea, { loading: cargando, error: errores }] =
-    useMutation(EDITAR_TAREA);
-  const onCursoPressSend = () => {
-    const findTareaByIdInput = {
-      id: idTarea,
-    };
-    const updateTareaInput = {
-      estado: "En Curso",
-      descripcion: nombreTarea,
-    };
-    editTarea({
-      variables: {
-        input: updateTareaInput,
-        inputId: findTareaByIdInput,
+  const {
+    loading: loadPro,
+    error: errProy,
+    data,
+    refetch,
+  } = useQuery(GET_COMENTARIOS, {
+    variables: {
+      input: {
+        id: idTarea,
       },
-    });
-
-    navigation.navigate("Tareas");
-  };
-
-  const onCompletadaPressSend = () => {
-    const findTareaByIdInput = {
-      id: idTarea,
-    };
-    const updateTareaInput = {
-      estado: "Completada",
-      descripcion: nombreTarea,
-    };
-    editTarea({
-      variables: {
-        input: updateTareaInput,
-        inputId: findTareaByIdInput,
-      },
-    });
-
-    navigation.navigate("Tareas");
-  };
-
-  const onEliminadaPressSend = () => {
-    const findTareaByIdInput = {
-      id: idTarea,
-    };
-    const updateTareaInput = {
-      estado: "Eliminada",
-      descripcion: nombreTarea,
-    };
-    editTarea({
-      variables: {
-        input: updateTareaInput,
-        inputId: findTareaByIdInput,
-      },
-    });
-
-    navigation.navigate("Tareas");
-  };
+    },
+  });
+  console.log(data?.getComentariosbyIdTarea)
+  refetch()
+  const renderItem = ({ item }: {item: Comentario}) => (
+    <View style={styles.commentContainer}>
+      <Text style={styles.dateText}>{item.created_at}:</Text>
+      <Text style={styles.commentText}>{item.comentario}</Text>
+    </View>
+  );
 
   return (
     <SafeAreaView>
@@ -141,100 +113,32 @@ export default function TareaEditScreen({ route }) {
             Estado: {estadoTarea}
           </Text>
         </View>
-
-        <TouchableOpacity
-          style={{
-            marginVertical: 20,
-            backgroundColor: "#005050",
-            height: 80,
-            borderRadius: 10,
-          }}
-          onPress={onCursoPressSend}
-        >
-          <Text
-            style={{
-              fontSize: 25,
-              width: 350,
-              color: "white",
-              textAlign: "center",
-              paddingTop: 20,
-            }}
-          >
-            En curso
-          </Text>
-          <Text
-            style={{
-              width: 350,
-              color: "red",
-              textAlign: "center",
-            }}
-          ></Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            marginVertical: 20,
-            backgroundColor: "blue",
-            height: 80,
-            borderRadius: 10,
-          }}
-          onPress={onCompletadaPressSend}
-        >
-          <Text
-            style={{
-              fontSize: 25,
-              width: 350,
-              color: "white",
-              textAlign: "center",
-              paddingTop: 20,
-            }}
-          >
-            Compleatada
-          </Text>
-          <Text
-            style={{
-              width: 350,
-              color: "red",
-              textAlign: "center",
-            }}
-          ></Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            marginVertical: 20,
-            backgroundColor: "red",
-            height: 80,
-            borderRadius: 10,
-          }}
-          onPress={onEliminadaPressSend}
-        >
-          <Text
-            style={{
-              fontSize: 25,
-              width: 350,
-              color: "white",
-              textAlign: "center",
-              paddingTop: 20,
-            }}
-          >
-            Eliminar
-          </Text>
-          <Text
-            style={{
-              width: 350,
-              color: "red",
-              textAlign: "center",
-            }}
-          ></Text>
-        </TouchableOpacity>
-
-        <View style={{ height: 40, paddingTop: 20 }}>
-          {/* {error && (
-              <Text style={{ color: "red", textAlign: "center" }}>
-                {error.message}
-              </Text>
-            )} */}
-        </View>
+        <CommentBox
+          idTarea={idTarea}
+          onCommentAdded={refetch}
+        />
+        <FlatList
+          data={data?.getComentariosbyIdTarea}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()}
+        />
       </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  commentContainer: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  dateText: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color:"black"
+  },
+  commentText: {
+    // Estilos para el texto del comentario
+  },
+});
