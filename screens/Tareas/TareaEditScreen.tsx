@@ -52,8 +52,6 @@ export default function TareaEditScreen({ route }) {
     </View>
   );
 
-  console.log(data?.getComentariosbyIdTarea)
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View
@@ -71,12 +69,12 @@ export default function TareaEditScreen({ route }) {
           <Text
             style={{
               fontFamily: Font["poppins-semiBold"],
-              fontSize: 30,
+              fontSize: 20,
               maxWidth: "60%",
               textAlign: "center",
             }}
           >
-            Tarea: {nombreTarea}
+            {nombreTarea}
           </Text>
         </View>
 
@@ -84,28 +82,21 @@ export default function TareaEditScreen({ route }) {
           style={{
             alignItems: "center",
             paddingTop: 20,
+            marginBottom: 20,
           }}
-        >
-          <Text
-            style={{
-              fontFamily: Font["poppins-semiBold"],
-              fontSize: 30,
-              maxWidth: "60%",
-              textAlign: "center",
-            }}
-          >
-            Estado: {estadoTarea}
-          </Text>
-        </View>
-        <CommentBox idTarea={idTarea} onCommentAdded={refetch} nombreUser={nameUser} />
-            
+        ></View>
+        <CommentBox
+          idTarea={idTarea}
+          onCommentAdded={refetch}
+          nombreUser={nameUser}
+        />
+
         <FlatList
           data={data?.getComentariosbyIdTarea}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           ListFooterComponent={<View style={{ height: 320 }} />}
         />
-
       </View>
     </SafeAreaView>
   );
