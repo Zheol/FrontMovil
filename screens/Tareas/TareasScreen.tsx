@@ -40,8 +40,10 @@ export default function TareasScreen({ route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
-  const [modalVisibleTareaId, setModalVisibleTareaId] = useState(null);
-  const showModalUpdate = (tareaId) => {
+  const [modalVisibleTareaId, setModalVisibleTareaId] = useState<number | null>(
+    null
+  );
+  const showModalUpdate = (tareaId: number) => {
     setModalVisibleTareaId(tareaId);
   };
 
@@ -429,7 +431,8 @@ export default function TareasScreen({ route }) {
                       <ModalTarea
                         visible={modalVisibleTareaId === tareas.id}
                         hideModal={hideModalUpdate}
-                        nombre={tareas.name}
+                        descripcion={tareas.name}
+                        estado={tareas.estado}
                         idTarea={tareas.id}
                       />
                     </TouchableOpacity>
