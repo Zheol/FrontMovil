@@ -13,9 +13,10 @@ const CREATE_COMENTARIO = gql`
 interface CreateCommentProps {
   idTarea: number;
   onCommentAdded: () => void;
+  nombreUser: string;
 }
 
-const CommentBox: React.FC<CreateCommentProps> = ({ idTarea, onCommentAdded }) => {
+const CommentBox: React.FC<CreateCommentProps> = ({ idTarea, onCommentAdded, nombreUser }) => {
   const [comment, setComment] = useState('');
 
   const [createComentario, { loading, error }] = useMutation(CREATE_COMENTARIO, {
@@ -28,10 +29,12 @@ const CommentBox: React.FC<CreateCommentProps> = ({ idTarea, onCommentAdded }) =
 
   const handleAddComment = () => {
     if (loading) return;
-
+    console.log(nombreUser)
+    const comentario: string = nombreUser + ": " + comment;
+    
     const createComentarioInput = {
       idTarea: idTarea,
-      comentario: comment
+      comentario: comentario
     };
     
     createComentario({
@@ -50,6 +53,7 @@ const CommentBox: React.FC<CreateCommentProps> = ({ idTarea, onCommentAdded }) =
         placeholder="Escribe un comentario..."
         multiline
         numberOfLines={5}
+        maxLength={200}
       />
       <Button 
         title="Enviar" 
