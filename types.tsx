@@ -86,6 +86,10 @@ export type formCreateProyect = {
   area: string;
 };
 
+export type formUpdateTeam = {
+  nombre: string;
+};
+
 export type formFindProyect = {
   nombre: string;
 };
@@ -112,6 +116,13 @@ export interface UpdateProyectoModalProps {
   nombre: string;
   area: string;
   idProyecto: number;
+}
+
+export interface UpdateEquipoModalProps {
+  visible: boolean;
+  hideModal: () => void;
+  nombre: string;
+  idEquipo: number;
 }
 
 export type formChangePassword = {

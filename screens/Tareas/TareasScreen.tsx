@@ -8,9 +8,9 @@ import {
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 const { height } = Dimensions.get("window");
 import {
   Button,
@@ -64,7 +64,12 @@ export default function TareasScreen({ route }) {
       id: idEquipo,
     },
   });
-  refetch(data);
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      return () => {};
+    }, [])
+  );
   const tareas: Tarea[] =
     data?.getTareasbyEquipoId?.map((item) => ({
       id: item.id,
@@ -72,10 +77,10 @@ export default function TareasScreen({ route }) {
       estado: item.estado,
     })) || [];
 
-    const tareasCreadas: Tarea[] = [];
-    const tareasEnCurso: Tarea[] = [];
-    const tareasCompletadas: Tarea[] = [];
-    const tareasEliminadas: Tarea[] = [];
+  const tareasCreadas: Tarea[] = [];
+  const tareasEnCurso: Tarea[] = [];
+  const tareasCompletadas: Tarea[] = [];
+  const tareasEliminadas: Tarea[] = [];
 
   if (data && data.getTareasbyEquipoId) {
       data.getTareasbyEquipoId.forEach(item => {

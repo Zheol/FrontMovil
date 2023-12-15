@@ -8,14 +8,16 @@ import {
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Equipo } from "./types";
-import { useNavigation } from "@react-navigation/native";
-const { height } = Dimensions.get("window");
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
 import { UserContext } from "../../context/UserContext";
+import ModalEquipo from "../../components/ModalEquipo";
+
+const { height } = Dimensions.get("window");
 
 const OBTENER_EQUIPOS = gql`
   query getEquiposbyProyectoId($id: Int!) {
@@ -39,18 +41,32 @@ export default function EquiposScreen({ route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
+  const [modalVisibleEquipoId, setModalVisibleEquipotId] = useState(null);
+  const showModalUpdate = (projectId) => {
+    setModalVisibleEquipotId(projectId);
+  };
+
+  const hideModalUpdate = () => {
+    setModalVisibleEquipotId(null);
+  };
 
   const { loading, error, data, refetch } = useQuery(OBTENER_EQUIPOS, {
     variables: {
       id: idProyecto,
     },
   });
-  refetch(data);
   const equipos: Equipo[] =
     data?.getEquiposbyProyectId?.map((item) => ({
       id: item.id,
       nombre: item.nombre,
     })) || [];
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      return () => {};
+    }, [])
+  );
+ 
 
   return (
     <PaperProvider>
@@ -115,13 +131,10 @@ export default function EquiposScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL Tareas
                         navigation.navigate("TareasNav", {
-                          nombreUser: nameUser,
-                          idUser: idUser,
                           nombreProyecto: nombreProyecto,
                           idProyecto: idProyecto,
                           nombreEquipo: equipos.nombre,
                           idEquipo: equipos.id,
-                          email: emailUser,
                         });
                       }}
                     >
@@ -136,6 +149,22 @@ export default function EquiposScreen({ route }) {
                       >
                         {equipos.nombre}
                       </Text>
+                      <View
+                        style={{
+                          alignSelf: "flex-end",
+                          paddingTop: 10,
+                        }}
+                      >
+                        <Button onPress={() => showModalUpdate(equipos.id)}>
+                          <Icon source="format-list-checkbox" size={17} />
+                        </Button>
+                      </View>
+                      <ModalEquipo 
+                        visible={modalVisibleEquipoId === equipos.id}
+                        hideModal={hideModalUpdate}
+                        nombre={equipos.name}
+                        idEquipo={equipos.id}  
+                      />
                     </TouchableOpacity>
                   );
                 })}
