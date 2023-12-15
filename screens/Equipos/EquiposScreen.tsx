@@ -63,7 +63,7 @@ export default function EquiposScreen({ route }) {
       return () => {};
     }, [])
   );
-
+  refetch();
   return (
     <PaperProvider>
       <View
