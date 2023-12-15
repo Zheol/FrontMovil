@@ -18,8 +18,8 @@ const OBTENER_TAREA = gql`
       descripcion
       id
       estado
-      created
-      updated
+      created_at
+      updated_at
       idResponsable
     }
   }
@@ -102,8 +102,9 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
       rol: item.rol,
       email: item.user.email,
     })) || [];
-
-  const TareaDB = dataTarea.getTareaById;
+  
+  const TareaDB = dataTarea?.getTareaById;
+  
 
   // if (TareaDB.idResponsable == null) {
   //   console.log("aun no tiene responsable");
@@ -260,10 +261,10 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
         </View>
 
         <View style={{ width: "100%", marginTop: 15 }}>
-          <Text>Fecha creación: {TareaDB.created}</Text>
+          <Text>Fecha creación: {TareaDB.created_at}</Text>
         </View>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
-          <Text>Última actualización: {TareaDB.updated}</Text>
+          <Text>Última actualización: {TareaDB.updated_at}</Text>
         </View>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
           <Divider />

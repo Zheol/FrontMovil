@@ -7,8 +7,9 @@ import fonts from "./config/fonts";
 import Navigation from "./navigation";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { UserProvider } from "./context/UserContext";
+import { ProyectProvider } from "./context/ProyectContext";
 const client = new ApolloClient({
-  uri: "http://192.168.1.111:4000/graphql",
+  uri: "http://172.29.32.1:4000/graphql",
   cache: new InMemoryCache(),
 });
 
@@ -17,12 +18,14 @@ export default function App() {
 
   return !fontsLoaded ? null : (
     <UserProvider>
-      <ApolloProvider client={client}>
-        <SafeAreaProvider>
-          <Navigation />
-          <StatusBar />
-        </SafeAreaProvider>
-      </ApolloProvider>
+      <ProyectProvider>
+        <ApolloProvider client={client}>
+          <SafeAreaProvider>
+            <Navigation />
+            <StatusBar />
+          </SafeAreaProvider>
+        </ApolloProvider>
+      </ProyectProvider>
     </UserProvider>
   );
 }

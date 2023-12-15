@@ -23,8 +23,8 @@ const OBTENER_TAREAS = gql`
       descripcion
       id
       estado
-      created
-      updated
+      created_at
+      updated_at
     }
   }
 `;
@@ -33,12 +33,11 @@ interface Tarea {
   id: number;
   descripcion: string;
   estado: string;
-  created: Date;
-  updated: Date;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export default function TareasScreen({ route }) {
-  const [proyect, setProyect] = useState<Tarea>();
   const { idProyecto, nombreProyecto, idEquipo, nombreEquipo } = route.params;
   const { nameUser, emailUser, idUser } = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
@@ -53,11 +52,6 @@ export default function TareasScreen({ route }) {
 
   const hideModalUpdate = () => {
     setModalVisibleTareaId(null);
-  };
-  const containerStyle = {
-    backgroundColor: "white",
-    padding: 40,
-    alignItems: "center",
   };
 
   const { loading, error, data, refetch } = useQuery(OBTENER_TAREAS, {
@@ -78,14 +72,16 @@ export default function TareasScreen({ route }) {
   const tareasCompletadas: Tarea[] = [];
   const tareasEliminadas: Tarea[] = [];
 
+  console.log(data)
+
   if (data && data.getTareasbyEquipoId) {
     data.getTareasbyEquipoId.forEach((item: Tarea) => {
       const tarea = {
         id: item.id,
         descripcion: item.descripcion,
         estado: item.estado,
-        created: item.created,
-        updated: item.created,
+        created_at: item.created_at,
+        updated_at: item.updated_at,
       };
 
       switch (tarea.estado) {
