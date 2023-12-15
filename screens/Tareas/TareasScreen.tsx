@@ -23,6 +23,8 @@ const OBTENER_TAREAS = gql`
       descripcion
       id
       estado
+      created
+      updated
     }
   }
 `;
@@ -31,6 +33,8 @@ interface Tarea {
   id: number;
   descripcion: string;
   estado: string;
+  created: Date;
+  updated: Date;
 }
 
 export default function TareasScreen({ route }) {
@@ -80,6 +84,8 @@ export default function TareasScreen({ route }) {
         id: item.id,
         descripcion: item.descripcion,
         estado: item.estado,
+        created: item.created,
+        updated: item.created,
       };
 
       switch (tarea.estado) {
@@ -118,16 +124,6 @@ export default function TareasScreen({ route }) {
           email={emailUser}
           idUser={idUser}
         />
-        <View
-          style={{
-            marginTop: 30,
-            alignSelf: "flex-start",
-          }}
-        >
-          <Button onPress={showModal}>
-            <Icon source="magnify" size={30} />
-          </Button>
-        </View>
 
         <View
           style={{
@@ -140,7 +136,7 @@ export default function TareasScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
-              marginTop: -43,
+              marginTop: 40,
               paddingBottom: 10,
             }}
           >
@@ -170,7 +166,79 @@ export default function TareasScreen({ route }) {
                       style={{
                         marginVertical: 20,
                         backgroundColor: "#ffebcd",
-                        height: 120,
+                        height: 90,
+                        borderRadius: 10,
+                      }}
+                      key={tareas.id}
+                      onPress={() => {
+                        navigation.navigate("EditarTarea", {
+                          nombreUser: nameUser,
+                          idUser: idUser,
+                          idProyecto: idProyecto,
+                          nombreProyecto: nombreProyecto,
+                          nombreEquipo: nombreEquipo,
+                          idEquipo: idEquipo,
+                          nombreTarea: tareas.descripcion,
+                          idTarea: tareas.id,
+                          estadoTarea: tareas.estado,
+                        });
+                      }}
+                    >
+                      <Text
+                        style={{
+                          width: 350,
+                          color: "grey",
+                          fontSize: 13,
+                          alignSelf: "flex-start",
+                          paddingTop: 10,
+                          paddingLeft: 15,
+                        }}
+                      >
+                        C: {tareas.created}
+                      </Text>
+                      <Text
+                        style={{
+                          width: 350,
+                          color: "black",
+                          textAlign: "center",
+                          fontSize: 15,
+                        }}
+                      >
+                        {tareas.descripcion}
+                      </Text>
+                      <View
+                        style={{
+                          alignSelf: "flex-end",
+                          paddingTop: 5,
+                        }}
+                      >
+                        <Button onPress={() => showModalUpdate(tareas.id)}>
+                          <Icon source="format-list-checkbox" size={17} />
+                        </Button>
+                      </View>
+                      <ModalTarea
+                        visible={modalVisibleTareaId === tareas.id}
+                        hideModal={hideModalUpdate}
+                        descripcion={tareas.descripcion}
+                        idTarea={tareas.id}
+                        estado={tareas.estado}
+                        idEquipo={idEquipo}
+                      />
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+
+              <Text>Tareas en Curso</Text>
+
+              <View>
+                {tareasEnCurso.map((tareas: any) => {
+                  return (
+                    <TouchableOpacity
+                      style={{
+                        marginVertical: 20,
+                        backgroundColor: "#ffebcd",
+                        height: 90,
                         borderRadius: 10,
                       }}
                       key={tareas.id}
@@ -199,14 +267,13 @@ export default function TareasScreen({ route }) {
                           paddingLeft: 15,
                         }}
                       >
-                        {tareas.estado}
+                        C: {tareas.created}
                       </Text>
                       <Text
                         style={{
                           width: 350,
                           color: "black",
                           textAlign: "center",
-                          paddingTop: 20,
                           fontSize: 15,
                         }}
                       >
@@ -215,77 +282,7 @@ export default function TareasScreen({ route }) {
                       <View
                         style={{
                           alignSelf: "flex-end",
-                          paddingTop: 10,
-                        }}
-                      >
-                        <Button onPress={() => showModalUpdate(tareas.id)}>
-                          <Icon source="format-list-checkbox" size={17} />
-                        </Button>
-                      </View>
-                      <ModalTarea
-                        visible={modalVisibleTareaId === tareas.id}
-                        hideModal={hideModalUpdate}
-                        descripcion={tareas.descripcion}
-                        idTarea={tareas.id}
-                        estado={tareas.estado}
-                      />
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-
-              <Text>Tareas en Curso</Text>
-
-              <View>
-                {tareasEnCurso.map((tareas: any) => {
-                  return (
-                    <TouchableOpacity
-                      style={{
-                        marginVertical: 20,
-                        backgroundColor: "#ffebcd",
-                        height: 120,
-                        borderRadius: 10,
-                      }}
-                      key={tareas.id}
-                      onPress={() => {
-                        // MANDAR A LA PANTALLA DEL PROYECTO
-                        navigation.navigate("EditarTarea", {
-                          nombreUser: nameUser,
-                          idUser: idUser,
-                          idProyecto: idProyecto,
-                          nombreProyecto: nombreProyecto,
-                          nombreEquipo: nombreEquipo,
-                          idEquipo: idEquipo,
-                          nombreTarea: tareas.descripcion,
-                          idTarea: tareas.id,
-                          estadoTarea: tareas.estado,
-                        });
-                      }}
-                    >
-                      <Text
-                        style={{
-                          width: 350,
-                          color: "black",
-                          textAlign: "center",
-                          paddingTop: 35,
-                          fontSize: 15,
-                        }}
-                      >
-                        {tareas.descripcion}
-                      </Text>
-                      <Text
-                        style={{
-                          width: 350,
-                          color: "red",
-                          textAlign: "center",
-                        }}
-                      >
-                        {tareas.estado}
-                      </Text>
-                      <View
-                        style={{
-                          alignSelf: "flex-end",
-                          paddingTop: 10,
+                          paddingTop: 5,
                         }}
                       >
                         <Button onPress={() => showModalUpdate(tareas.id)}>
@@ -314,7 +311,7 @@ export default function TareasScreen({ route }) {
                       style={{
                         marginVertical: 20,
                         backgroundColor: "#ffebcd",
-                        height: 120,
+                        height: 90,
                         borderRadius: 10,
                       }}
                       key={tareas.id}
@@ -336,27 +333,29 @@ export default function TareasScreen({ route }) {
                       <Text
                         style={{
                           width: 350,
+                          color: "grey",
+                          fontSize: 13,
+                          alignSelf: "flex-start",
+                          paddingTop: 10,
+                          paddingLeft: 15,
+                        }}
+                      >
+                        C: {tareas.created}
+                      </Text>
+                      <Text
+                        style={{
+                          width: 350,
                           color: "black",
                           textAlign: "center",
-                          paddingTop: 35,
                           fontSize: 15,
                         }}
                       >
                         {tareas.descripcion}
                       </Text>
-                      <Text
-                        style={{
-                          width: 350,
-                          color: "red",
-                          textAlign: "center",
-                        }}
-                      >
-                        {tareas.estado}
-                      </Text>
                       <View
                         style={{
                           alignSelf: "flex-end",
-                          paddingTop: 10,
+                          paddingTop: 5,
                         }}
                       >
                         <Button onPress={() => showModalUpdate(tareas.id)}>
@@ -385,7 +384,7 @@ export default function TareasScreen({ route }) {
                       style={{
                         marginVertical: 20,
                         backgroundColor: "#ffebcd",
-                        height: 120,
+                        height: 90,
                         borderRadius: 10,
                       }}
                       key={tareas.id}
@@ -407,27 +406,29 @@ export default function TareasScreen({ route }) {
                       <Text
                         style={{
                           width: 350,
+                          color: "grey",
+                          fontSize: 13,
+                          alignSelf: "flex-start",
+                          paddingTop: 10,
+                          paddingLeft: 15,
+                        }}
+                      >
+                        C: {tareas.created}
+                      </Text>
+                      <Text
+                        style={{
+                          width: 350,
                           color: "black",
                           textAlign: "center",
-                          paddingTop: 35,
                           fontSize: 15,
                         }}
                       >
                         {tareas.descripcion}
                       </Text>
-                      <Text
-                        style={{
-                          width: 350,
-                          color: "red",
-                          textAlign: "center",
-                        }}
-                      >
-                        {tareas.estado}
-                      </Text>
                       <View
                         style={{
                           alignSelf: "flex-end",
-                          paddingTop: 10,
+                          paddingTop: 5,
                         }}
                       >
                         <Button onPress={() => showModalUpdate(tareas.id)}>
