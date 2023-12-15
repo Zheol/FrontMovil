@@ -156,7 +156,7 @@ export default function TareasScreen({ route }) {
             <Divider />
           </View>
 
-          <View style={{ marginBottom: 60, marginTop: 5 }}>
+          <View style={{ marginBottom: 90, marginTop: 5 }}>
             <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>
               <Text>Tareas Creadas</Text>
               <View>
