@@ -65,12 +65,6 @@ export default function TareasScreen({ route }) {
       return () => {};
     }, [])
   );
-  const tareas: Tarea[] =
-    data?.getTareasbyEquipoId?.map((item) => ({
-      id: item.id,
-      descripcion: item.descripcion,
-      estado: item.estado,
-    })) || [];
 
   const tareasCreadas: Tarea[] = [];
   const tareasEnCurso: Tarea[] = [];
@@ -78,7 +72,7 @@ export default function TareasScreen({ route }) {
   const tareasEliminadas: Tarea[] = [];
 
   if (data && data.getTareasbyEquipoId) {
-    data.getTareasbyEquipoId.forEach((item) => {
+    data.getTareasbyEquipoId.forEach((item: Tarea) => {
       const tarea = {
         id: item.id,
         descripcion: item.descripcion,

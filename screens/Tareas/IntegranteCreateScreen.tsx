@@ -82,10 +82,7 @@ export default function IntegrantesCreateScreen({ route }) {
           input: findUserByEmailInput,
         },
       });
-
       const userId = userData.user.id;
-
-      console.log(userId);
 
       const createIntegranteInput = {
         userId: userId,

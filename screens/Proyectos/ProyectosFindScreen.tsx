@@ -40,7 +40,7 @@ const FIND_PROYECT = gql`
 
 interface Project {
   id: number;
-  name: string;
+  nombre: string;
   area: string;
 }
 
@@ -78,9 +78,9 @@ export default function ProyectoFindScreen() {
   };
 
   const projects: Project[] =
-    data?.getProyectobyUserIdName?.map((item) => ({
+    data?.getProyectobyUserIdName?.map((item: Project) => ({
       id: item.id,
-      name: item.nombre,
+      nombre: item.nombre,
       area: item.area,
     })) || [];
 
@@ -194,7 +194,7 @@ export default function ProyectoFindScreen() {
                     onPress={() => {
                       // MANDAR A LA PANTALLA DEL PROYECTO
                       navigation.navigate("EquiposNav", {
-                        nombreProyecto: projects.name,
+                        nombreProyecto: projects.nombre,
                         idProyecto: projects.id,
                       });
                     }}
@@ -220,7 +220,7 @@ export default function ProyectoFindScreen() {
                         fontSize: 15,
                       }}
                     >
-                      {projects.name}
+                      {projects.nombre}
                     </Text>
 
                   </TouchableOpacity>

@@ -14,13 +14,10 @@ function TareasNav({
   route,
 }: NativeStackScreenProps<RootStackParamList, "TareasNav">) {
   const {
-    idUser,
-    nombreUser,
     idProyecto,
     nombreProyecto,
     idEquipo,
     nombreEquipo,
-    email,
   } = route.params;
 
   return (
@@ -39,13 +36,10 @@ function TareasNav({
         name="Create"
         component={TareasCreateScreen}
         initialParams={{
-          idUser,
-          nombreUser,
           idProyecto,
           nombreProyecto,
           idEquipo,
           nombreEquipo,
-          email,
         }}
       />
 
@@ -60,13 +54,10 @@ function TareasNav({
         name="Tareas"
         component={TareasScreen}
         initialParams={{
-          idUser,
-          nombreUser,
           idProyecto,
           nombreProyecto,
           idEquipo,
           nombreEquipo,
-          email,
         }}
       />
 
@@ -84,13 +75,10 @@ function TareasNav({
         }}
         component={IntegrantesScreen}
         initialParams={{
-          idUser,
-          nombreUser,
           idProyecto,
           nombreProyecto,
           idEquipo,
           nombreEquipo,
-          email,
         }}
       />
     </Tab.Navigator>
