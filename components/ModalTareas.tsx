@@ -12,6 +12,19 @@ import SelectDropdown from "react-native-select-dropdown";
 
 const estados = ["Completada", "En Curso"];
 
+const OBTENER_TAREA = gql`
+  query getTareaById($id: Int!) {
+    getTareaById(id: $id) {
+      descripcion
+      id
+      estado
+      created
+      updated
+      idResponsable
+    }
+  }
+`;
+
 const UPDATE_TAREA = gql`
   mutation updateTarea($input: updateTareaDto!, $inputId: findTareaDto!) {
     updateTarea(updateTareaInput: $input, findTareaByIdInput: $inputId) {
@@ -57,17 +70,19 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
   descripcion,
   estado,
   idEquipo,
-  created,
-  updated,
 }) => {
   const [updateTarea, { loading: loadingUpdate, error: errorUpdate }] =
     useMutation(UPDATE_TAREA);
   const [updateIntegrante, { loading: loadingUpdateI, error: errorUpdateI }] =
     useMutation(UPDATE_INTEGRANTE);
-
   const { loading, error, data, refetch } = useQuery(GET_INTEGRANTES, {
     variables: {
       id: idEquipo,
+    },
+  });
+  const { data: dataTarea } = useQuery(OBTENER_TAREA, {
+    variables: {
+      id: idTarea,
     },
   });
 
