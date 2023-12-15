@@ -19,15 +19,9 @@ import AppTextInput from "../../components/AppTextInput";
 import Colors from "../../constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import UserProfileModal from "../../components/UserProfileModal";
-import {
-  Button,
-  PaperProvider,
-  Divider,
-  Icon
-} from "react-native-paper";
+import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
-
 
 const CREATE_TAREA = gql`
   mutation createTarea($input: CreateTareaInput!) {
@@ -54,17 +48,8 @@ export default function TareasCreateScreen({ route }) {
       descripcion: "",
     },
   });
-  const {
-    idProyecto,
-    nombreProyecto,
-    idEquipo,
-    nombreEquipo,
-  } = route.params;
-  const {
-    nameUser,
-    emailUser,
-    idUser,
-  } = useContext(UserContext);
+  const { idProyecto, nombreProyecto, idEquipo, nombreEquipo } = route.params;
+  const { nameUser, emailUser, idUser } = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
@@ -102,22 +87,12 @@ export default function TareasCreateScreen({ route }) {
         }}
       >
         <UserProfileModal
-            visible={modalVisible}
-            hideModal={hideModal}
-            nombre={nameUser}
-            email={emailUser}
-            idUser={idUser}
-          />
-          <View
-          style={{
-            marginTop: 30,
-            alignSelf: "flex-start",
-          }}
-        >
-          <Button onPress={showModal}>
-            <Icon source="magnify" size={30} />
-          </Button>
-        </View>
+          visible={modalVisible}
+          hideModal={hideModal}
+          nombre={nameUser}
+          email={emailUser}
+          idUser={idUser}
+        />
         <View
           style={{
             alignItems: "center",
@@ -129,7 +104,7 @@ export default function TareasCreateScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
-              marginTop: -43,
+              marginTop: 40,
               paddingBottom: 10,
             }}
           >
@@ -148,11 +123,9 @@ export default function TareasCreateScreen({ route }) {
           </View>
 
           <View style={{ width: "100%" }}>
-           <Divider />
+            <Divider />
           </View>
-
         </View>
-
 
         <View
           style={{

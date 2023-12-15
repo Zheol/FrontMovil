@@ -86,17 +86,6 @@ export default function IntegrantesScreen({ route }) {
           email={emailUser}
           idUser={idUser}
         />
-
-        <View
-          style={{
-            marginTop: 30,
-            alignSelf: "flex-start",
-          }}
-        >
-          <Button onPress={showModal}>
-            <Icon source="magnify" size={30} />
-          </Button>
-        </View>
         <View
           style={{
             alignItems: "center",
@@ -108,7 +97,7 @@ export default function IntegrantesScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
-              marginTop: -43,
+              marginTop: 40,
               paddingBottom: 10,
             }}
           >
