@@ -122,7 +122,8 @@ export interface UpdateTareaModalProps {
   visible: boolean;
   hideModal: () => void;
   idTarea: number;
-  nombre: string;
+  descripcion: string;
+  estado: string;
 }
 
 export interface UpdateEquipoModalProps {
