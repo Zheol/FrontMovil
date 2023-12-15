@@ -69,6 +69,7 @@ interface Tarea {
   estado: string;
   created: Date;
   updated: Date;
+  idResponsable: number;
 }
 
 const ModalTarea: React.FC<UpdateTareaModalProps> = ({
@@ -102,8 +103,11 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
       email: item.user.email,
     })) || [];
 
-  const TareaDB = dataTarea;
-  console.log(TareaDB.estado);
+  const TareaDB = dataTarea.getTareaById;
+
+  // if (TareaDB.idResponsable == null) {
+  //   console.log("aun no tiene responsable");
+  // }
 
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
@@ -252,10 +256,14 @@ const ModalTarea: React.FC<UpdateTareaModalProps> = ({
         </View>
 
         <View style={{ width: "100%", marginTop: 15 }}>
-          <Text>Fecha creación: </Text>
+          <Text>Responsable: {TareaDB.idResponsable}</Text>
+        </View>
+
+        <View style={{ width: "100%", marginTop: 15 }}>
+          <Text>Fecha creación: {TareaDB.created}</Text>
         </View>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
-          <Text>Última actualización: </Text>
+          <Text>Última actualización: {TareaDB.updated}</Text>
         </View>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
           <Divider />
