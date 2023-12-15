@@ -1,4 +1,4 @@
-import { Dimensions, View, Text, StyleSheet } from "react-native";
+import { Dimensions, View, Text, StyleSheet, ScrollView } from "react-native";
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import { gql, useQuery } from "@apollo/client";
@@ -6,6 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CommentBox from "../../components/CommnetBox";
 import { FlatList } from "react-native-gesture-handler";
+import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
 
 const { height } = Dimensions.get("window");
 
@@ -27,6 +29,7 @@ interface Comentario {
 }
 
 export default function TareaEditScreen({ route }) {
+  const { nameUser, emailUser, idUser } = useContext(UserContext);
   const { idTarea, nombreTarea, estadoTarea } = route.params;
   const navigation = useNavigation();
   const {
@@ -41,7 +44,6 @@ export default function TareaEditScreen({ route }) {
       },
     },
   });
-  console.log(data?.getComentariosbyIdTarea);
   refetch();
   const renderItem = ({ item }: { item: Comentario }) => (
     <View style={styles.commentContainer}>
@@ -50,8 +52,10 @@ export default function TareaEditScreen({ route }) {
     </View>
   );
 
+  console.log(data?.getComentariosbyIdTarea)
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <View
         style={{
           padding: Spacing * 2,
@@ -93,12 +97,15 @@ export default function TareaEditScreen({ route }) {
             Estado: {estadoTarea}
           </Text>
         </View>
-        <CommentBox idTarea={idTarea} onCommentAdded={refetch} />
+        <CommentBox idTarea={idTarea} onCommentAdded={refetch} nombreUser={nameUser} />
+            
         <FlatList
           data={data?.getComentariosbyIdTarea}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
+          ListFooterComponent={<View style={{ height: 320 }} />}
         />
+
       </View>
     </SafeAreaView>
   );
