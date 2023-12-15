@@ -112,6 +112,13 @@ export interface UpdateProyectoModalProps {
   idProyecto: number;
 }
 
+export interface UpdateTareaModalProps {
+  visible: boolean;
+  hideModal: () => void;
+  idTarea: number;
+  nombre: string;
+}
+
 export interface UpdateEquipoModalProps {
   visible: boolean;
   hideModal: () => void;
