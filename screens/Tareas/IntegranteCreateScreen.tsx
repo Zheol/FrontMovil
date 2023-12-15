@@ -1,10 +1,4 @@
-import {
-  Dimensions,
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { Dimensions, View, Text, TouchableOpacity } from "react-native";
 import Spacing from "../../constants/Spacing";
 import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
@@ -14,9 +8,7 @@ import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import { formCreateIntegrante } from "../../types";
-import { Schema } from "yup";
 import AppTextInput from "../../components/AppTextInput";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
 import { ActivityIndicator } from "react-native-paper";
 import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
@@ -124,16 +116,6 @@ export default function IntegrantesCreateScreen({ route }) {
         />
         <View
           style={{
-            marginTop: 30,
-            alignSelf: "flex-start",
-          }}
-        >
-          <Button onPress={showModal}>
-            <Icon source="magnify" size={30} />
-          </Button>
-        </View>
-        <View
-          style={{
             alignItems: "center",
           }}
         >
@@ -143,23 +125,12 @@ export default function IntegrantesCreateScreen({ route }) {
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
-              marginTop: -43,
+              marginTop: 40,
               paddingBottom: 10,
             }}
           >
             Agregar Integrante
           </Text>
-
-          <View
-            style={{
-              alignSelf: "flex-end",
-              marginTop: -50,
-            }}
-          >
-            <Button onPress={showModal}>
-              <Icon source="account-details" size={30} />
-            </Button>
-          </View>
         </View>
 
         <View style={{ width: "100%" }}>

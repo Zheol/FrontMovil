@@ -14,7 +14,6 @@ import { gql, useApolloClient, useQuery } from "@apollo/client";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
-import UserProyectoModal from "../../components/UpdateProyectoModal";
 import ProyectoUpdateModal from "../../components/UpdateProyectoModal";
 import { UserContext } from "../../context/UserContext";
 
@@ -56,17 +55,17 @@ interface Project {
   idAdmin: number;
 }
 
-interface Integrante{
+interface Integrante {
   idProyecto: number;
 }
 
 export default function ProyectosScreen() {
-  const [proyect, setProyect] = useState<Proyect[]>();
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalUpdateVisible, setModalUpdateVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
-  const [modalVisibleProjectId, setModalVisibleProjectId] = useState<number | null>(null);
+  const [modalVisibleProjectId, setModalVisibleProjectId] = useState<
+    number | null
+  >(null);
 
   const showModalUpdate = (projectId: number) => {
     setModalVisibleProjectId(projectId);

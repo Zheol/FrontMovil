@@ -160,7 +160,7 @@ export default function TareasScreen({ route }) {
             <Divider />
           </View>
 
-          <View style={{ marginBottom: 60 }}>
+          <View style={{ marginBottom: 60, marginTop: 5 }}>
             <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>
               <Text>Tareas Creadas</Text>
               <View>
@@ -192,22 +192,25 @@ export default function TareasScreen({ route }) {
                       <Text
                         style={{
                           width: 350,
-                          color: "black",
-                          textAlign: "center",
-                          paddingTop: 35,
-                          fontSize: 15,
+                          color: "grey",
+                          fontSize: 13,
+                          alignSelf: "flex-start",
+                          paddingTop: 10,
+                          paddingLeft: 15,
                         }}
                       >
-                        {tareas.descripcion}
+                        {tareas.estado}
                       </Text>
                       <Text
                         style={{
                           width: 350,
-                          color: "red",
+                          color: "black",
                           textAlign: "center",
+                          paddingTop: 20,
+                          fontSize: 15,
                         }}
                       >
-                        {tareas.estado}
+                        {tareas.descripcion}
                       </Text>
                       <View
                         style={{
