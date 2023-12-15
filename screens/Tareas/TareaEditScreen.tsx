@@ -77,7 +77,8 @@ mutation updateTarea($input: updateTareaDto!, $inputId: findTareaDto!) {
           },
       });
 
-      navigation.navigate("Tareas");
+      navigation.navigate('Tareas');
+
     };
 
     const onEliminadaPressSend = () => {

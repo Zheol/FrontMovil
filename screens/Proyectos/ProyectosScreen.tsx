@@ -56,15 +56,19 @@ interface Project {
   idAdmin: number;
 }
 
+interface Integrante{
+  idProyecto: number;
+}
+
 export default function ProyectosScreen() {
   const [proyect, setProyect] = useState<Proyect[]>();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalUpdateVisible, setModalUpdateVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
-  const [modalVisibleProjectId, setModalVisibleProjectId] = useState(null);
+  const [modalVisibleProjectId, setModalVisibleProjectId] = useState<number | null>(null);
 
-  const showModalUpdate = (projectId) => {
+  const showModalUpdate = (projectId: number) => {
     setModalVisibleProjectId(projectId);
   };
 
@@ -110,7 +114,7 @@ export default function ProyectosScreen() {
 
   useEffect(() => {
     if (data?.getIntegrantebyIdUsuario) {
-      data.getIntegrantebyIdUsuario.forEach(async (integrante) => {
+      data.getIntegrantebyIdUsuario.forEach(async (integrante: Integrante) => {
         const getProyectosbyUserInput = {
           id: integrante.idProyecto,
         };

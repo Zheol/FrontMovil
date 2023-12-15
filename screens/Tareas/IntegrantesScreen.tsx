@@ -10,10 +10,11 @@ import Font from "../../constants/Font";
 import FontSize from "../../constants/FontSize";
 import { gql, useQuery } from "@apollo/client";
 import { SubmitHandler } from "react-hook-form";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Button, PaperProvider, Divider, Icon } from "react-native-paper";
 import UserProfileModal from "../../components/UserProfileModal";
-import { useContext, useState } from "react";
+import UserModal from "../../components/UserModal";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 
 const { height } = Dimensions.get("window");
@@ -24,11 +25,23 @@ const OBTENER_INTEGRANTES = gql`
       id
       user {
         name
+        email
       }
       rol
     }
   }
 `;
+
+interface Integrante {
+  id: number;
+  user: User;
+  rol: string;
+}
+
+interface User {
+  name: string;
+  email: string;
+}
 
 export default function IntegrantesScreen({ route }) {
   const {
@@ -42,6 +55,15 @@ export default function IntegrantesScreen({ route }) {
     emailUser,
     idUser,
   } = useContext(UserContext);
+  const [modalVisibleUserId, setModalVisibleUserId] = useState<number | null>(null);
+
+  const showModalUpdate = (userId: number) => {
+    setModalVisibleUserId(userId);
+  };
+
+  const hideModalUpdate = () => {
+    setModalVisibleUserId(null);
+  };
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
@@ -50,14 +72,21 @@ export default function IntegrantesScreen({ route }) {
       id: idEquipo,
     },
   });
-  refetch(data);
+  refetch();
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      return () => {};
+    }, [])
+  );
   const navigation = useNavigation();
 
   const integrantes =
-    data?.getIntegrantebyIdEquipo?.map((item) => ({
+    data?.getIntegrantebyIdEquipo?.map((item: Integrante) => ({
       id: item.id,
       name: item.user.name,
       rol: item.rol,
+      email: item.user.email
     })) || [];
 
   return (
@@ -131,10 +160,7 @@ export default function IntegrantesScreen({ route }) {
                       paddingTop: 6,
                     }}
                     key={integrante.id}
-                    onPress={() => {
-                      // MANDAR A LA PANTALLA DEL PROYECTO
-                      console.log("Pulsaste el boton de:", integrante.name);
-                    }}
+                    onPress={() => showModalUpdate(integrante.id)}
                   >
                     <Text
                       style={{
@@ -157,6 +183,15 @@ export default function IntegrantesScreen({ route }) {
                     >
                       {integrante.rol}
                     </Text>
+
+                    <UserModal
+                      visible={modalVisibleUserId === integrante.id}
+                      hideModal={hideModalUpdate}
+                      nombre={integrante.name}
+                      idUser={integrante.id}
+                      email={integrante.email}
+
+                    />
                   </TouchableOpacity>
                 );
               })}
@@ -173,8 +208,6 @@ export default function IntegrantesScreen({ route }) {
                 onPress={() => {
                   // MANDAR A LA PANTALLA DE CREAR INTEGRANTE
                   navigation.navigate("CrearIntegrante", {
-                    nombreUser: nameUser,
-                    idUser: idUser,
                     idProyecto: idProyecto,
                     nombreProyecto: nombreProyecto,
                     nombreEquipo: nombreEquipo,

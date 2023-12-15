@@ -4,7 +4,6 @@
  */
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Float } from "react-native/Libraries/Types/CodegenTypes";
 
 declare global {
   namespace ReactNavigation {
@@ -18,12 +17,7 @@ export type RootStackParamList = {
   Register: undefined;
   ForgotPass: undefined;
   ResetPassword: undefined;
-  ProyectosNav: {
-    nombre: string;
-    email: string;
-    id: Float;
-    accessToken: string;
-  };
+  ProyectosNav: undefined;
   EquiposNav: {
     nombreProyecto: string;
     idProyecto: number;
@@ -132,6 +126,6 @@ export type formChangePassword = {
 };
 
 export type formUpdateUser = {
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
 };

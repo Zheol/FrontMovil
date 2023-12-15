@@ -41,9 +41,9 @@ export default function EquiposScreen({ route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
-  const [modalVisibleEquipoId, setModalVisibleEquipotId] = useState(null);
-  const showModalUpdate = (projectId) => {
-    setModalVisibleEquipotId(projectId);
+  const [modalVisibleEquipoId, setModalVisibleEquipotId] = useState<number | null>(null);
+  const showModalUpdate = (equipoId: number) => {
+    setModalVisibleEquipotId(equipoId);
   };
 
   const hideModalUpdate = () => {
@@ -56,7 +56,7 @@ export default function EquiposScreen({ route }) {
     },
   });
   const equipos: Equipo[] =
-    data?.getEquiposbyProyectId?.map((item) => ({
+    data?.getEquiposbyProyectId?.map((item: Equipo) => ({
       id: item.id,
       nombre: item.nombre,
     })) || [];

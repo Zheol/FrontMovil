@@ -208,13 +208,10 @@ export default function EquipoFindScreen({ route }) {
                       onPress={() => {
                         // MANDAR A LA PANTALLA DEL Tareas
                         navigation.navigate("TareasNav", {
-                          nombreUser: nameUser,
-                          idUser: idUser,
                           nombreProyecto: nombreProyecto,
                           idProyecto: idProyecto,
                           nombreEquipo: equipos.nombre,
                           idEquipo: equipos.id,
-                          email: emailUser,
                         });
                       }}
                     >

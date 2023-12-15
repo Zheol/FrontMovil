@@ -15,12 +15,12 @@ import Spacing from "../constants/Spacing";
 import { gql, useMutation } from "@apollo/client";
 import { UserContext } from "../context/UserContext";
 
-const UPDATE_USER = gql`
-  mutation updateUser($input: UpdateUserDto!, $inputId: FindUserByIdInput!) {
-    updateUser(updateUserInput: $input, findUserByIdInput: $inputId) {
-      id
+const DELETE_INTEGRANTE = gql`
+    mutation removeIntegrante($input: findIntegranteDto!){
+        removeIntegrante(findIntegranteDto: $input){
+        userId
+        }
     }
-  }
 `;
 
 const schema = yup.object().shape({
@@ -28,14 +28,14 @@ const schema = yup.object().shape({
   name: yup.string().optional(),
 });
 
-const UserProfileModal: React.FC<UserProfileModalProps> = ({
+const UserModal: React.FC<UserProfileModalProps> = ({
   visible,
   hideModal,
   nombre,
   email,
   idUser,
 }) => {
-  const [updateUser, { data, loading, error }] = useMutation(UPDATE_USER);
+  const [deleteIntegrante, { data, loading, error }] = useMutation(DELETE_INTEGRANTE);
   const {
     control,
     handleSubmit,
@@ -49,42 +49,20 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
   });
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
-  const navigation = useNavigation();
-
-  const goToLogin = () => {
-    navigation.navigate("Login");
-  };
-
-  const { setnameUser } = useContext(UserContext);
-
-  const onPressSend = (formData: formUpdateUser) => {
-    if (formData.email !== undefined){
-      if (!formData.email.length) formData.email = email;
-    }
-    if (formData.name !== undefined){
-      if (!formData.name.length) formData.name = nombre;
-    }
-    
-    
-    const updateUserInput = {
-      name: formData.name,
-      email: formData.email,
-    };
+  const onPressSend = () => {    
     const findUserByIdInput = {
       id: idUser,
     };
-    updateUser({
+    deleteIntegrante({
       variables: {
-        input: updateUserInput,
-        inputId: findUserByIdInput,
+        input: findUserByIdInput,
       },
     })
       .then(() => {
-        setnameUser(updateUser.name);
         hideModal();
       })
       .catch((error) => {
-        console.error("Error al Actualizar el usuario", error);
+        console.error("Error al Eliminar el usuario", error);
       });
   };
 
@@ -123,7 +101,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
             render={({ field: { onChange, value } }) => (
               <AppTextInput
                 value={value}
-                onChangeText={onChange}
+                editable={false}
                 placeholder={nombre}
               />
             )}
@@ -193,34 +171,10 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   fontSize: FontSize.large,
                 }}
               >
-                Actualizar
+                Eliminar Integrante
               </Text>
             </TouchableOpacity>
           )}
-
-          <TouchableOpacity
-            onPress={goToLogin}
-            style={{
-              padding: Spacing * 1,
-              backgroundColor: "#000000",
-              width: "45%",
-              marginLeft: 15,
-              marginTop: 10,
-              borderRadius: Spacing,
-              shadowColor: Colors.primary,
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: Font["poppins-bold"],
-                color: Colors.onPrimary,
-                textAlign: "center",
-                fontSize: FontSize.large,
-              }}
-            >
-              Salir
-            </Text>
-          </TouchableOpacity>
         </View>
 
         <View style={{ height: 40, paddingTop: 20 }}>
@@ -230,23 +184,6 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
             </Text>
           )}
         </View>
-
-        <TouchableOpacity>
-          <Text
-            onPress={() => {
-              navigation.navigate("ChangePassword", { idUser });
-            }}
-            style={{
-              marginTop: 10,
-              fontFamily: Font["poppins-semiBold"],
-              color: Colors.text,
-              textAlign: "center",
-              fontSize: FontSize.small,
-            }}
-          >
-            Actualizar contraseña
-          </Text>
-        </TouchableOpacity>
         <View style={{ width: "100%", marginTop: 15, marginBottom: 20 }}>
           <Divider />
         </View>
@@ -255,4 +192,4 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
   );
 };
 
-export default UserProfileModal;
+export default UserModal;

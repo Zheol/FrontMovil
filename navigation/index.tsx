@@ -50,10 +50,7 @@ function RootNavigator() {
       <Stack.Screen name="ProyectosNav" component={ProyectosNav} />
       <Stack.Screen name="EquiposNav" component={EquiposNav} />
       <Stack.Screen name="TareasNav" component={TareasNav} />
-      <Stack.Screen
-        name="CrearIntegrante"
-        component={IntegrantesCreateScreen}
-      />
+      <Stack.Screen name="CrearIntegrante" component={IntegrantesCreateScreen}/>
       <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
       <Stack.Screen name="EditarTarea" component={TareaEditScreen} />
     </Stack.Navigator>
