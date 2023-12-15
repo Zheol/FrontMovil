@@ -128,6 +128,11 @@ export interface UpdateEquipoModalProps {
   idEquipo: number;
 }
 
+export interface CreateCommentProps {
+  idTarea: number;
+  onCommentAdded: undefined;
+}
+
 export type formChangePassword = {
   oldPassword: string;
   newPassword: string;
